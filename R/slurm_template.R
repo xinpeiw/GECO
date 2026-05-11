@@ -8,7 +8,7 @@
 #'
 #' The number of cell types is taken straight from the .h5ad file —
 #' the precision SLURM array is sized at runtime by step 02 (after
-#' [geco_finalize_estimates()] has computed `mats.rds`), so you never
+#' [geco_finalize_estimates()] has written `cell_type_order.rds`), so you never
 #' have to tell the scaffolding how many cell types your data has.
 #'
 #' @param scripts_dir Directory to write the scripts into (created if
@@ -22,7 +22,7 @@
 #'   `genes` argument. Required.
 #' @param n_jobs Number of SLURM array elements for the chunk step.
 #'   Choose this so each chunk runs in a reasonable wall time (e.g.
-#'   241 for ~6M pairs, mirroring the legacy script).
+#'   300 is a reasonable default for ~10k genes / ~50M pairs).
 #' @param prepare_args Named list of additional args injected into the
 #'   `geco_prepare()` call (e.g. `subset_col = "SLE_status"`).
 #' @param slurm Named list of SLURM options. Defaults are reasonable
@@ -37,7 +37,7 @@ generate_slurm_pipeline <- function(scripts_dir,
                                     output_dir,
                                     h5ad_file,
                                     gene_list_file,
-                                    n_jobs = 241,
+                                    n_jobs = 300,
                                     prepare_args = list(),
                                     slurm = list(
                                       partition = "general",
@@ -91,18 +91,22 @@ generate_slurm_pipeline <- function(scripts_dir,
     "## 02_finalize_estimates.R",
     "args <- commandArgs(trailingOnly = TRUE)",
     "library(GECO)",
-    "GECO::geco_finalize_estimates(work_dir = args[1])"
+    "GECO::geco_finalize_estimates(work_dir = args[1],",
+    "                              output_dir = args[2])"
   ), file.path(scripts_dir, "02_finalize_estimates.R"))
 
   writeLines(c(
     "## 03_precision.R - SLURM array element (one per cell type + shared)",
     "args <- commandArgs(trailingOnly = TRUE)",
     "library(GECO)",
-    "work_dir <- args[1]",
+    "work_dir   <- args[1]",
+    "output_dir <- args[2]",
     "ct_idx <- as.integer(Sys.getenv('SLURM_ARRAY_TASK_ID',",
-    "                                unset = if (length(args) >= 2) args[2] else NA))",
-    "if (is.na(ct_idx)) stop('No SLURM_ARRAY_TASK_ID set and no 2nd CLI arg.')",
-    "GECO::geco_precision_chunk(work_dir = work_dir, ct_idx = ct_idx)"
+    "                                unset = if (length(args) >= 3) args[3] else NA))",
+    "if (is.na(ct_idx)) stop('No SLURM_ARRAY_TASK_ID set and no 3rd CLI arg.')",
+    "GECO::geco_precision_chunk(work_dir   = work_dir,",
+    "                           output_dir = output_dir,",
+    "                           ct_idx     = ct_idx)"
   ), file.path(scripts_dir, "03_precision.R"))
 
   writeLines(c(
@@ -152,21 +156,22 @@ generate_slurm_pipeline <- function(scripts_dir,
   ), file.path(scripts_dir, "01_chunk.sh"))
 
   ## Step 02 finalizes estimates AND then submits steps 03 + 04 with
-  ## the correct precision array size (derived from mats.rds).
+  ## the correct precision array size (derived from cell_type_order.rds).
   writeLines(c(
     hdr("geco_fin_est"),
     "set -euo pipefail",
     "",
-    paste0("WORK_DIR=", shQuote(work_dir)),
+    paste0("WORK_DIR=",   shQuote(work_dir)),
     paste0("OUTPUT_DIR=", shQuote(output_dir)),
     "",
-    paste0(r_executable, " 02_finalize_estimates.R \"${WORK_DIR}\""),
+    paste0(r_executable,
+           " 02_finalize_estimates.R \"${WORK_DIR}\" \"${OUTPUT_DIR}\""),
     "",
-    "# How many precision jobs to launch? = (n_cell_types + 1)",
-    "# Read it back from mats.rds, which step 02 just wrote.",
+    "# How many precision jobs to launch? = (n_cell_types + 1).",
+    "# Read it from cell_type_order.rds, which step 02 just wrote.",
     paste0("N_PREC=$(", r_executable,
            " -e \"cat(length(readRDS(file.path(commandArgs(TRUE)[1],",
-           " 'mats.rds'))$cov))\" --args \"${WORK_DIR}\")"),
+           " 'cell_type_order.rds'))))\" --args \"${WORK_DIR}\")"),
     "echo \"n_precision_jobs = ${N_PREC}\"",
     "",
     "J3=$(sbatch --parsable --array=1-${N_PREC} 03_precision.sh)",
@@ -181,7 +186,8 @@ generate_slurm_pipeline <- function(scripts_dir,
     hdr("geco_precision"),   # no array directive here
     "set -euo pipefail",
     paste0(r_executable, " 03_precision.R \\"),
-    paste0("  ", shQuote(work_dir))
+    paste0("  ", shQuote(work_dir),   " \\"),
+    paste0("  ", shQuote(output_dir))
   ), file.path(scripts_dir, "03_precision.sh"))
 
   writeLines(c(
@@ -197,7 +203,7 @@ generate_slurm_pipeline <- function(scripts_dir,
     "#!/bin/bash",
     "# pipeline.sh - submits the GECO cluster pipeline via sbatch dependencies.",
     "# Steps 03 (precision array) and 04 (finalize outputs) are submitted",
-    "# from inside step 02, after mats.rds tells us how many cell types we have.",
+    "# from inside step 02, after cell_type_order.rds tells us how many cell types we have.",
     "set -euo pipefail",
     "",
     "J0=$(sbatch --parsable 00_prepare.sh)",

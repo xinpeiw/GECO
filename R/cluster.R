@@ -309,20 +309,23 @@ geco_chunk <- function(work_dir, task_id, n_jobs, verbose = 100) {
 }
 
 
-#' Merge chunks and reformat into per-cell-type matrices
+#' Merge chunks and write per-cell-type cov/se/p matrices
 #'
 #' Concatenates all `work_dir/chunks/chunk_*.rds` files, calls
-#' [reformat_to_matrices()], computes p-value matrices, applies
-#' [transform_psd()], and saves a single `work_dir/mats.rds`
-#' containing all the inputs that downstream precision/degree steps
-#' need.
+#' [reformat_to_matrices()], computes p-value matrices, and writes
+#' per-cell-type `cov_<ct>.rds`, `se_<ct>.rds`, and `p_<ct>.rds`
+#' files directly into `output_dir`. Also saves a small
+#' `work_dir/cell_type_order.rds` (a character vector) so step 03
+#' knows the canonical ordering of cell types — no consolidated
+#' `mats.rds` file is written.
 #'
 #' @param work_dir Working directory built by [geco_prepare()].
-#' @param psd_thr Threshold for [transform_psd()] (default 0).
+#' @param output_dir Directory to write the final per-cell-type
+#'   matrices into. Created if missing.
 #'
-#' @return Invisibly the merged result list.
+#' @return Invisibly the merged matrices list (`cov`, `se`, `p`).
 #' @export
-geco_finalize_estimates <- function(work_dir, psd_thr = 0) {
+geco_finalize_estimates <- function(work_dir, output_dir) {
 
   prep <- readRDS(file.path(work_dir, "prep.rds"))
   chunk_files <- list.files(file.path(work_dir, "chunks"),
@@ -346,123 +349,127 @@ geco_finalize_estimates <- function(work_dir, psd_thr = 0) {
   mats <- reformat_to_matrices(est, prep$genes,
                                cell_types = prep$cell_type_names)
 
-  message("[geco_finalize_estimates] Computing p-value + PSD matrices...")
-  p_mats   <- mapply(compute_p_matrix, mats$cov, mats$se, SIMPLIFY = FALSE)
+  message("[geco_finalize_estimates] Computing p-value matrices...")
+  p_mats <- mapply(compute_p_matrix, mats$cov, mats$se, SIMPLIFY = FALSE)
   names(p_mats) <- names(mats$cov)
-  cov_psd  <- lapply(mats$cov, transform_psd, thr = psd_thr)
 
-  out <- list(cov = mats$cov, se = mats$se,
-              p = p_mats, cov_psd = cov_psd,
-              cell_type_names = prep$cell_type_names,
-              n_ind = length(prep$individuals),
-              genes = prep$genes)
-  saveRDS(out, file.path(work_dir, "mats.rds"))
-  message("[geco_finalize_estimates] Wrote ", file.path(work_dir, "mats.rds"))
-  invisible(out)
+  dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
+  for (nm in names(mats$cov)) {
+    saveRDS(mats$cov[[nm]], file.path(output_dir, paste0("cov_", nm, ".rds")))
+    saveRDS(mats$se [[nm]], file.path(output_dir, paste0("se_",  nm, ".rds")))
+    saveRDS(p_mats  [[nm]], file.path(output_dir, paste0("p_",   nm, ".rds")))
+  }
+
+  ## Tiny metadata file used by step 03 to size the precision array.
+  saveRDS(names(mats$cov), file.path(work_dir, "cell_type_order.rds"))
+
+  message("[geco_finalize_estimates] Wrote per-cell-type ",
+          "cov_*.rds / se_*.rds / p_*.rds to ", output_dir, ".")
+  invisible(list(cov = mats$cov, se = mats$se, p = p_mats))
 }
 
 
 #' Fit the precision matrix for a single cell type (SLURM array element)
 #'
-#' Loads `work_dir/mats.rds`, picks the cell type at index `ct_idx`
-#' (1 = "shared", then cell types in the order saved by
-#' [geco_prepare()]), and runs [fit_precision()]. The result is saved
-#' to `work_dir/precision/precision_<name>.rds`.
+#' Reads `output_dir/cov_<ct>.rds` and `output_dir/p_<ct>.rds`,
+#' PSD-clips the covariance on the fly with [transform_psd()], runs
+#' [fit_precision()], and writes the result to
+#' `output_dir/precision_<ct>.rds`. The full fit (including lambda
+#' path) is also saved to `work_dir/precision/fit_<ct>.rds` for
+#' diagnostics.
 #'
 #' @param work_dir Working directory built by [geco_prepare()].
+#' @param output_dir Directory with `cov_<ct>.rds` and `p_<ct>.rds`
+#'   written by [geco_finalize_estimates()]. The precision matrix is
+#'   written here too.
 #' @param ct_idx   Integer index into the ordered list
 #'   `c("shared", <cell types from h5ad>)`. So valid values are
 #'   `1..(n_cell_types + 1)`.
+#' @param psd_thr Threshold for [transform_psd()] (default 0).
 #' @param fit_args Named list of arguments forwarded to
 #'   [fit_precision()].
 #'
 #' @return Invisibly the precision fit result.
 #' @export
-geco_precision_chunk <- function(work_dir, ct_idx, fit_args = list()) {
-  mats   <- readRDS(file.path(work_dir, "mats.rds"))
-  all_nm <- names(mats$cov)
-  if (ct_idx < 1 || ct_idx > length(all_nm)) {
-    stop("ct_idx must be in 1..", length(all_nm))
+geco_precision_chunk <- function(work_dir, output_dir, ct_idx,
+                                 psd_thr = 0, fit_args = list()) {
+  prep   <- readRDS(file.path(work_dir, "prep.rds"))
+  order  <- readRDS(file.path(work_dir, "cell_type_order.rds"))
+  if (ct_idx < 1 || ct_idx > length(order)) {
+    stop("ct_idx must be in 1..", length(order))
   }
-  nm <- all_nm[ct_idx]
+  nm <- order[ct_idx]
   message("[geco_precision_chunk] Fitting precision for: ", nm)
 
-  fit <- do.call(fit_precision,
-    c(list(cov = mats$cov_psd[[nm]],
-           p = mats$p[[nm]],
-           n_ind = mats$n_ind),
-      fit_args))
-  dimnames(fit$precision) <- list(mats$genes, mats$genes)
+  cov <- readRDS(file.path(output_dir, paste0("cov_", nm, ".rds")))
+  p   <- readRDS(file.path(output_dir, paste0("p_",   nm, ".rds")))
+  cov_psd <- transform_psd(cov, thr = psd_thr)
 
-  out_path <- file.path(work_dir, "precision",
-                        paste0("precision_", nm, ".rds"))
-  saveRDS(fit, out_path)
-  message("[geco_precision_chunk] Wrote ", out_path,
+  n_ind <- length(prep$individuals)
+  fit <- do.call(fit_precision,
+    c(list(cov = cov_psd, p = p, n_ind = n_ind), fit_args))
+  dimnames(fit$precision) <- list(prep$genes, prep$genes)
+
+  saveRDS(fit$precision,
+          file.path(output_dir, paste0("precision_", nm, ".rds")))
+  saveRDS(list(lambda = fit$lambda, eBIC_path = fit$eBIC_path),
+          file.path(work_dir, "precision", paste0("fit_", nm, ".rds")))
+
+  message("[geco_precision_chunk] Wrote ",
+          file.path(output_dir, paste0("precision_", nm, ".rds")),
           " (lambda = ", fit$lambda, ")")
   invisible(fit)
 }
 
 
-#' Finalize cluster outputs: save matrices, build degree.xlsx
+#' Finalize cluster outputs: build degree.xlsx
 #'
-#' Reads `work_dir/mats.rds` and `work_dir/precision/*.rds`, writes
-#' per-cell-type `cov/se/p/precision_<ct>.rds` to `output_dir`, and
-#' assembles a single `degree.xlsx` workbook with one column per cell
-#' type.
+#' Reads `output_dir/precision_*.rds` files (written by
+#' [geco_precision_chunk()]), computes node degrees, and writes
+#' `output_dir/degree.xlsx` with one column per cell type. All other
+#' per-cell-type outputs (`cov_*`, `se_*`, `p_*`, `precision_*`) are
+#' already in `output_dir` by the time this runs — this function only
+#' adds the degree workbook.
 #'
 #' @param work_dir Working directory built by [geco_prepare()].
-#' @param output_dir Final outputs directory (created if missing).
+#' @param output_dir Final outputs directory.
 #'
-#' @return Invisibly the final result list.
+#' @return Invisibly the degree `data.frame`.
 #' @export
 geco_finalize_outputs <- function(work_dir, output_dir) {
-  mats <- readRDS(file.path(work_dir, "mats.rds"))
-  pdir <- file.path(work_dir, "precision")
-  precision_files <- list.files(pdir,
-                                pattern = "^precision_.*\\.rds$",
-                                full.names = TRUE)
-  if (length(precision_files) == 0L) {
-    stop("No precision files found in ", pdir)
-  }
+  prep  <- readRDS(file.path(work_dir, "prep.rds"))
+  order <- readRDS(file.path(work_dir, "cell_type_order.rds"))
 
-  precisions <- list()
-  lambdas    <- list()
-  eBIC_paths <- list()
-  for (pf in precision_files) {
-    nm  <- sub("^precision_(.*)\\.rds$", "\\1", basename(pf))
-    fit <- readRDS(pf)
-    precisions[[nm]] <- fit$precision
-    lambdas[[nm]]    <- fit$lambda
-    eBIC_paths[[nm]] <- fit$eBIC_path
-  }
-
-  genes <- mats$genes
+  genes <- prep$genes
   deg_df <- data.frame(gene = genes, stringsAsFactors = FALSE)
-  for (nm in names(mats$cov)) {
-    if (is.null(precisions[[nm]])) {
-      warning("Missing precision for cell type '", nm,
-              "' - degree column set to NA.")
+  for (nm in order) {
+    pf <- file.path(output_dir, paste0("precision_", nm, ".rds"))
+    if (!file.exists(pf)) {
+      warning("Missing precision file for '", nm, "': ", pf,
+              " (degree column set to NA).")
       deg_df[[nm]] <- NA_integer_
-    } else {
-      deg <- compute_degree(precisions[[nm]])
-      deg_df[[nm]] <- as.integer(deg[genes])
+      next
     }
+    Omega <- readRDS(pf)
+    deg   <- compute_degree(Omega)
+    deg_df[[nm]] <- as.integer(deg[genes])
   }
 
-  result <- list(
-    cov        = mats$cov,
-    se         = mats$se,
-    p          = mats$p,
-    cov_psd    = mats$cov_psd,
-    precision  = precisions,
-    lambda     = lambdas,
-    eBIC_paths = eBIC_paths,
-    degree     = deg_df,
-    genes      = genes,
-    cell_types = mats$cell_type_names
-  )
+  if (requireNamespace("openxlsx", quietly = TRUE)) {
+    wb <- openxlsx::createWorkbook()
+    openxlsx::addWorksheet(wb, "degree")
+    openxlsx::writeData(wb, "degree", deg_df)
+    openxlsx::saveWorkbook(wb,
+      file = file.path(output_dir, "degree.xlsx"),
+      overwrite = TRUE)
+  } else {
+    utils::write.csv(deg_df,
+      file = file.path(output_dir, "degree.csv"),
+      row.names = FALSE)
+    message("openxlsx not available; wrote degree.csv instead of .xlsx")
+  }
 
-  save_results(result, output_dir)
-  message("[geco_finalize_outputs] Wrote outputs to ", output_dir)
-  invisible(result)
+  message("[geco_finalize_outputs] Wrote ",
+          file.path(output_dir, "degree.xlsx"))
+  invisible(deg_df)
 }

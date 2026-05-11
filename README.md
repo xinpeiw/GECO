@@ -139,7 +139,7 @@ Every step of the pipeline is also exposed in case you want to run only
 part of it or inject custom logic:
 
 ```r
-genes <- read_gene_list("genelist11087.txt")
+genes <- read_gene_list("genelist.txt")
 data  <- load_h5ad("subset_data.h5ad", genes = genes)
 
 opms  <- compute_OPms(data, genes)
@@ -151,8 +151,8 @@ fcov  <- build_fixed_cov(data,
 est   <- estimate_geco(data, genes, opms, fixed_cov = fcov)
 mats  <- reformat_to_matrices(est, genes)
 
-p_mat   <- compute_p_matrix(mats$cov$T4, mats$se$T4)
-cov_psd <- transform_psd   (mats$cov$T4)
+p_mat   <- compute_p_matrix(mats$cov$CD4NC, mats$se$CD4NC)
+cov_psd <- transform_psd   (mats$cov$CD4NC)
 
 n_ind <- length(unique(data$ind_cov))         # taken from the h5ad
 fit   <- fit_precision(cov_psd, p_mat, n_ind = n_ind)
@@ -180,23 +180,24 @@ memory with the others:
    `cell_data.fst` (column-selectable), computes per-gene OPmean/OPsd,
    builds the fixed covariate matrix, and saves the gene-pair list.
    Everything that downstream workers might need lands in `work_dir/`.
-2. **Chunk** — a SLURM array (default 241 tasks). Each worker reads
+2. **Chunk** — a SLURM array (default 300 tasks). Each worker reads
    `prep.rds` + just the two gene columns it needs for its slice of
    gene pairs from the fst file, runs `GeCo()` on every pair in the
    slice, and writes `work_dir/chunks/chunk_<id>.rds`.
 3. **Merge & reformat** — one process concatenates all
-   `chunk_*.rds` into a single long table, reformats it into per-cell
-   -type `cov`/`se` matrices, computes p-values, and PSD-clips the
-   covariance. Result is saved as one `mats.rds` so steps 4–5 don't
-   each have to re-walk the chunks.
+   `chunk_*.rds` into a single long table, reformats it into
+   per-cell-type matrices, computes p-values, and writes
+   `cov_<ct>.rds` / `se_<ct>.rds` / `p_<ct>.rds` for each cell type
+   directly to `output_dir`. A small `work_dir/cell_type_order.rds`
+   records the cell-type ordering for step 4.
 4. **Precision** — a second SLURM array (one task per cell type
-   plus `shared`). Each worker reads `mats.rds`, runs glassoFast +
-   eBIC for its assigned cell type, and writes
-   `precision/precision_<ct>.rds`.
-5. **Finalize** — one process reads `mats.rds` + every
-   `precision_*.rds`, computes degrees, and writes the final
-   `cov_*.rds` / `se_*.rds` / `p_*.rds` / `precision_*.rds` plus
-   `degree.xlsx` to `output_dir`.
+   plus `shared`). Each worker reads `cov_<ct>.rds` and `p_<ct>.rds`
+   from `output_dir`, PSD-clips the covariance on the fly, runs
+   glassoFast + eBIC, and writes `precision_<ct>.rds` back into
+   `output_dir`.
+5. **Finalize** — one process reads the `precision_*.rds` files,
+   computes degrees, and writes `degree.xlsx` to `output_dir`. All
+   other deliverables are already in place from steps 3 and 4.
 
 The extra disk hops (especially the chunk-merging step) are why
 cluster mode has more files and more invocations than in-memory mode.
@@ -216,14 +217,14 @@ generate_slurm_pipeline(
   work_dir       = "/path/to/work",
   output_dir     = "/path/to/results",
   h5ad_file      = "/path/to/subset_data.h5ad",
-  gene_list_file = "/path/to/genelist11087.txt",  # one gene ID per line
-  n_jobs         = 241,   # number of SLURM array chunks (chunk step)
+  gene_list_file = "/path/to/genelist.txt",  # one gene ID per line
+  n_jobs         = 300,   # number of SLURM array chunks (chunk step)
   prepare_args   = list(fixed_covariates = c("age_group", "sex", "PC1")),
   slurm = list(partition = "general", time = "24:00:00",
                mem = "32G", cpus = 1)
 )
 # The precision SLURM array is sized automatically by step 02 (after
-# mats.rds is written), so no `n_cell_types` argument is needed.
+# cell_type_order.rds is written), so no `n_cell_types` argument is needed.
 ```
 
 This writes five `.R` + `.sh` files plus a `pipeline.sh` orchestrator
@@ -236,7 +237,7 @@ bash pipeline.sh
 
 `pipeline.sh` chains the first three jobs with `--dependency=afterok`.
 Step 02 then submits steps 03 and 04 itself once it knows the number
-of cell types (read from `mats.rds`):
+of cell types (read from `cell_type_order.rds`):
 
 ```
 00_prepare.sh   →  one-time setup (h5ad → fst + OPms + fixed_cov + gene_pairs)
@@ -254,21 +255,21 @@ You can also call the functions directly without the script generator:
 
 ```r
 # Once
-genes <- read_gene_list("genelist11087.txt")
+genes <- read_gene_list("genelist.txt")
 geco_prepare(h5ad_file = "...", work_dir = "work/",
              genes = genes,
              fixed_covariates = c("age_group", "sex", "PC1"))
 
 # Per chunk (SLURM array, 1..n_jobs)
-geco_chunk(work_dir = "work/", task_id = task_id, n_jobs = 241)
+geco_chunk(work_dir = "work/", task_id = task_id, n_jobs = 300)
 
-# After all chunks finish
-geco_finalize_estimates(work_dir = "work/")
+# After all chunks finish — writes cov/se/p directly to output_dir
+geco_finalize_estimates(work_dir = "work/", output_dir = "results/")
 
 # Per cell type (SLURM array, 1..(n_ct + 1) for shared)
-geco_precision_chunk(work_dir = "work/", ct_idx = i)
+geco_precision_chunk(work_dir = "work/", output_dir = "results/", ct_idx = i)
 
-# Finally
+# Finally — builds degree.xlsx in output_dir
 geco_finalize_outputs(work_dir = "work/", output_dir = "results/")
 ```
 
@@ -290,42 +291,99 @@ work_dir/
 │   ├── chunk_00001.rds
 │   ├── chunk_00002.rds
 │   └── ...               # one per SLURM array task
-├── mats.rds              # merged cov / se / p / cov_psd
+├── cell_type_order.rds   # ordered names of "shared" + each cell type
 └── precision/
-    ├── precision_shared.rds
-    ├── precision_T4.rds
-    └── ...               # one per cell type + shared
+    ├── fit_shared.rds
+    ├── fit_CD4NC.rds
+    └── ...               # per-cell-type glasso lambda + eBIC paths
 ```
 
 **`output_dir/`** — the deliverables:
 
 ```
 output_dir/
-├── cov_shared.rds        cov_T4.rds      cov_cM.rds      ...
-├── se_shared.rds         se_T4.rds       se_cM.rds       ...
-├── p_shared.rds          p_T4.rds        p_cM.rds        ...
-├── precision_shared.rds  precision_T4.rds precision_cM.rds ...
+├── cov_shared.rds        cov_CD4NC.rds       cov_CD4ET.rds       ...
+├── se_shared.rds         se_CD4NC.rds        se_CD4ET.rds        ...
+├── p_shared.rds          p_CD4NC.rds         p_CD4ET.rds         ...
+├── precision_shared.rds  precision_CD4NC.rds precision_CD4ET.rds ...
 └── degree.xlsx
 ```
 
-### Sizing `n_jobs` for your data
+### Wall-time breakdown
+
+There are two cost components in the cluster pipeline:
+
+1. **One-time precompute** in `geco_prepare()`: compute `Y` (means per
+   `[ind, gene, ct]`) and `VS_diag` (variances per `[ind, ct, gene]`)
+   over **all** genes, once. This is paid by a single process at the
+   start of the run. Cost ≈ `n_gene × n_cells × constant` —
+   roughly **70 ms/gene** at `n_ind = 1000, n_ct = 7, ~100 cells per
+   (ind, ct)`.
+2. **Per-pair work** inside each chunk worker: one column read from
+   `cell_data.fst`, the off-diagonal `cov(g1, g2)` aggregation, and
+   the `GeCo()` linear algebra. At the same shape this is
+   **~0.16 s per pair**, split roughly as:
+
+   | sub-step | time | what it does |
+   |---------:|-----:|--------------|
+   | fst read of 2 gene columns | ~5 ms | I/O |
+   | Y slice from precomputed tensor | <1 ms | array indexing |
+   | per-pair `cov(g1, g2)` per (ind, ct) | ~150 ms | data.table group-by — dominant |
+   | `GeCo()` QR + decomposition | ~9 ms | core math |
+
+Total cluster wall time = one-time precompute + per-pair × n_pairs / n_jobs.
+
+#### Total time, all-in-one view
 
 The chunk step splits ~`choose(n_gene, 2)` pairs across `n_jobs`
 SLURM array tasks. Pick `n_jobs` so each task runs in a reasonable
 wall time — typically 6–24 hours, well under your queue's time limit.
-A rough estimate of single-pair time on a typical HPC node is
-**~0.15 s** when n_ind ≈ 1000, n_ct ≈ 7, ~100 cells per
-(ind, ct) combo. Scale linearly with total cell count.
+Numbers assume `n_ind ≈ 1000, n_ct ≈ 7, ~100 cells per (ind, ct)`;
+scale linearly with total cell count.
 
-| n_gene | n_pairs | n_jobs = 100 | 241 | 500 | 1000 |
-|------:|--------:|------:|------:|------:|------:|
-| 1,000   |   500,000 |  ~12 m / task |  ~5 m  |  ~3 m  |  ~1 m  |
-| 5,000   | 12,500,000 |  ~5 h / task |  ~2 h  |  ~1 h  | ~30 m |
-| 11,087  | 61,455,241 | ~26 h / task | ~11 h | ~5 h  | ~2.6 h |
-| 20,000  | 200M       | ~83 h / task | ~35 h | ~17 h | ~8 h  |
+| n_gene | One-time precompute (Y + VS_diag) | n_pairs |  per-pair: n_jobs = 100 | 300 | 500 | 1000 |
+|------:|------:|--------:|------:|------:|------:|------:|
+| 1,000   |  ~1.2 m  |    500,000 |   ~12 m / task |  ~4 m  |  ~3 m  |  ~1 m  |
+| 5,000   |  ~6 m    | 12,500,000 |   ~5 h  / task |  ~1.7 h |  ~1 h  | ~30 m  |
+| 10,000  | ~12 m    | 49,995,000 |  ~21 h  / task |  ~7 h   |  ~4 h  |  ~2 h  |
+| 20,000  | ~24 m    |     ~200M  |  ~83 h  / task | ~28 h   | ~17 h  |  ~8 h  |
 
-If a chunk runs out of time, just resubmit only the failed task IDs
-(see "Resuming after a partial failure" below).
+The precompute is small relative to the chunked work for any real
+gene count, and it's only paid once. If a chunk runs out of time, just
+resubmit only the failed task IDs (see "Resuming after a partial
+failure" below).
+
+### Supplying your own Y or VS_diag
+
+`geco_prepare()` precomputes two large tensors once before the chunk
+step and reuses them for every gene pair:
+
+- `Y.rds` — `[n_ind, n_gene, n_ct]` per-(individual, gene, cell-type) means
+- `VS_diag.rds` — `[n_ind, n_ct, n_gene]` per-(individual, cell-type) variances
+
+If you already have these (e.g. precomputed on a different machine
+or from a non-`.h5ad` source) you can hand them to `geco_prepare()`
+via `Y_path` / `VS_diag_path` and skip the recompute:
+
+```r
+geco_prepare(
+  h5ad_file        = "data.h5ad",
+  work_dir         = "work/",
+  genes            = read_gene_list("genelist.txt"),
+  fixed_covariates = c("age_group", "sex", "PC1"),
+  Y_path           = "/path/to/my_Y.rds",
+  VS_diag_path     = "/path/to/my_VS_diag.rds"
+)
+```
+
+The two `.rds` files are simply copied into `work_dir/Y.rds` and
+`work_dir/VS_diag.rds`. Make sure their shapes/orderings match the
+gene and individual order in `prep$genes` / `prep$individuals` — the
+chunk step indexes them positionally.
+
+For in-memory mode, `run_geco()` exposes the same hand-off via
+`Y_all = ...` and `VS_diag = ...` arguments (in-memory arrays, not
+file paths).
 
 ### Memory & disk budget
 
@@ -336,15 +394,16 @@ If a chunk runs out of time, just resubmit only the failed task IDs
 | `VS_diag.rds` | same as Y | disk + memory in each chunk |
 | Per-pair working memory | `O(n_ind × n_ct)` | per chunk worker |
 | `chunk_*.rds` per task | `n_pairs_in_chunk × (3 + 3·n_ct) × 8` bytes ×2 (cov+se) | disk |
-| `mats.rds` | `n_ct × n_gene² × 8 × 4` (cov+se+p+cov_psd) | disk |
-| `precision_*.rds` | `n_gene² × 8` per cell type | disk |
+| `cov_*.rds` / `se_*.rds` / `p_*.rds` | `n_gene² × 8` per cell type | disk (output_dir) |
+| `precision_*.rds` | `n_gene² × 8` per cell type | disk (output_dir) |
 
-For `n_ind = 1000, n_gene = 11087, n_ct = 7`:
+For `n_ind = 1000, n_gene = 10000, n_ct = 7`:
 
 - `cell_data.fst`: depends on `n_cells`, e.g. 1M cells × 11k genes × 4 (compression) ≈ 22 GB
 - `Y.rds` and `VS_diag.rds`: each ~620 MB (loaded once per chunk worker)
-- `mats.rds`: ~11 GB (8 cell types × 4 matrix kinds × 11k² × 8B ≈ 35 GB raw, .rds compresses well)
-- `precision_*.rds`: ~1 GB each
+- `cov_*` / `se_*` / `p_*` / `precision_*` per cell type: ~1 GB each
+  (`n_gene² × 8 bytes`, e.g. 11k² × 8 ≈ 970 MB), so ~30 GB total
+  across 8 cell types × 4 matrix kinds
 
 Per-chunk worker memory is therefore dominated by `Y.rds + VS_diag.rds + meta` ≈ **2 GB**. Set `#SBATCH --mem=4G` or higher to be safe.
 
@@ -386,7 +445,7 @@ issues (wrong column names, missing covariate metadata, etc.):
 
 ```r
 library(GECO)
-genes <- read_gene_list("genelist11087.txt")[1:50]
+genes <- read_gene_list("genelist.txt")[1:50]
 
 work_dir   <- tempfile("geco_test_")
 output_dir <- tempfile("geco_test_out_")
@@ -404,10 +463,10 @@ for (tid in seq_len(n_jobs)) {
 }
 
 # 3-5. Finalize
-geco_finalize_estimates(work_dir)
-mats <- readRDS(file.path(work_dir, "mats.rds"))
-for (i in seq_along(mats$cov)) {
-  geco_precision_chunk(work_dir, ct_idx = i)
+geco_finalize_estimates(work_dir, output_dir)
+order <- readRDS(file.path(work_dir, "cell_type_order.rds"))
+for (i in seq_along(order)) {
+  geco_precision_chunk(work_dir, output_dir, ct_idx = i)
 }
 geco_finalize_outputs(work_dir, output_dir)
 
@@ -426,8 +485,8 @@ full array, or to reproduce a failure interactively:
 # Allocate an interactive node
 salloc --time=2:00:00 --mem=8G --cpus-per-task=1
 
-# Then run task_id = 1 of an n_jobs = 241 split:
-SLURM_ARRAY_TASK_ID=1 Rscript 01_chunk.R /path/to/work_dir 241
+# Then run task_id = 1 of an n_jobs = 300 split:
+SLURM_ARRAY_TASK_ID=1 Rscript 01_chunk.R /path/to/work_dir 300
 ```
 
 The `SLURM_ARRAY_TASK_ID` env var is what `01_chunk.R` reads; you can
@@ -446,8 +505,8 @@ override it for any task ID you want.
   columns or pass a custom spec (see "Choosing which fixed covariates
   to regress out").
 - **Step 03 array bound off**. The auto-sized array uses the number
-  of entries in `mats$cov` from `mats.rds`. If something looks wrong
-  there, open the .rds and inspect `names(mats$cov)`.
+  of cell types in `work_dir/cell_type_order.rds`. If something looks
+  wrong there, open it with `readRDS()` to see the names.
 - **`fst` not installed on worker nodes**. The R install used by the
   worker (often a module load or conda env) must have `fst`. Set
   `r_executable = "micromamba run -n my_env Rscript"` in
