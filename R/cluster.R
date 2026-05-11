@@ -31,9 +31,9 @@
 #'
 #' @param h5ad_file Path to the .h5ad file.
 #' @param work_dir  Directory to use. Created if missing.
-#' @param genes Optional gene vector. Default uses all columns not in
-#'   `metadata_cols`.
-#' @param metadata_cols See [run_geco()].
+#' @param genes Character vector of gene IDs to extract from the
+#'   .h5ad (required). See [run_geco()]/[load_h5ad()] for details and
+#'   [read_gene_list()] for loading from a file.
 #' @param ind_col,ct_col See [run_geco()].
 #' @param subset_col,subset_value Optional metadata filter (see
 #'   [load_h5ad()]).
@@ -47,9 +47,7 @@
 #' @export
 geco_prepare <- function(h5ad_file,
                          work_dir,
-                         genes = NULL,
-                         metadata_cols = c("ind_cov", "cg_cov", "SLE_status",
-                                           "Sex", "Age", "pop_cov"),
+                         genes,
                          ind_col = "ind_cov",
                          ct_col  = "cg_cov",
                          subset_col = NULL, subset_value = NULL,
@@ -58,6 +56,13 @@ geco_prepare <- function(h5ad_file,
   if (!requireNamespace("fst", quietly = TRUE)) {
     stop("Cluster mode requires the 'fst' package. install.packages('fst').")
   }
+  if (missing(genes) || is.null(genes)) {
+    stop("`genes` is required. Pass a character vector of gene IDs ",
+         "(or use read_gene_list() to load one from a .txt file).",
+         call. = FALSE)
+  }
+  if (length(genes) < 2L) stop("Need at least 2 genes.")
+  genes <- unique(as.character(genes))
 
   dir.create(work_dir, showWarnings = FALSE, recursive = TRUE)
   dir.create(file.path(work_dir, "chunks"),    showWarnings = FALSE)
@@ -65,13 +70,8 @@ geco_prepare <- function(h5ad_file,
 
   message("[geco_prepare] Loading h5ad: ", h5ad_file)
   data <- load_h5ad(h5ad_file,
+                    genes = genes,
                     subset_col = subset_col, subset_value = subset_value)
-
-  if (is.null(genes)) {
-    all_cols <- colnames(data)
-    genes <- setdiff(all_cols, metadata_cols)
-  }
-  if (length(genes) < 2) stop("Need at least 2 genes.")
 
   message("[geco_prepare] Writing cell-level data to fst (",
           nrow(data), " cells x ", length(genes), " genes)...")

@@ -8,6 +8,11 @@
 #'
 #' @param h5ad_file Path to a `.h5ad` file. Assumed to have already passed
 #'   the user's QC filtering.
+#' @param genes Character vector of gene IDs to extract from the
+#'   expression matrix. If `NULL`, every gene in the matrix is kept.
+#'   Either pass an in-memory vector or load one from a file with
+#'   [read_gene_list()] first. Any requested gene that's not in the
+#'   matrix raises an error.
 #' @param assay Name of the assay layer to extract. Defaults to "X".
 #' @param gene_id_col Column in `rowData(adata)` that holds gene IDs to
 #'   use as gene column names. If `NULL`, `rownames(expr_matrix)` are
@@ -19,9 +24,11 @@
 #'   `"Healthy"`). NULL means no filtering.
 #'
 #' @return A `data.table` with one row per cell. Columns: all (kept)
-#'   metadata columns first, then one column per gene (numeric).
+#'   metadata columns first, then one column per requested gene
+#'   (numeric).
 #' @export
 load_h5ad <- function(h5ad_file,
+                      genes = NULL,
                       assay = "X",
                       gene_id_col = "gene_ids",
                       keep_meta = NULL,
@@ -65,6 +72,26 @@ load_h5ad <- function(h5ad_file,
          'BiocManager::install("zellkonverter") or install.packages("anndata")')
   }
 
+  # Optional gene subsetting (done while still genes x cells, so the
+  # transpose is cheap).
+  if (!is.null(genes)) {
+    avail <- rownames(expr_matrix)
+    if (is.null(avail)) {
+      stop("Cannot select genes by name: expression matrix has no rownames. ",
+           "Check the gene_id_col argument.")
+    }
+    miss <- setdiff(genes, avail)
+    if (length(miss) > 0L) {
+      n <- length(miss)
+      preview <- paste(utils::head(miss, 5), collapse = ", ")
+      stop(n, " requested gene", if (n > 1L) "s are" else " is",
+           " not in the h5ad: ", preview,
+           if (n > 5L) sprintf(" (... and %d more)", n - 5L) else "",
+           call. = FALSE)
+    }
+    expr_matrix <- expr_matrix[genes, , drop = FALSE]
+  }
+
   # genes x cells -> cells x genes
   expr_df <- t(as.matrix(expr_matrix))
 
@@ -93,4 +120,32 @@ load_h5ad <- function(h5ad_file,
   }
 
   data_all
+}
+
+
+#' Read a gene list from a text file
+#'
+#' Tiny convenience wrapper: one gene ID per line (no header). Useful
+#' when you already have something like `genelist11087.txt` from the
+#' legacy pipeline.
+#'
+#' @param path Path to the file.
+#' @param comment.char Character marking comment lines. Default `"#"`.
+#'
+#' @return Character vector of gene IDs (whitespace trimmed, blanks
+#'   dropped, duplicates dropped while preserving order).
+#'
+#' @examples
+#' \dontrun{
+#' genes <- read_gene_list("genelist11087.txt")
+#' length(genes)
+#' }
+#' @export
+read_gene_list <- function(path, comment.char = "#") {
+  if (!file.exists(path)) stop("Gene list file not found: ", path)
+  lines <- readLines(path, warn = FALSE)
+  lines <- sub(paste0("\\s*", comment.char, ".*$"), "", lines)
+  lines <- trimws(lines)
+  lines <- lines[nzchar(lines)]
+  unique(lines)
 }

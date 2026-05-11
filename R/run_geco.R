@@ -9,11 +9,10 @@
 #' cell type.
 #'
 #' @param h5ad_file Path to the `.h5ad` file.
-#' @param genes Character vector of genes to include. If `NULL`, uses
-#'   all expression columns in the loaded data that aren't in
-#'   `metadata_cols`.
-#' @param metadata_cols Character vector of column names treated as
-#'   metadata (the rest are genes). Used only when `genes` is `NULL`.
+#' @param genes Character vector of gene IDs (required). The package
+#'   selects exactly these columns from the .h5ad's expression matrix
+#'   and ignores every other column. Load from a text file with
+#'   [read_gene_list()] if needed.
 #' @param ind_col,ct_col Names of the individual and cell-type columns.
 #' @param subset_col,subset_value Optional filter on a metadata column
 #'   (see [load_h5ad()]).
@@ -40,9 +39,7 @@
 #'   and `genes`.
 #' @export
 run_geco <- function(h5ad_file,
-                     genes = NULL,
-                     metadata_cols = c("ind_cov", "cg_cov", "SLE_status",
-                                       "Sex", "Age", "pop_cov"),
+                     genes,
                      ind_col = "ind_cov",
                      ct_col  = "cg_cov",
                      subset_col = NULL, subset_value = NULL,
@@ -52,16 +49,19 @@ run_geco <- function(h5ad_file,
                      fit_precision_args = list(),
                      verbose = 0) {
 
+  if (missing(genes) || is.null(genes)) {
+    stop("`genes` is required. Pass a character vector of gene IDs ",
+         "(or use read_gene_list() to load one from a .txt file).",
+         call. = FALSE)
+  }
+  if (length(genes) < 2L) stop("Need at least 2 genes.")
+  genes <- unique(as.character(genes))
+
   message("[GECO] Loading h5ad: ", h5ad_file)
   data <- load_h5ad(h5ad_file,
+                    genes = genes,
                     subset_col = subset_col,
                     subset_value = subset_value)
-
-  if (is.null(genes)) {
-    all_cols <- colnames(data)
-    genes <- setdiff(all_cols, metadata_cols)
-  }
-  if (length(genes) < 2) stop("Need at least 2 genes.")
   message("[GECO] Using ", length(genes), " genes across ",
           length(unique(data[[ind_col]])), " individuals and ",
           length(unique(data[[ct_col]])), " cell types.")

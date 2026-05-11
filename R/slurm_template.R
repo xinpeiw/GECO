@@ -6,21 +6,23 @@
 #' options at the top of each `.sh` and then run
 #' `bash pipeline.sh`.
 #'
+#' The number of cell types is taken straight from the .h5ad file —
+#' the precision SLURM array is sized at runtime by step 02 (after
+#' [geco_finalize_estimates()] has computed `mats.rds`), so you never
+#' have to tell the scaffolding how many cell types your data has.
+#'
 #' @param scripts_dir Directory to write the scripts into (created if
 #'   missing).
 #' @param work_dir Working directory the scripts should use (becomes a
 #'   variable in each script).
 #' @param output_dir Final outputs directory used by step 04.
 #' @param h5ad_file Path to the .h5ad file used by `geco_prepare()`.
+#' @param gene_list_file Path to a text file with one gene ID per line
+#'   (loaded by [read_gene_list()]). Passed to `geco_prepare()` as the
+#'   `genes` argument. Required.
 #' @param n_jobs Number of SLURM array elements for the chunk step.
 #'   Choose this so each chunk runs in a reasonable wall time (e.g.
 #'   241 for ~6M pairs, mirroring the legacy script).
-#' @param n_cell_types Number of cell types in the data. Used only to
-#'   set the SLURM array size for the precision step
-#'   (`1..(n_cell_types + 1)`, for the "shared" matrix plus each cell
-#'   type). If `NULL`, the script leaves a placeholder array bound
-#'   that the user must edit after running `geco_prepare()` (since the
-#'   actual cell types are taken from the h5ad file).
 #' @param prepare_args Named list of additional args injected into the
 #'   `geco_prepare()` call (e.g. `subset_col = "SLE_status"`).
 #' @param slurm Named list of SLURM options. Defaults are reasonable
@@ -34,14 +36,14 @@ generate_slurm_pipeline <- function(scripts_dir,
                                     work_dir,
                                     output_dir,
                                     h5ad_file,
+                                    gene_list_file,
                                     n_jobs = 241,
-                                    n_cell_types = NULL,
                                     prepare_args = list(),
                                     slurm = list(
                                       partition = "general",
                                       time      = "24:00:00",
                                       mem       = "32G",
-                                      cpus      = 4
+                                      cpus      = 1
                                     ),
                                     r_executable = "Rscript") {
 
@@ -62,9 +64,12 @@ generate_slurm_pipeline <- function(scripts_dir,
     "library(GECO)",
     "h5ad_file <- args[1]",
     "work_dir  <- args[2]",
+    "gene_file <- args[3]",
+    "genes <- GECO::read_gene_list(gene_file)",
     "GECO::geco_prepare(",
     "  h5ad_file = h5ad_file,",
-    paste0("  work_dir  = work_dir", prepare_args_block),
+    "  work_dir  = work_dir,",
+    paste0("  genes     = genes", prepare_args_block),
     ")"
   ), file.path(scripts_dir, "00_prepare.R"))
 
@@ -134,7 +139,8 @@ generate_slurm_pipeline <- function(scripts_dir,
     "set -euo pipefail",
     paste0(r_executable, " 00_prepare.R \\"),
     paste0("  ", shQuote(h5ad_file), " \\"),
-    paste0("  ", shQuote(work_dir))
+    paste0("  ", shQuote(work_dir),  " \\"),
+    paste0("  ", shQuote(gene_list_file))
   ), file.path(scripts_dir, "00_prepare.sh"))
 
   writeLines(c(
@@ -145,20 +151,34 @@ generate_slurm_pipeline <- function(scripts_dir,
     paste0("  ", n_jobs)
   ), file.path(scripts_dir, "01_chunk.sh"))
 
+  ## Step 02 finalizes estimates AND then submits steps 03 + 04 with
+  ## the correct precision array size (derived from mats.rds).
   writeLines(c(
     hdr("geco_fin_est"),
     "set -euo pipefail",
-    paste0(r_executable, " 02_finalize_estimates.R \\"),
-    paste0("  ", shQuote(work_dir))
+    "",
+    paste0("WORK_DIR=", shQuote(work_dir)),
+    paste0("OUTPUT_DIR=", shQuote(output_dir)),
+    "",
+    paste0(r_executable, " 02_finalize_estimates.R \"${WORK_DIR}\""),
+    "",
+    "# How many precision jobs to launch? = (n_cell_types + 1)",
+    "# Read it back from mats.rds, which step 02 just wrote.",
+    paste0("N_PREC=$(", r_executable,
+           " -e \"cat(length(readRDS(file.path(commandArgs(TRUE)[1],",
+           " 'mats.rds'))$cov))\" --args \"${WORK_DIR}\")"),
+    "echo \"n_precision_jobs = ${N_PREC}\"",
+    "",
+    "J3=$(sbatch --parsable --array=1-${N_PREC} 03_precision.sh)",
+    "echo \"precision: ${J3}\"",
+    "",
+    "sbatch --parsable --dependency=afterok:${J3} 04_finalize_outputs.sh"
   ), file.path(scripts_dir, "02_finalize_estimates.sh"))
 
-  precision_array <- if (!is.null(n_cell_types)) {
-    paste0("1-", as.integer(n_cell_types) + 1L)
-  } else {
-    "1-N   # edit to (n_cell_types + 1) after geco_prepare() runs"
-  }
+  ## 03_precision.sh has no #SBATCH --array directive — that is
+  ## supplied at submit time by 02_finalize_estimates.sh.
   writeLines(c(
-    hdr("geco_precision", array = precision_array),
+    hdr("geco_precision"),   # no array directive here
     "set -euo pipefail",
     paste0(r_executable, " 03_precision.R \\"),
     paste0("  ", shQuote(work_dir))
@@ -168,14 +188,16 @@ generate_slurm_pipeline <- function(scripts_dir,
     hdr("geco_fin_out"),
     "set -euo pipefail",
     paste0(r_executable, " 04_finalize_outputs.R \\"),
-    paste0("  ", shQuote(work_dir), " \\"),
+    paste0("  ", shQuote(work_dir),   " \\"),
     paste0("  ", shQuote(output_dir))
   ), file.path(scripts_dir, "04_finalize_outputs.sh"))
 
   ## ---------- Master orchestrator ----------
   writeLines(c(
     "#!/bin/bash",
-    "# pipeline.sh - submits the entire GECO cluster pipeline via sbatch dependencies",
+    "# pipeline.sh - submits the GECO cluster pipeline via sbatch dependencies.",
+    "# Steps 03 (precision array) and 04 (finalize outputs) are submitted",
+    "# from inside step 02, after mats.rds tells us how many cell types we have.",
     "set -euo pipefail",
     "",
     "J0=$(sbatch --parsable 00_prepare.sh)",
@@ -185,13 +207,7 @@ generate_slurm_pipeline <- function(scripts_dir,
     "echo \"chunk:   $J1\"",
     "",
     "J2=$(sbatch --parsable --dependency=afterok:${J1} 02_finalize_estimates.sh)",
-    "echo \"fin_est: $J2\"",
-    "",
-    "J3=$(sbatch --parsable --dependency=afterok:${J2} 03_precision.sh)",
-    "echo \"precision: $J3\"",
-    "",
-    "J4=$(sbatch --parsable --dependency=afterok:${J3} 04_finalize_outputs.sh)",
-    "echo \"fin_out: $J4\""
+    "echo \"fin_est: $J2   (will submit 03 + 04 itself)\""
   ), file.path(scripts_dir, "pipeline.sh"))
 
   Sys.chmod(list.files(scripts_dir, "\\.sh$", full.names = TRUE), "0755")

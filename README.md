@@ -61,8 +61,13 @@ install.packages("path/to/GECO", repos = NULL, type = "source")
 ```r
 library(GECO)
 
+# Required: a vector of gene IDs to analyse. They must exist in the
+# h5ad's expression matrix; any other columns in the .h5ad are ignored.
+genes <- read_gene_list("genelist11087.txt")   # or just: c("ENSG...", "ENSG...", ...)
+
 result <- run_geco(
   h5ad_file        = "subset_data.h5ad",
+  genes            = genes,
   ind_col          = "ind_cov",
   ct_col           = "cg_cov",
   # optional: restrict to a subset of cells
@@ -129,11 +134,8 @@ Every step of the pipeline is also exposed in case you want to run only
 part of it or inject custom logic:
 
 ```r
-data <- load_h5ad("subset_data.h5ad")
-
-genes <- setdiff(colnames(data),
-                 c("ind_cov", "cg_cov", "SLE_status",
-                   "Sex", "Age", "pop_cov"))
+genes <- read_gene_list("genelist11087.txt")
+data  <- load_h5ad("subset_data.h5ad", genes = genes)
 
 opms  <- compute_OPms(data, genes)
 pc1   <- compute_PC1 (data, genes)
@@ -147,8 +149,9 @@ mats  <- reformat_to_matrices(est, genes)
 p_mat   <- compute_p_matrix(mats$cov$T4, mats$se$T4)
 cov_psd <- transform_psd   (mats$cov$T4)
 
-fit <- fit_precision(cov_psd, p_mat, n_ind = 243)
-deg <- compute_degree(fit$precision)
+n_ind <- length(unique(data$ind_cov))         # taken from the h5ad
+fit   <- fit_precision(cov_psd, p_mat, n_ind = n_ind)
+deg   <- compute_degree(fit$precision)
 ```
 
 ## Cluster (HPC) mode
@@ -165,15 +168,17 @@ library(GECO)
 
 generate_slurm_pipeline(
   scripts_dir  = "/path/to/scripts",
-  work_dir     = "/path/to/work",
-  output_dir   = "/path/to/results",
-  h5ad_file    = "/path/to/subset_data.h5ad",
-  n_jobs       = 241,   # number of SLURM array chunks
-  n_cell_types = 7,     # so the precision SLURM array is sized as 1..(n+1)
-  prepare_args = list(fixed_covariates = c("age_group", "sex", "PC1")),
+  work_dir       = "/path/to/work",
+  output_dir     = "/path/to/results",
+  h5ad_file      = "/path/to/subset_data.h5ad",
+  gene_list_file = "/path/to/genelist11087.txt",  # one gene ID per line
+  n_jobs         = 241,   # number of SLURM array chunks (chunk step)
+  prepare_args   = list(fixed_covariates = c("age_group", "sex", "PC1")),
   slurm = list(partition = "general", time = "24:00:00",
-               mem = "32G", cpus = 4)
+               mem = "32G", cpus = 1)
 )
+# The precision SLURM array is sized automatically by step 02 (after
+# mats.rds is written), so no `n_cell_types` argument is needed.
 ```
 
 This writes five `.R` + `.sh` files plus a `pipeline.sh` orchestrator
@@ -184,24 +189,29 @@ cd /path/to/scripts
 bash pipeline.sh
 ```
 
-`pipeline.sh` chains the five SLURM jobs with `--dependency=afterok`:
+`pipeline.sh` chains the first three jobs with `--dependency=afterok`.
+Step 02 then submits steps 03 and 04 itself once it knows the number
+of cell types (read from `mats.rds`):
 
 ```
 00_prepare.sh   →  one-time setup (h5ad → fst + OPms + fixed_cov + gene_pairs)
 01_chunk.sh     →  SLURM array, runs geco_chunk per task_id
 02_finalize_estimates.sh
                 →  merge chunks, reformat into per-cell-type matrices,
-                   compute p-values, PSD-transform
-03_precision.sh →  SLURM array (one per "shared" + cell type), glasso+eBIC
-04_finalize_outputs.sh
-                →  build degree.xlsx and write all matrices to output_dir
+                   compute p-values, PSD-transform; then sbatch:
+   03_precision.sh →  SLURM array (one per "shared" + cell type),
+                      glasso+eBIC
+   04_finalize_outputs.sh
+                   →  build degree.xlsx and write all matrices to output_dir
 ```
 
 You can also call the functions directly without the script generator:
 
 ```r
 # Once
+genes <- read_gene_list("genelist11087.txt")
 geco_prepare(h5ad_file = "...", work_dir = "work/",
+             genes = genes,
              fixed_covariates = c("age_group", "sex", "PC1"))
 
 # Per chunk (SLURM array, 1..n_jobs)
