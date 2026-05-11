@@ -1,0 +1,33 @@
+Package: GECO
+Type: Package
+Title: Gene Covariance Estimation Across Cell Types from Single-Cell Data
+Version: 0.1.0
+Authors@R: person("Xinpei", "Wang", email = "xinpei1016@gmail.com", role = c("aut", "cre"))
+Description: An end-to-end pipeline that estimates gene-by-gene
+    covariance, standard errors, p-values, sparse precision matrices,
+    and node degrees from a QC'd .h5ad single-cell expression file.
+    The pipeline accepts a .h5ad file and configurable metadata column
+    names, decomposes the variance into an across-individual component
+    (shared) and a within-cell-type component, optionally regressing
+    out fixed covariates, and produces per-cell-type covariance, SE,
+    p-value, and precision matrices plus a degree summary spreadsheet.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends:
+    R (>= 4.0.0)
+Imports:
+    Matrix,
+    data.table,
+    glassoFast,
+    openxlsx,
+    stats,
+    utils
+Suggests:
+    zellkonverter,
+    SingleCellExperiment,
+    SummarizedExperiment,
+    rhdf5,
+    anndata,
+    fst
+RoxygenNote: 7.3.1
