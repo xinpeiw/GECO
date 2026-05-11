@@ -30,7 +30,6 @@ component:
 - `cov_<celltype>.rds`   — covariance matrix (`n_gene x n_gene`)
 - `se_<celltype>.rds`    — standard error matrix
 - `p_<celltype>.rds`     — two-sided p-value matrix
-- `cov_psd_<celltype>.rds` — PSD-clipped covariance
 - `precision_<celltype>.rds` — sparse precision matrix (glassoFast + eBIC)
 
 Plus a single workbook:

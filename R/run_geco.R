@@ -152,7 +152,6 @@ save_results <- function(result, output_dir) {
     saveRDS(result$cov      [[nm]], file.path(output_dir, paste0("cov_",       nm, ".rds")))
     saveRDS(result$se       [[nm]], file.path(output_dir, paste0("se_",        nm, ".rds")))
     saveRDS(result$p        [[nm]], file.path(output_dir, paste0("p_",         nm, ".rds")))
-    saveRDS(result$cov_psd  [[nm]], file.path(output_dir, paste0("cov_psd_",   nm, ".rds")))
     saveRDS(result$precision[[nm]], file.path(output_dir, paste0("precision_", nm, ".rds")))
   }
 

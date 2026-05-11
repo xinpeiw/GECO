@@ -370,9 +370,9 @@ geco_precision_chunk <- function(work_dir, ct_idx, fit_args = list()) {
 #' Finalize cluster outputs: save matrices, build degree.xlsx
 #'
 #' Reads `work_dir/mats.rds` and `work_dir/precision/*.rds`, writes
-#' per-cell-type `cov/se/p/cov_psd/precision_<ct>.rds` to
-#' `output_dir`, and assembles a single `degree.xlsx` workbook with
-#' one column per cell type.
+#' per-cell-type `cov/se/p/precision_<ct>.rds` to `output_dir`, and
+#' assembles a single `degree.xlsx` workbook with one column per cell
+#' type.
 #'
 #' @param work_dir Working directory built by [geco_prepare()].
 #' @param output_dir Final outputs directory (created if missing).
