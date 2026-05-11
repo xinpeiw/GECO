@@ -63,21 +63,19 @@ resolve_fixed_covariates <- function(data, genes,
 #'   \item{`age_group`}{Age binned into 1..15 using breaks
 #'     `c(-Inf, 25, seq(30, 90, 5), Inf)` — source column `"Age"`.}
 #'   \item{`sex`}{1 if `"Sex" == "Male"`, else 0 — source column `"Sex"`.}
-#'   \item{`pop`}{1 if `"pop_cov" != "European"`, else 0 — source
-#'     column `"pop_cov"`.}
-#'   \item{`cases`}{1 if `"SLE_status" != "Healthy"`, else 0 — source
-#'     column `"SLE_status"`.}
 #'   \item{`PC1`}{The first principal component of the per-individual
 #'     mean expression matrix (see [compute_PC1()]). Requires the
 #'     `pc1` argument to [build_fixed_cov()].}
 #' }
 #'
+#' Study-specific binary covariates (population, case/control, etc.)
+#' are easy to add via a custom spec passed as a named list to
+#' [build_fixed_cov()] — see its examples.
+#'
 #' @export
 GECO_COVARIATE_CATALOG <- list(
-  age_group = list(col = "Age",        type = "age_bins"),
-  sex       = list(col = "Sex",        type = "binary", positive = "Male"),
-  pop       = list(col = "pop_cov",    type = "binary", positive_not = "European"),
-  cases     = list(col = "SLE_status", type = "binary", positive_not = "Healthy"),
+  age_group = list(col = "Age", type = "age_bins"),
+  sex       = list(col = "Sex", type = "binary", positive = "Male"),
   PC1       = list(type = "pc1")
 )
 
@@ -136,8 +134,7 @@ available_covariates <- function() names(GECO_COVARIATE_CATALOG)
 #' }
 #' @export
 build_fixed_cov <- function(data,
-                            covariates = c("age_group", "sex", "pop",
-                                           "cases", "PC1"),
+                            covariates = c("age_group", "sex", "PC1"),
                             ind_col = "ind_cov",
                             pc1 = NULL) {
 

@@ -101,8 +101,6 @@ The built-in catalog (see `GECO_COVARIATE_CATALOG` or call
 |------|---------------|-----------------|
 | `age_group` | `Age`        | binned to 1..15 |
 | `sex`       | `Sex`        | 1 if Male, else 0 |
-| `pop`       | `pop_cov`    | 1 if not European, else 0 |
-| `cases`     | `SLE_status` | 1 if not Healthy, else 0 |
 | `PC1`       | (derived)    | PC1 of per-individual mean expression |
 
 Pick whichever subset you want — the most common cases:
@@ -114,13 +112,15 @@ run_geco(..., fixed_covariates = NULL)
 # Just age and sex:
 run_geco(..., fixed_covariates = c("age_group", "sex"))
 
-# The full legacy-script set:
-run_geco(..., fixed_covariates = c("age_group", "sex", "pop", "cases", "PC1"))
+# All catalog covariates:
+run_geco(..., fixed_covariates = c("age_group", "sex", "PC1"))
 
-# Custom covariate from a "Smoker" column, alongside age:
+# Catalog covariates + a study-specific binary one ("Smoker"):
 run_geco(..., fixed_covariates = list(
   age_group = GECO_COVARIATE_CATALOG$age_group,
-  smoker    = list(col = "Smoker", type = "binary", positive = "Yes")
+  sex       = GECO_COVARIATE_CATALOG$sex,
+  smoker    = list(col = "Smoker",     type = "binary", positive = "Yes"),
+  cases     = list(col = "SLE_status", type = "binary", positive_not = "Healthy")
 ))
 
 # Or compute your own per-individual matrix and pass it directly:
@@ -235,10 +235,11 @@ geco_finalize_outputs(work_dir = "work/", output_dir = "results/")
 - Cluster mode stores the cell-level data once as `cell_data.fst`
   and each chunk only reads the two gene columns it needs, so each
   worker's memory footprint stays small.
-- `fixed_covariates = c("age_group", "sex", "pop", "cases", "PC1")`
-  reproduces the legacy script. See **Choosing which fixed covariates
-  to regress out** above for the full menu (and how to add custom
-  ones). `fixed_covariates = NULL` skips the regression entirely.
+- `fixed_covariates = c("age_group", "sex", "PC1")` is the
+  default-recommended set. See **Choosing which fixed covariates to
+  regress out** above for the full menu (and how to add study-specific
+  binary covariates like population or case/control). `fixed_covariates
+  = NULL` skips the regression entirely.
 - Cell-type names in the output are taken directly from
   `unique(data[[ct_col]])` in the h5ad file — they are not provided
   by the user. The first matrix in every output list is always named
