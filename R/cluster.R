@@ -322,10 +322,16 @@ geco_chunk <- function(work_dir, task_id, n_jobs, verbose = 100) {
 #' @param work_dir Working directory built by [geco_prepare()].
 #' @param output_dir Directory to write the final per-cell-type
 #'   matrices into. Created if missing.
+#' @param cleanup_chunks Logical. If `TRUE` (the default), the
+#'   `work_dir/chunks/chunk_*.rds` files are deleted after the merged
+#'   `cov_*/se_*/p_*` matrices have been written to `output_dir` —
+#'   they're not needed by any later step. Set to `FALSE` to keep them
+#'   for inspection / re-runs.
 #'
 #' @return Invisibly the merged matrices list (`cov`, `se`, `p`).
 #' @export
-geco_finalize_estimates <- function(work_dir, output_dir) {
+geco_finalize_estimates <- function(work_dir, output_dir,
+                                    cleanup_chunks = TRUE) {
 
   prep <- readRDS(file.path(work_dir, "prep.rds"))
   chunk_files <- list.files(file.path(work_dir, "chunks"),
@@ -365,6 +371,17 @@ geco_finalize_estimates <- function(work_dir, output_dir) {
 
   message("[geco_finalize_estimates] Wrote per-cell-type ",
           "cov_*.rds / se_*.rds / p_*.rds to ", output_dir, ".")
+
+  ## chunk_*.rds files have served their purpose — delete to save disk
+  ## unless the caller explicitly asked to keep them.
+  if (isTRUE(cleanup_chunks)) {
+    removed <- file.remove(chunk_files)
+    n_ok <- sum(removed)
+    message("[geco_finalize_estimates] Cleaned up ", n_ok,
+            " chunk_*.rds file(s) from ", file.path(work_dir, "chunks"),
+            ". Pass cleanup_chunks = FALSE to keep them.")
+  }
+
   invisible(list(cov = mats$cov, se = mats$se, p = p_mats))
 }
 

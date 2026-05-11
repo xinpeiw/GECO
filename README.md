@@ -287,8 +287,8 @@ work_dir/
 ├── gene_pairs.rds        # 2 x M matrix of all pairs to estimate
 ├── Y.rds                 # [n_ind, n_gene, n_ct] precomputed means
 ├── VS_diag.rds           # [n_ind, n_ct, n_gene] precomputed variances
-├── chunks/
-│   ├── chunk_00001.rds
+├── chunks/               # transient — deleted automatically by step 02
+│   ├── chunk_00001.rds   # (pass cleanup_chunks = FALSE to keep)
 │   ├── chunk_00002.rds
 │   └── ...               # one per SLURM array task
 ├── cell_type_order.rds   # ordered names of "shared" + each cell type
@@ -393,7 +393,7 @@ file paths).
 | `Y.rds` | `n_ind × n_gene × n_ct × 8` bytes | disk + memory in each chunk |
 | `VS_diag.rds` | same as Y | disk + memory in each chunk |
 | Per-pair working memory | `O(n_ind × n_ct)` | per chunk worker |
-| `chunk_*.rds` per task | `n_pairs_in_chunk × (3 + 3·n_ct) × 8` bytes ×2 (cov+se) | disk |
+| `chunk_*.rds` per task | `n_pairs_in_chunk × (3 + 3·n_ct) × 8` bytes ×2 (cov+se) | disk — auto-deleted by step 02 unless `cleanup_chunks = FALSE` |
 | `cov_*.rds` / `se_*.rds` / `p_*.rds` | `n_gene² × 8` per cell type | disk (output_dir) |
 | `precision_*.rds` | `n_gene² × 8` per cell type | disk (output_dir) |
 
@@ -413,7 +413,9 @@ Each stage is idempotent and reads everything it needs from
 `work_dir/`. To resume:
 
 - **A few `chunk_*.rds` files failed.** Look at the SLURM output to
-  find which task IDs failed, then resubmit just those:
+  find which task IDs failed, then resubmit just those (note: step 02
+  deletes chunks on success, so this only works if step 02 hasn't run
+  or you passed `cleanup_chunks = FALSE`):
 
   ```bash
   sbatch --array=37,42,108 01_chunk.sh
