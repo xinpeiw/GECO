@@ -37,9 +37,10 @@
 #' @param ind_col,ct_col See [run_geco()].
 #' @param subset_col,subset_value Optional metadata filter (see
 #'   [load_h5ad()]).
-#' @param fixed_cov_spec See [run_geco()]. `NA`, `"default"`, or a
-#'   matrix.
-#' @param covariates_list See [run_geco()].
+#' @param fixed_covariates Which covariates to regress out before
+#'   GeCo estimation. See [run_geco()] for accepted forms (a character
+#'   vector of catalog names is the common case, e.g.
+#'   `c("age_group", "sex", "PC1")`).
 #'
 #' @return Invisibly, the prepared `prep` metadata list (also saved to
 #'   `work_dir/prep.rds`).
@@ -52,8 +53,7 @@ geco_prepare <- function(h5ad_file,
                          ind_col = "ind_cov",
                          ct_col  = "cg_cov",
                          subset_col = NULL, subset_value = NULL,
-                         fixed_cov_spec = NA,
-                         covariates_list = NULL) {
+                         fixed_covariates = NULL) {
 
   if (!requireNamespace("fst", quietly = TRUE)) {
     stop("Cluster mode requires the 'fst' package. install.packages('fst').")
@@ -82,16 +82,9 @@ geco_prepare <- function(h5ad_file,
   message("[geco_prepare] Computing OPms...")
   opms <- compute_OPms(data, genes, ind_col = ind_col)
 
-  fixed_cov <- NA
-  if (identical(fixed_cov_spec, "default")) {
-    message("[geco_prepare] Computing PC1 + building fixed covariates...")
-    pc1 <- compute_PC1(data, genes, ind_col = ind_col)
-    fixed_cov <- build_fixed_cov(data, ind_col = ind_col,
-                                 covariates = covariates_list,
-                                 pc1 = pc1)
-  } else if (is.matrix(fixed_cov_spec) || is.data.frame(fixed_cov_spec)) {
-    fixed_cov <- as.matrix(fixed_cov_spec)
-  }
+  fixed_cov <- resolve_fixed_covariates(data, genes,
+                                        fixed_covariates = fixed_covariates,
+                                        ind_col = ind_col)
 
   individuals <- as.character(unique(data[[ind_col]]))
   cts_raw     <- as.character(unique(data[[ct_col]]))   # straight from h5ad

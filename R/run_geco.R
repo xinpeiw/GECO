@@ -17,12 +17,16 @@
 #' @param ind_col,ct_col Names of the individual and cell-type columns.
 #' @param subset_col,subset_value Optional filter on a metadata column
 #'   (see [load_h5ad()]).
-#' @param fixed_cov_spec Either `NA` (no covariate regression),
-#'   `"default"` (mimic the legacy script: age bins, sex, pop, cases,
-#'   plus PC1 from the data), or a user-supplied matrix passed straight
-#'   to [GeCo()] via [estimate_geco()].
-#' @param covariates_list Optional custom `covariates` argument to
-#'   [build_fixed_cov()] when `fixed_cov_spec = "default"`.
+#' @param fixed_covariates Which covariates to regress out before
+#'   computing GeCo. Accepts:
+#'   - `NULL` (default): no regression.
+#'   - A character vector of names from [GECO_COVARIATE_CATALOG],
+#'     e.g. `c("age_group", "sex", "PC1")`. Call [available_covariates()]
+#'     to see all options.
+#'   - A named list of fully-specified covariate recipes (see
+#'     [build_fixed_cov()] for the spec format).
+#'   - A precomputed matrix / `data.frame` with one row per individual,
+#'     used directly.
 #' @param output_dir Directory to save all results. If `NULL` nothing
 #'   is written and everything is returned.
 #' @param psd_thr Threshold for [transform_psd()]. Default 0.
@@ -42,8 +46,7 @@ run_geco <- function(h5ad_file,
                      ind_col = "ind_cov",
                      ct_col  = "cg_cov",
                      subset_col = NULL, subset_value = NULL,
-                     fixed_cov_spec = NA,
-                     covariates_list = NULL,
+                     fixed_covariates = NULL,
                      output_dir = NULL,
                      psd_thr = 0,
                      fit_precision_args = list(),
@@ -66,16 +69,9 @@ run_geco <- function(h5ad_file,
   message("[GECO] Computing per-gene OPmean / OPsd...")
   opms <- compute_OPms(data, genes, ind_col = ind_col)
 
-  fixed_cov <- NA
-  if (identical(fixed_cov_spec, "default")) {
-    message("[GECO] Building fixed covariate matrix...")
-    pc1 <- compute_PC1(data, genes, ind_col = ind_col)
-    fixed_cov <- build_fixed_cov(data, ind_col = ind_col,
-                                 covariates = covariates_list,
-                                 pc1 = pc1)
-  } else if (is.matrix(fixed_cov_spec) || is.data.frame(fixed_cov_spec)) {
-    fixed_cov <- as.matrix(fixed_cov_spec)
-  }
+  fixed_cov <- resolve_fixed_covariates(data, genes,
+                                        fixed_covariates = fixed_covariates,
+                                        ind_col = ind_col)
 
   message("[GECO] Estimating GeCo across all gene pairs...")
   est <- estimate_geco(data, genes, opms = opms,

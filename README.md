@@ -62,14 +62,14 @@ install.packages("path/to/GECO", repos = NULL, type = "source")
 library(GECO)
 
 result <- run_geco(
-  h5ad_file      = "subset_data.h5ad",
-  ind_col        = "ind_cov",
-  ct_col         = "cg_cov",
+  h5ad_file        = "subset_data.h5ad",
+  ind_col          = "ind_cov",
+  ct_col           = "cg_cov",
   # optional: restrict to a subset of cells
-  # subset_col   = "SLE_status", subset_value = "Healthy",
-  # optional: regress out covariates as in the legacy script
-  fixed_cov_spec = "default",
-  output_dir     = "./results"
+  # subset_col     = "SLE_status", subset_value = "Healthy",
+  # pick which covariates to regress out (see available_covariates()):
+  fixed_covariates = c("age_group", "sex", "PC1"),
+  output_dir       = "./results"
 )
 # Cell-type names in the output are taken directly from
 # unique(data[[ct_col]]) in the h5ad file.
@@ -82,6 +82,46 @@ head(result$degree)    # gene x cell_type degree table
 
 After `run_geco()` finishes, the `output_dir` will contain all the
 `.rds` matrices and `degree.xlsx`.
+
+### Choosing which fixed covariates to regress out
+
+`run_geco()` and `geco_prepare()` both take a `fixed_covariates`
+argument that decides which per-individual covariates are regressed
+out before the GeCo decomposition runs.
+
+The built-in catalog (see `GECO_COVARIATE_CATALOG` or call
+`available_covariates()`) provides these names:
+
+| Name | Source column | What it becomes |
+|------|---------------|-----------------|
+| `age_group` | `Age`        | binned to 1..15 |
+| `sex`       | `Sex`        | 1 if Male, else 0 |
+| `pop`       | `pop_cov`    | 1 if not European, else 0 |
+| `cases`     | `SLE_status` | 1 if not Healthy, else 0 |
+| `PC1`       | (derived)    | PC1 of per-individual mean expression |
+
+Pick whichever subset you want — the most common cases:
+
+```r
+# No regression at all (default):
+run_geco(..., fixed_covariates = NULL)
+
+# Just age and sex:
+run_geco(..., fixed_covariates = c("age_group", "sex"))
+
+# The full legacy-script set:
+run_geco(..., fixed_covariates = c("age_group", "sex", "pop", "cases", "PC1"))
+
+# Custom covariate from a "Smoker" column, alongside age:
+run_geco(..., fixed_covariates = list(
+  age_group = GECO_COVARIATE_CATALOG$age_group,
+  smoker    = list(col = "Smoker", type = "binary", positive = "Yes")
+))
+
+# Or compute your own per-individual matrix and pass it directly:
+my_mat <- ...  # n_ind x p matrix, rownames = individual IDs
+run_geco(..., fixed_covariates = my_mat)
+```
 
 ## Step-by-step usage
 
@@ -97,7 +137,9 @@ genes <- setdiff(colnames(data),
 
 opms  <- compute_OPms(data, genes)
 pc1   <- compute_PC1 (data, genes)
-fcov  <- build_fixed_cov(data, pc1 = pc1)
+fcov  <- build_fixed_cov(data,
+                         covariates = c("age_group", "sex", "PC1"),
+                         pc1 = pc1)
 
 est   <- estimate_geco(data, genes, opms, fixed_cov = fcov)
 mats  <- reformat_to_matrices(est, genes)
@@ -128,7 +170,7 @@ generate_slurm_pipeline(
   h5ad_file    = "/path/to/subset_data.h5ad",
   n_jobs       = 241,   # number of SLURM array chunks
   n_cell_types = 7,     # so the precision SLURM array is sized as 1..(n+1)
-  prepare_args = list(fixed_cov_spec = "default"),
+  prepare_args = list(fixed_covariates = c("age_group", "sex", "PC1")),
   slurm = list(partition = "general", time = "24:00:00",
                mem = "32G", cpus = 4)
 )
@@ -159,7 +201,8 @@ You can also call the functions directly without the script generator:
 
 ```r
 # Once
-geco_prepare(h5ad_file = "...", work_dir = "work/", fixed_cov_spec = "default")
+geco_prepare(h5ad_file = "...", work_dir = "work/",
+             fixed_covariates = c("age_group", "sex", "PC1"))
 
 # Per chunk (SLURM array, 1..n_jobs)
 geco_chunk(work_dir = "work/", task_id = task_id, n_jobs = 241)
@@ -182,10 +225,10 @@ geco_finalize_outputs(work_dir = "work/", output_dir = "results/")
 - Cluster mode stores the cell-level data once as `cell_data.fst`
   and each chunk only reads the two gene columns it needs, so each
   worker's memory footprint stays small.
-- `fixed_cov_spec = "default"` reproduces the legacy script's covariate
-  construction (age bins, sex, population, case status, PC1). Pass a
-  matrix directly to use a custom covariate set, or `NA` to skip the
-  regression step.
+- `fixed_covariates = c("age_group", "sex", "pop", "cases", "PC1")`
+  reproduces the legacy script. See **Choosing which fixed covariates
+  to regress out** above for the full menu (and how to add custom
+  ones). `fixed_covariates = NULL` skips the regression entirely.
 - Cell-type names in the output are taken directly from
   `unique(data[[ct_col]])` in the h5ad file — they are not provided
   by the user. The first matrix in every output list is always named
