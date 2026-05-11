@@ -41,6 +41,12 @@
 #'   GeCo estimation. See [run_geco()] for accepted forms (a character
 #'   vector of catalog names is the common case, e.g.
 #'   `c("age_group", "sex", "PC1")`).
+#' @param Y_path Optional path to a precomputed Y tensor `.rds`
+#'   (shape `[n_ind, n_gene, n_ct]`). If supplied, copied into
+#'   `work_dir/Y.rds` instead of recomputing from the .h5ad.
+#' @param VS_diag_path Optional path to a precomputed VS_diag tensor
+#'   `.rds` (shape `[n_ind, n_ct, n_gene]`). If supplied, copied into
+#'   `work_dir/VS_diag.rds` instead of recomputing.
 #'
 #' @return Invisibly, the prepared `prep` metadata list (also saved to
 #'   `work_dir/prep.rds`).
@@ -51,7 +57,9 @@ geco_prepare <- function(h5ad_file,
                          ind_col = "ind_cov",
                          ct_col  = "cg_cov",
                          subset_col = NULL, subset_value = NULL,
-                         fixed_covariates = NULL) {
+                         fixed_covariates = NULL,
+                         Y_path = NULL,
+                         VS_diag_path = NULL) {
 
   if (!requireNamespace("fst", quietly = TRUE)) {
     stop("Cluster mode requires the 'fst' package. install.packages('fst').")
@@ -89,6 +97,37 @@ geco_prepare <- function(h5ad_file,
   individuals <- as.character(unique(data[[ind_col]]))
   cts_raw     <- as.character(unique(data[[ct_col]]))   # straight from h5ad
 
+  ## Precompute Y (per-(ind, gene, ct) means) and VS_diag (per-(ind, ct,
+  ## gene) within-group variance). Doing both once here means every
+  ## chunk worker only has to compute the off-diagonal cov12 per pair.
+  Y_out_path <- file.path(work_dir, "Y.rds")
+  if (!is.null(Y_path)) {
+    message("[geco_prepare] Copying user-supplied Y from ", Y_path)
+    file.copy(Y_path, Y_out_path, overwrite = TRUE)
+  } else {
+    message("[geco_prepare] Computing Y tensor [n_ind=", length(individuals),
+            ", n_gene=", length(genes), ", n_ct=", length(cts_raw), "]...")
+    Y_obj <- compute_Y(data, genes,
+                       ind_col = ind_col, ct_col = ct_col,
+                       individuals = individuals, cell_types = cts_raw)
+    saveRDS(Y_obj$Y, Y_out_path)
+  }
+
+  VS_out_path <- file.path(work_dir, "VS_diag.rds")
+  if (!is.null(VS_diag_path)) {
+    message("[geco_prepare] Copying user-supplied VS_diag from ", VS_diag_path)
+    file.copy(VS_diag_path, VS_out_path, overwrite = TRUE)
+  } else {
+    message("[geco_prepare] Computing VS_diag tensor [n_ind=",
+            length(individuals), ", n_ct=", length(cts_raw),
+            ", n_gene=", length(genes), "]...")
+    VS_diag <- compute_VS_diag(data, genes,
+                               ind_col = ind_col, ct_col = ct_col,
+                               individuals = individuals,
+                               cell_types  = cts_raw)
+    saveRDS(VS_diag, VS_out_path)
+  }
+
   gene_pairs <- utils::combn(genes, 2)
 
   prep <- list(
@@ -108,7 +147,7 @@ geco_prepare <- function(h5ad_file,
   saveRDS(prep,       file.path(work_dir, "prep.rds"))
   saveRDS(gene_pairs, file.path(work_dir, "gene_pairs.rds"))
   message("[geco_prepare] Wrote ", work_dir,
-          "/{cell_data.fst, prep.rds, gene_pairs.rds}. ",
+          "/{cell_data.fst, prep.rds, gene_pairs.rds, Y.rds, VS_diag.rds}. ",
           ncol(gene_pairs), " gene pairs total.")
   invisible(prep)
 }
@@ -152,6 +191,8 @@ geco_chunk <- function(work_dir, task_id, n_jobs, verbose = 100) {
 
   prep       <- readRDS(file.path(work_dir, "prep.rds"))
   gene_pairs <- readRDS(file.path(work_dir, "gene_pairs.rds"))
+  Y_all      <- readRDS(file.path(work_dir, "Y.rds"))        # [n_ind, n_gene, n_ct]
+  VS_diag    <- readRDS(file.path(work_dir, "VS_diag.rds"))  # [n_ind, n_ct, n_gene]
   cell_fst   <- file.path(work_dir, "cell_data.fst")
 
   rng <- .chunk_indices(prep$n_pairs, task_id, n_jobs)
@@ -162,6 +203,9 @@ geco_chunk <- function(work_dir, task_id, n_jobs, verbose = 100) {
   inds    <- prep$individuals
   cts     <- prep$cell_types_raw
   n_ind   <- length(inds);  n_ct   <- length(cts)
+
+  ## Map gene name -> column index in Y_all / VS_diag (same order as prep$genes)
+  gene_to_idx <- stats::setNames(seq_along(prep$genes), prep$genes)
 
   opms_dt <- data.table::as.data.table(prep$opms)
   data.table::setkey(opms_dt, g)
@@ -198,44 +242,36 @@ geco_chunk <- function(work_dir, task_id, n_jobs, verbose = 100) {
     m2 <- ms2$OPmean; s2 <- ms2$OPsd
     if (is.na(s1) || s1 == 0 || is.na(s2) || s2 == 0) next
 
+    idx1 <- gene_to_idx[[g1]]
+    idx2 <- gene_to_idx[[g2]]
+    if (is.null(idx1) || is.null(idx2)) next
+
+    ## Pull pre-computed Y means for these two genes; rescale by OP.
+    Y1 <- Y_all[, idx1, , drop = FALSE]; dim(Y1) <- c(n_ind, n_ct)
+    Y2 <- Y_all[, idx2, , drop = FALSE]; dim(Y2) <- c(n_ind, n_ct)
+    Y1 <- (Y1 - m1) / s1
+    Y2 <- (Y2 - m2) / s2
+    Y_pair <- array(NA_real_, dim = c(n_ind, 2, n_ct))
+    Y_pair[, 1, ] <- Y1; Y_pair[, 2, ] <- Y2
+
+    ## Read just the two gene columns for the off-diagonal cov12.
     dat <- try({
       gene_df <- fst::read_fst(cell_fst, columns = c(g1, g2))
       cbind(meta_df, data.table::as.data.table(gene_df))
     }, silent = TRUE)
     if (inherits(dat, "try-error")) next
 
-    Y_pair <- try({
-      ## Per-(ind, ct) means for the two genes
-      ind_codes <- stats::setNames(seq_along(inds), inds)
-      ct_codes  <- stats::setNames(seq_along(cts),  cts)
-      ii <- as.integer(ind_codes[as.character(dat[[ind_col]])])
-      cc <- as.integer(ct_codes [as.character(dat[[ct_col]])])
-      dt2 <- data.table::data.table(i = ii, c = cc,
-                                    x = dat[[g1]], y = dat[[g2]])
-      mu <- dt2[, list(mu1 = mean(x), mu2 = mean(y)), by = list(i, c)]
-      Y1 <- matrix(NA_real_, n_ind, n_ct)
-      Y2 <- matrix(NA_real_, n_ind, n_ct)
-      Y1[cbind(mu$i, mu$c)] <- mu$mu1
-      Y2[cbind(mu$i, mu$c)] <- mu$mu2
-      Y1 <- (Y1 - m1) / s1
-      Y2 <- (Y2 - m2) / s2
+    cov12 <- try(compute_VS_cov_pair(dat, g1, g2,
+                                     ind_col = ind_col, ct_col = ct_col,
+                                     individuals = inds, cell_types = cts),
+                 silent = TRUE)
+    if (inherits(cov12, "try-error")) next
 
-      Yp <- array(NA_real_, dim = c(n_ind, 2, n_ct))
-      Yp[, 1, ] <- Y1; Yp[, 2, ] <- Y2
-      Yp
-    }, silent = TRUE)
-    if (inherits(Y_pair, "try-error")) next
-
-    VS <- try(compute_VS_pair(dat, g1, g2,
-                              ind_col = ind_col, ct_col = ct_col,
-                              individuals = inds, cell_types = cts),
-              silent = TRUE)
-    if (inherits(VS, "try-error")) next
-
-    VS[, , 1, 1] <- VS[, , 1, 1] / s1^2
-    VS[, , 2, 2] <- VS[, , 2, 2] / s2^2
-    VS[, , 1, 2] <- VS[, , 1, 2] / s1 / s2
-    VS[, , 2, 1] <- VS[, , 2, 1] / s1 / s2
+    VS <- array(NA_real_, dim = c(n_ind, n_ct, 2, 2))
+    VS[, , 1, 1] <- VS_diag[, , idx1] / s1^2
+    VS[, , 2, 2] <- VS_diag[, , idx2] / s2^2
+    VS[, , 1, 2] <- cov12 / s1 / s2
+    VS[, , 2, 1] <- VS[, , 1, 2]
 
     res <- try(GeCo(Y = Y_pair, VS = VS, fixed_cov = prep$fixed_cov),
                silent = TRUE)

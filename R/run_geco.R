@@ -26,6 +26,12 @@
 #'     [build_fixed_cov()] for the spec format).
 #'   - A precomputed matrix / `data.frame` with one row per individual,
 #'     used directly.
+#' @param Y_all Optional precomputed Y tensor `[n_ind, n_gene, n_ct]`
+#'   (from [compute_Y()]`$Y`). If `NULL`, the function computes it.
+#' @param VS_diag Optional precomputed diagonal-variance tensor
+#'   `[n_ind, n_ct, n_gene]` (from [compute_VS_diag()]). If `NULL`,
+#'   the function computes it. Supply both to skip the expensive
+#'   precompute step.
 #' @param output_dir Directory to save all results. If `NULL` nothing
 #'   is written and everything is returned.
 #' @param psd_thr Threshold for [transform_psd()]. Default 0.
@@ -44,6 +50,8 @@ run_geco <- function(h5ad_file,
                      ct_col  = "cg_cov",
                      subset_col = NULL, subset_value = NULL,
                      fixed_covariates = NULL,
+                     Y_all = NULL,
+                     VS_diag = NULL,
                      output_dir = NULL,
                      psd_thr = 0,
                      fit_precision_args = list(),
@@ -77,6 +85,7 @@ run_geco <- function(h5ad_file,
   est <- estimate_geco(data, genes, opms = opms,
                        fixed_cov = fixed_cov,
                        ind_col = ind_col, ct_col = ct_col,
+                       Y_all = Y_all, VS_diag = VS_diag,
                        verbose = verbose)
 
   cell_type_names <- est$cell_types   # taken straight from the h5ad

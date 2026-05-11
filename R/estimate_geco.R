@@ -13,6 +13,12 @@
 #'   (or `NA` to skip the regression step).
 #' @param ind_col,ct_col Names of the individual and cell-type columns.
 #' @param cell_types Optional ordering of cell types.
+#' @param Y_all Optional precomputed Y tensor of shape `[n_ind,
+#'   n_gene, n_ct]` (from [compute_Y()]`$Y`). If `NULL`, the function
+#'   computes it. Pass it when you've already loaded one from disk.
+#' @param VS_diag Optional precomputed diagonal-variance tensor of
+#'   shape `[n_ind, n_ct, n_gene]` (from [compute_VS_diag()]). If
+#'   `NULL`, the function computes it. Pass it to skip recomputation.
 #' @param verbose Print progress every `verbose` pairs (0 = silent).
 #'
 #' @return A list with two `data.frame`s, `cov` and `se`, each having
@@ -24,6 +30,8 @@ estimate_geco <- function(data, genes, opms,
                           ind_col = "ind_cov",
                           ct_col  = "cg_cov",
                           cell_types = NULL,
+                          Y_all = NULL,
+                          VS_diag = NULL,
                           verbose = 0) {
 
   dt <- data.table::as.data.table(data)
@@ -33,11 +41,22 @@ estimate_geco <- function(data, genes, opms,
   n_ind <- length(individuals)
   n_ct  <- length(cell_types)
 
-  # Pre-compute Y for all genes
-  Y_obj <- compute_Y(dt, genes,
-                     ind_col = ind_col, ct_col = ct_col,
-                     individuals = individuals, cell_types = cell_types)
-  Y_all <- Y_obj$Y  # [n_ind, n_gene, n_ct]
+  # Pre-compute Y for all genes (means per ind x gene x ct)
+  if (is.null(Y_all)) {
+    Y_obj <- compute_Y(dt, genes,
+                       ind_col = ind_col, ct_col = ct_col,
+                       individuals = individuals, cell_types = cell_types)
+    Y_all <- Y_obj$Y  # [n_ind, n_gene, n_ct]
+  }
+  # Pre-compute VS diagonal (per-(ind, ct) variance) once for all genes.
+  # The off-diagonal cov-12 is computed inside the per-pair loop below.
+  if (is.null(VS_diag)) {
+    message("[estimate_geco] Precomputing VS_diag for ", length(genes), " genes...")
+    VS_diag <- compute_VS_diag(dt, genes,
+                               ind_col = ind_col, ct_col = ct_col,
+                               individuals = individuals,
+                               cell_types  = cell_types)
+  }
 
   # Per-gene mean/sd lookup
   opms_dt <- data.table::as.data.table(opms)
@@ -88,17 +107,18 @@ estimate_geco <- function(data, genes, opms,
       Y2 <- Y_all[, j, , drop = FALSE]; dim(Y2) <- c(n_ind, n_ct)
       Y2 <- (Y2 - m2) / s2
 
-      VS <- try(compute_VS_pair(dt, g1, g2,
-                                ind_col = ind_col, ct_col = ct_col,
-                                individuals = individuals,
-                                cell_types  = cell_types),
-                silent = TRUE)
-      if (inherits(VS, "try-error")) next
+      cov12 <- try(compute_VS_cov_pair(dt, g1, g2,
+                                       ind_col = ind_col, ct_col = ct_col,
+                                       individuals = individuals,
+                                       cell_types  = cell_types),
+                   silent = TRUE)
+      if (inherits(cov12, "try-error")) next
 
-      VS[, , 1, 1] <- VS[, , 1, 1] / s1^2
-      VS[, , 2, 2] <- VS[, , 2, 2] / s2^2
-      VS[, , 1, 2] <- VS[, , 1, 2] / s1 / s2
-      VS[, , 2, 1] <- VS[, , 2, 1] / s1 / s2
+      VS <- array(NA_real_, dim = c(n_ind, n_ct, 2, 2))
+      VS[, , 1, 1] <- VS_diag[, , i] / s1^2
+      VS[, , 2, 2] <- VS_diag[, , j] / s2^2
+      VS[, , 1, 2] <- cov12 / s1 / s2
+      VS[, , 2, 1] <- VS[, , 1, 2]
 
       Y_pair <- array(NA_real_, dim = c(n_ind, 2, n_ct))
       Y_pair[, 1, ] <- Y1
