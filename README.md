@@ -1,9 +1,7 @@
 # GECO
 
-**GECO** (**Ge**ne **Co**variance) is an R package that decomposes
-gene-by-gene covariance single-cell expression data
-(`.h5ad`) into cell-type-shared and cell-type-specific components, and
-turns the result into shared and per-cell-type sparse precision matrices and node
+**GECO** (**Ge**ne **Co**expression) is an R package that unbiasedly decomposes
+interindividual gene-by-gene coexpression into cell-type-shared and cell-type-specific components, and turns the result into cell-type-shared and per-cell-type-specific sparse precision matrices and node
 degrees.
 
 The entire legacy SLURM pipeline (data process → VS/Y generation →
@@ -24,13 +22,12 @@ eBIC selection → degree) is exposed in two ways:
 `obs`/`colData`; the expression matrix is read from the chosen assay.
 Column names for the individual ID and cell-type are configurable.
 
-**Outputs.** For every cell type plus the "shared" (across-individual)
-component:
+**Outputs.** For every cell-type-specific plus the cell-type-shared component:
 
 - `cov_<celltype>.rds`   — covariance matrix (`n_gene x n_gene`)
 - `se_<celltype>.rds`    — standard error matrix
 - `p_<celltype>.rds`     — two-sided p-value matrix
-- `precision_<celltype>.rds` — sparse precision matrix (glassoFast + eBIC)
+- `precision_<celltype>.rds` — sparse precision matrix
 
 Plus a single workbook:
 
@@ -49,11 +46,20 @@ BiocManager::install(c("zellkonverter", "SingleCellExperiment",
 # ...or anndata (CRAN, uses reticulate)
 # install.packages("anndata")
 
-# Install GECO from local source
-install.packages("path/to/GECO", repos = NULL, type = "source")
-# or, if you've cloned the package and have devtools:
+# Install GECO from GitHub (recommended)
+# install.packages("remotes")            # if you don't have it
+remotes::install_github("xinpeiw/GECO")
+# or with devtools:
+# devtools::install_github("xinpeiw/GECO")
+
+# Alternatively, from a local clone:
+# install.packages("path/to/GECO", repos = NULL, type = "source")
 # devtools::install("path/to/GECO")
 ```
+
+Repository: <https://github.com/xinpeiw/GECO> (private — collaborators
+will need a GitHub PAT with `repo` scope to `remotes::install_github()`,
+e.g. via `Sys.setenv(GITHUB_PAT = "...")`).
 
 ## Quick start (in-memory mode)
 
@@ -62,7 +68,7 @@ library(GECO)
 
 # Required: a vector of gene IDs to analyse. They must exist in the
 # h5ad's expression matrix; any other columns in the .h5ad are ignored.
-genes <- read_gene_list("genelist11087.txt")   # or just: c("ENSG...", "ENSG...", ...)
+genes <- read_gene_list("genelist.txt")   # or just: c("ENSG...", "ENSG...", ...)
 
 result <- run_geco(
   h5ad_file        = "subset_data.h5ad",
