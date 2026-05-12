@@ -16,6 +16,29 @@ eBIC selection → degree) is exposed in two ways:
   `generate_slurm_pipeline()` helper that emits ready-to-`sbatch`
   scripts. Use this for ~10k-gene runs that don't fit on one node.
 
+## Contents
+
+- [Inputs and outputs](#inputs-and-outputs)
+- [Installation](#installation)
+- [Quick start (in-memory mode)](#quick-start-in-memory-mode)
+  - [Choosing which fixed covariates to regress out](#choosing-which-fixed-covariates-to-regress-out)
+- [Step-by-step usage](#step-by-step-usage)
+- [Cluster (HPC) mode](#cluster-hpc-mode)
+  - [How cluster mode differs from in-memory mode](#how-cluster-mode-differs-from-in-memory-mode)
+  - [Running it](#running-it)
+  - [What ends up where on disk](#what-ends-up-where-on-disk)
+  - [Wall-time breakdown](#wall-time-breakdown)
+    - [Total time, all-in-one view](#total-time-all-in-one-view)
+    - [A note on the precision (glasso) step](#a-note-on-the-precision-glasso-step)
+      - [Tuning the lambda line search](#tuning-the-lambda-line-search)
+  - [Supplying your own Y or VS_diag](#supplying-your-own-y-or-vs_diag)
+  - [Memory & disk budget](#memory--disk-budget)
+  - [Resuming after a partial failure](#resuming-after-a-partial-failure)
+  - [Smoke-testing on your laptop first](#smoke-testing-on-your-laptop-first)
+  - [Running a single SLURM chunk manually](#running-a-single-slurm-chunk-manually)
+  - [Common pitfalls](#common-pitfalls)
+- [Notes and caveats](#notes-and-caveats)
+
 ## Inputs and outputs
 
 **Input.** A `.h5ad` file. Cell-level metadata is read from
@@ -397,9 +420,7 @@ minimum. Two arguments control its behavior and both can be set per
 cell type via `fit_precision_args`:
 
 - **`start_lambda`** (default `2`) — the initial lambda multiplier the
-  search evaluates. The penalty applied to `glassoFast` is
-  `rho_ori * start_lambda`, where `rho_ori = 1 / (z + c)` is derived
-  from BH-adjusted p-values. If you've already run GECO on a similar
+  search evaluates. If you've already run GECO on a similar
   dataset and observed the optimum landing near, say, lambda = 0.8 or
   3.5, set `start_lambda` to that value — the search will terminate
   in 2–3 evaluations instead of stepping across the whole range.
