@@ -389,6 +389,42 @@ times out, you can resubmit just that array task ID (see
 iterations, pass `fit_precision_args = list(maxIt = 5000)` (or
 similar) through to `geco_precision_chunk()`.
 
+##### Tuning the lambda line search
+
+The eBIC line search in [`fit_precision()`] starts at a lambda
+multiplier and walks in fixed-size steps until it brackets the
+minimum. Two arguments control its behavior and both can be set per
+cell type via `fit_precision_args`:
+
+- **`start_lambda`** (default `2`) — the initial lambda multiplier the
+  search evaluates. The penalty applied to `glassoFast` is
+  `rho_ori * start_lambda`, where `rho_ori = 1 / (z + c)` is derived
+  from BH-adjusted p-values. If you've already run GECO on a similar
+  dataset and observed the optimum landing near, say, lambda = 0.8 or
+  3.5, set `start_lambda` to that value — the search will terminate
+  in 2–3 evaluations instead of stepping across the whole range.
+- **`step_size`** (default `0.1`) — how far the search moves between
+  successive evaluations. Larger steps (e.g. `0.5`) reach the optimum
+  in fewer `glassoFast` calls when the eBIC curve is shallow, at the
+  cost of coarser resolution; smaller steps (e.g. `0.02`) give a
+  tighter optimum but call `glassoFast` more times.
+
+Example: skip the broad search and pin a known-good region with a
+coarse step, then refine if needed:
+
+```r
+geco_precision_chunk(
+  work_dir   = "work/",
+  output_dir = "results/",
+  ct_idx     = 1,
+  fit_args   = list(start_lambda = 1.0, step_size = 0.2, maxIt = 5000)
+)
+```
+
+Each `glassoFast` call is the expensive part of step 03, so reducing
+the number of line-search evaluations is the most direct way to
+accelerate this step.
+
 ### Supplying your own Y or VS_diag
 
 `geco_prepare()` precomputes two large tensors once before the chunk
