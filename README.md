@@ -353,6 +353,42 @@ gene count, and it's only paid once. If a chunk runs out of time, just
 resubmit only the failed task IDs (see "Resuming after a partial
 failure" below).
 
+#### A note on the precision (glasso) step
+
+The tables above cover the chunk step. Step 03 — fitting a sparse
+precision matrix per cell type with `glassoFast` + eBIC — has a
+**less predictable** runtime that we cannot reduce to a single
+constant, even with the package's optimizations:
+
+- The package already does the obvious work-saving moves: it
+  parallelizes precision fits across cell types (one SLURM array task
+  per cell type), uses `glassoFast` (a C-backed glasso implementation
+  much faster than vanilla `glasso`), and uses a 1-D line search over
+  the lambda multiplier rather than a full grid.
+- What remains data-dependent is the iteration count inside each
+  `glassoFast` call. The per-iteration cost is roughly
+  `O(n_gene²)`–`O(n_gene³)`, but the *number* of iterations until
+  convergence depends on the conditioning of the input covariance
+  and the resulting sparsity pattern: very sparse networks converge
+  in a few sweeps, while denser networks (lots of non-zero
+  off-diagonals) can take orders of magnitude more iterations. The
+  eBIC line search also evaluates `glassoFast` at several lambda
+  values, so the effective cost is "single fit × number of
+  line-search steps".
+- In practice, on `n_gene = 10,000` and well-conditioned input, a
+  single cell type's precision fit ranges from a few minutes to a few
+  hours. Highly correlated genes (e.g. dense co-expression modules)
+  push it toward the upper end. Pathological inputs — covariance
+  with very small or near-zero eigenvalues, or extremely dense
+  ground-truth networks — can occasionally exceed that.
+
+Practical advice: give step 03 a generous `--time=` in your SLURM
+options (e.g. `time = "24:00:00"`), and if a particular cell type
+times out, you can resubmit just that array task ID (see
+"Resuming after a partial failure"). If you need a tighter cap on
+iterations, pass `fit_precision_args = list(maxIt = 5000)` (or
+similar) through to `geco_precision_chunk()`.
+
 ### Supplying your own Y or VS_diag
 
 `geco_prepare()` precomputes two large tensors once before the chunk
