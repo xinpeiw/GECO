@@ -4,9 +4,8 @@
 interindividual gene-by-gene coexpression into cell-type-shared and cell-type-specific components, and turns the result into cell-type-shared and per-cell-type-specific sparse precision matrices and node
 degrees.
 
-The entire legacy SLURM pipeline (data process → VS/Y generation →
-estimation → reformatting → p-values → PSD transform → glasso →
-eBIC selection → degree) is exposed in two ways:
+The entire legacy SLURM pipeline (data process → Y/VS generation →
+covariance/se estimation → p-values → glasso → degree) is exposed in two ways:
 
 - **In-memory mode** — one call to `run_geco()` runs everything on a
   single machine. Good for up to a few hundred genes.
