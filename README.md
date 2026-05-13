@@ -93,7 +93,7 @@ library(GECO)
 genes <- read_gene_list("genelist.txt")   # or just: c("ENSG...", "ENSG...", ...)
 
 result <- run_geco(
-  h5ad_file        = "subset_data.h5ad",
+  h5ad_file        = "data_post_qc.h5ad",
   genes            = genes,
   ind_col          = "ind_cov",
   ct_col           = "cg_cov",
@@ -162,7 +162,7 @@ part of it or inject custom logic:
 
 ```r
 genes <- read_gene_list("genelist.txt")
-data  <- load_h5ad("subset_data.h5ad", genes = genes)
+data  <- load_h5ad("data_post_qc.h5ad", genes = genes)
 
 opms  <- compute_OPms(data, genes)
 pc1   <- compute_PC1 (data, genes)
@@ -238,7 +238,7 @@ generate_slurm_pipeline(
   scripts_dir  = "/path/to/scripts",
   work_dir       = "/path/to/work",
   output_dir     = "/path/to/results",
-  h5ad_file      = "/path/to/subset_data.h5ad",
+  h5ad_file      = "/path/to/data_post_qc.h5ad",
   gene_list_file = "/path/to/genelist.txt",  # one gene ID per line
   n_jobs         = 300,   # number of SLURM array chunks (chunk step)
   prepare_args   = list(fixed_covariates = c("age_group", "sex", "PC1")),
@@ -545,7 +545,7 @@ work_dir   <- tempfile("geco_test_")
 output_dir <- tempfile("geco_test_out_")
 
 # 1. Prepare
-geco_prepare(h5ad_file        = "subset_data.h5ad",
+geco_prepare(h5ad_file        = "data_post_qc.h5ad",
              work_dir         = work_dir,
              genes            = genes,
              fixed_covariates = c("age_group", "sex", "PC1"))
@@ -567,7 +567,7 @@ geco_finalize_outputs(work_dir, output_dir)
 list.files(output_dir)
 ```
 
-If that works, swap `subset_data.h5ad` and the full gene list into
+If that works, swap `data_post_qc.h5ad` and the full gene list into
 `generate_slurm_pipeline()` and submit.
 
 ### Running a single SLURM chunk manually
