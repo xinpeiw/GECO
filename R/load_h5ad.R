@@ -101,10 +101,41 @@ load_h5ad <- function(h5ad_file,
 
   if (use == "anndata") {
     adata <- anndata::read_h5ad(h5ad_file)
-    expr_matrix <- t(as.matrix(adata$X))   # genes x cells
-    rownames(expr_matrix) <- adata$var_names
-    colnames(expr_matrix) <- adata$obs_names
+
+    ## var_names / obs_names come through as pandas.Index proxies:
+    ## as.character() on them returns the printed repr, not values.
+    ## Use $tolist() to force a real Python list -> R char vector.
+    as_names <- function(x) {
+      if (inherits(x, "python.builtin.object")) {
+        as.character(unlist(x$tolist()))
+      } else {
+        as.character(x)
+      }
+    }
+    var_names <- as_names(adata$var_names)
+    obs_names <- as_names(adata$obs_names)
+
+    ## Densify sparse X if needed. Dense X comes through as an R
+    ## matrix already in (n_cells x n_genes) orientation.
+    X <- adata$X
+    if (inherits(X, "python.builtin.object") &&
+        any(grepl("scipy\\.sparse", class(X)))) {
+      X <- X$toarray()
+    }
+    X <- as.matrix(X)
+    if (nrow(X) != length(obs_names) || ncol(X) != length(var_names)) {
+      stop("Unexpected X shape: got ", nrow(X), "x", ncol(X),
+           " but obs/var lengths are ", length(obs_names), " / ",
+           length(var_names), ".")
+    }
+    expr_matrix <- t(X)                  # -> genes x cells
+    rownames(expr_matrix) <- var_names
+    colnames(expr_matrix) <- obs_names
+
+    ## adata$obs is usually already an R data.frame; coerce defensively.
     metadata <- adata$obs
+    if (!is.data.frame(metadata)) metadata <- as.data.frame(metadata)
+    rownames(metadata) <- obs_names
 
   } else {
     adata <- zellkonverter::readH5AD(h5ad_file)
