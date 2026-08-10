@@ -55,7 +55,10 @@ run_geco <- function(h5ad_file,
                      output_dir = NULL,
                      psd_thr = 0,
                      fit_precision_args = list(),
+                     backend = c("auto", "anndata", "zellkonverter"),
                      verbose = 0) {
+
+  backend <- match.arg(backend)
 
   if (missing(genes) || is.null(genes)) {
     stop("`genes` is required. Pass a character vector of gene IDs ",
@@ -68,6 +71,7 @@ run_geco <- function(h5ad_file,
   message("[GECO] Loading h5ad: ", h5ad_file)
   data <- load_h5ad(h5ad_file,
                     genes = genes,
+                    backend = backend,
                     subset_col = subset_col,
                     subset_value = subset_value)
   message("[GECO] Using ", length(genes), " genes across ",

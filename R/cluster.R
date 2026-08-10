@@ -59,11 +59,13 @@ geco_prepare <- function(h5ad_file,
                          subset_col = NULL, subset_value = NULL,
                          fixed_covariates = NULL,
                          Y_path = NULL,
-                         VS_diag_path = NULL) {
+                         VS_diag_path = NULL,
+                         backend = c("auto", "anndata", "zellkonverter")) {
 
   if (!requireNamespace("fst", quietly = TRUE)) {
     stop("Cluster mode requires the 'fst' package. install.packages('fst').")
   }
+  backend <- match.arg(backend)
   if (missing(genes) || is.null(genes)) {
     stop("`genes` is required. Pass a character vector of gene IDs ",
          "(or use read_gene_list() to load one from a .txt file).",
@@ -79,6 +81,7 @@ geco_prepare <- function(h5ad_file,
   message("[geco_prepare] Loading h5ad: ", h5ad_file)
   data <- load_h5ad(h5ad_file,
                     genes = genes,
+                    backend = backend,
                     subset_col = subset_col, subset_value = subset_value)
 
   message("[geco_prepare] Writing cell-level data to fst (",

@@ -61,12 +61,21 @@ Plus a single workbook:
 # Dependencies (CRAN)
 install.packages(c("Matrix", "data.table", "glassoFast", "openxlsx"))
 
-# For reading .h5ad: either zellkonverter (recommended, Bioconductor)
-if (!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-BiocManager::install(c("zellkonverter", "SingleCellExperiment",
-                       "SummarizedExperiment"))
-# ...or anndata (CRAN, uses reticulate)
-# install.packages("anndata")
+# For reading .h5ad: one of the two backends below.
+#
+# (Recommended, especially on HPC) anndata — CRAN, uses whatever
+# Python is already on your PATH via reticulate. Fast install, no
+# private Python compile:
+install.packages("anndata")
+# And in your Python environment: pip install anndata
+
+# Alternatively: zellkonverter (Bioconductor). Bundles its own private
+# Python via basilisk. Works cleanly on workstations, but on HPC
+# nodes the private Python build often fails (missing Tk / OpenSSL /
+# build headers). Prefer the anndata backend there.
+# if (!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+# BiocManager::install(c("zellkonverter", "SingleCellExperiment",
+#                        "SummarizedExperiment"))
 
 # Install GECO from GitHub (recommended)
 # install.packages("remotes")            # if you don't have it
@@ -627,6 +636,33 @@ override it for any task ID you want.
 - **Out-of-memory in a chunk**. The chunk worker holds `Y` +
   `VS_diag` + the cell-data metadata (~2 GB for n_ind=1000,
   n_gene=11k, n_ct=7). Bump `slurm$mem` to 8 GB if you see OOM kills.
+- **`zellkonverter` tries to build Python 3.x and fails on the HPC**
+  (`BUILD FAILED (RedHatEnterprise ... _tkinter... No such file or
+  directory`). `zellkonverter` uses `basilisk`, which downloads and
+  compiles its own private Python via `pyenv` on first use — that
+  build often fails on locked-down cluster nodes missing `tk-devel`,
+  `openssl-devel`, or similar. Switch to the `anndata` backend, which
+  uses whatever Python is already on `PATH` (via `reticulate`):
+
+  ```r
+  # R side
+  install.packages("anndata")
+
+  # Python side (in your loaded module / conda env)
+  # pip install anndata
+
+  # Then in R, force the backend:
+  geco_prepare(h5ad_file, work_dir, genes,
+               backend = "anndata", ...)
+  # or run_geco(..., backend = "anndata")
+  ```
+
+  `backend = "auto"` (the default) already prefers `anndata` when both
+  packages are installed, so simply having `anndata` present is
+  usually enough. Point reticulate at your Python with
+  `Sys.setenv(RETICULATE_PYTHON = "/path/to/python")` or
+  `reticulate::use_python("/path/to/python", required = TRUE)` if it
+  picks the wrong one.
 
 ## Notes and caveats
 
