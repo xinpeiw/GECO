@@ -1,3 +1,10 @@
+## Internal: is `p` an absolute path? Handles Unix (starts with "/")
+## and Windows (`C:/`, `C:\\`, `//server/share`) forms.
+.is_abs_path <- function(p) {
+  grepl("^(/|~|[A-Za-z]:[/\\\\]|//)", p)
+}
+
+
 #' Generate a SLURM pipeline scaffold for cluster mode
 #'
 #' Emits a set of R + shell scripts into `scripts_dir` that run the
@@ -11,15 +18,26 @@
 #' [geco_finalize_estimates()] has written `cell_type_order.rds`), so you never
 #' have to tell the scaffolding how many cell types your data has.
 #'
+#' **A note on paths.** All five path arguments below (`scripts_dir`,
+#' `work_dir`, `output_dir`, `h5ad_file`, `gene_list_file`) are
+#' resolved to **absolute paths** at template-generation time via
+#' `normalizePath(mustWork = FALSE)`. That means it doesn't matter
+#' whether you pass them as absolute or relative to your R working
+#' directory — the generated `.sh` files always contain the fully
+#' resolved paths, so `sbatch` / `bash pipeline.sh` will work no
+#' matter which directory you launch them from.
+#'
 #' @param scripts_dir Directory to write the scripts into (created if
 #'   missing).
 #' @param work_dir Working directory the scripts should use (becomes a
-#'   variable in each script).
-#' @param output_dir Final outputs directory used by step 04.
+#'   variable in each script). Does not need to exist yet.
+#' @param output_dir Final outputs directory used by step 04. Does
+#'   not need to exist yet.
 #' @param h5ad_file Path to the .h5ad file used by `geco_prepare()`.
+#'   Must exist.
 #' @param gene_list_file Path to a text file with one gene ID per line
 #'   (loaded by [read_gene_list()]). Passed to `geco_prepare()` as the
-#'   `genes` argument. Required.
+#'   `genes` argument. Required. Must exist.
 #' @param n_jobs Number of SLURM array elements for the chunk step.
 #'   Choose this so each chunk runs in a reasonable wall time (e.g.
 #'   300 is a reasonable default for ~10k genes / ~50M pairs).
@@ -46,6 +64,22 @@ generate_slurm_pipeline <- function(scripts_dir,
                                       cpus      = 1
                                     ),
                                     r_executable = "Rscript") {
+
+  ## Resolve every path argument to an absolute path so the generated
+  ## .sh files work no matter where the user launches sbatch from.
+  ## normalizePath() with mustWork = FALSE may leave a non-existent
+  ## relative path unchanged on some platforms, so we manually anchor
+  ## relative paths at the R session's working directory.
+  as_abs <- function(p) {
+    p <- path.expand(p)
+    if (!.is_abs_path(p)) p <- file.path(getwd(), p)
+    normalizePath(p, mustWork = FALSE, winslash = "/")
+  }
+  scripts_dir    <- as_abs(scripts_dir)
+  work_dir       <- as_abs(work_dir)
+  output_dir     <- as_abs(output_dir)
+  h5ad_file      <- as_abs(h5ad_file)
+  gene_list_file <- as_abs(gene_list_file)
 
   dir.create(scripts_dir, showWarnings = FALSE, recursive = TRUE)
 
