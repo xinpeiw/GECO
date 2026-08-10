@@ -385,8 +385,12 @@ constant, even with the package's optimizations:
 - The package already does the obvious work-saving moves: it
   parallelizes precision fits across cell types (one SLURM array task
   per cell type), uses `glassoFast` (a C-backed glasso implementation
-  much faster than vanilla `glasso`), and uses a 1-D line search over
-  the lambda multiplier rather than a full grid.
+  much faster than vanilla `glasso`), and selects lambda with a
+  **two-phase search** — a coarse walk (`coarse_step`) that brackets
+  the minimum in `O(few)` `glassoFast` calls, followed by a discrete
+  binary search on a fine grid (`fine_step`) that refines the answer
+  in `O(log)` more calls. Every lambda that gets evaluated is cached,
+  so `glassoFast()` never runs twice at the same point.
 - What remains data-dependent is the iteration count inside each
   `glassoFast` call. The per-iteration cost is roughly
   `O(n_gene²)`–`O(n_gene³)`, but the *number* of iterations until
@@ -413,37 +417,52 @@ similar) through to `geco_precision_chunk()`.
 
 ##### Tuning the lambda line search
 
-The eBIC line search in [`fit_precision()`] starts at a lambda
-multiplier and walks in fixed-size steps until it brackets the
-minimum. Two arguments control its behavior and both can be set per
-cell type via `fit_precision_args`:
+`fit_precision()` selects the lambda multiplier that minimizes eBIC
+using a two-phase search (coarse bracket, then discrete binary
+refine). Every parameter below can be set per cell type via
+`fit_precision_args`:
 
-- **`start_lambda`** (default `2`) — the initial lambda multiplier the
-  search evaluates. If you've already run GECO on a similar
-  dataset and observed the optimum landing near, say, lambda = 0.8 or
-  3.5, set `start_lambda` to that value — the search will terminate
-  in 2–3 evaluations instead of stepping across the whole range.
-- **`step_size`** (default `0.1`) — how far the search moves between
-  successive evaluations. Larger steps (e.g. `0.5`) reach the optimum
-  in fewer `glassoFast` calls when the eBIC curve is shallow, at the
-  cost of coarser resolution; smaller steps (e.g. `0.02`) give a
-  tighter optimum but call `glassoFast` more times.
+- **`start_lambda`** (default `1`) — the initial lambda multiplier
+  the search evaluates. If you've already run GECO on a similar
+  dataset and observed the optimum near, say, lambda ≈ 3, setting
+  `start_lambda = 3` lets the search terminate in a handful of
+  evaluations instead of walking there from 1.
+- **`coarse_step`** (default `1`) — step size for phase 1's bracketing
+  walk. Larger values (e.g. `2` or `5`) reach the bracket in fewer
+  `glassoFast` calls when the eBIC minimum lies far from
+  `start_lambda`; smaller values give a tighter bracket to hand to
+  phase 2.
+- **`fine_step`** (default `0.1`) — grid resolution for phase 2's
+  discrete binary search. Also the resolution of the returned
+  optimum. Smaller (e.g. `0.02`) → more precise optimum, more
+  `glassoFast` calls; larger (e.g. `0.2`) → coarser optimum, fewer
+  calls.
+- **`lower` / `upper`** (defaults `0.1` / `50`) — hard bounds on the
+  lambda multiplier. If your prior knowledge says lambda always lies
+  in `[0.5, 5]`, tightening these prevents the search from wandering.
+- **`maxIt`** (default `10000`) — max iterations per single
+  `glassoFast` call. Lower this (e.g. `5000`) if a specific cell
+  type has a slow-converging glasso and you'd rather stop early.
 
-Example: skip the broad search and pin a known-good region with a
-coarse step, then refine if needed:
+Example: skip the broad search when you already know the good region:
 
 ```r
 geco_precision_chunk(
   work_dir   = "work/",
   output_dir = "results/",
   ct_idx     = 1,
-  fit_args   = list(start_lambda = 1.0, step_size = 0.2, maxIt = 5000)
+  fit_args   = list(start_lambda = 3.0,     # jump-start near known optimum
+                    coarse_step  = 0.5,     # small coarse step
+                    fine_step    = 0.05,    # tight refinement
+                    lower = 1, upper = 10,  # bound the search
+                    maxIt = 5000)
 )
 ```
 
 Each `glassoFast` call is the expensive part of step 03, so reducing
 the number of line-search evaluations is the most direct way to
-accelerate this step.
+accelerate this step. `fit_precision()` returns `n_eval` alongside
+the fit so you can see how many `glassoFast` calls the search made.
 
 ### Supplying your own Y or VS_diag
 
