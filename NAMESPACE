@@ -38,5 +38,5 @@ export(tensor_reconstructed)
 export(only_one)
 
 importFrom(Matrix, Matrix)
-importFrom(stats, var, cov, sd, prcomp, qnorm, pnorm, p.adjust, qr, qr.resid)
+importFrom(stats, var, cov, sd, prcomp, qnorm, pnorm, p.adjust)
 importFrom(utils, combn)
