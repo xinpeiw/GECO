@@ -84,11 +84,30 @@ geco_prepare <- function(h5ad_file,
                     backend = backend,
                     subset_col = subset_col, subset_value = subset_value)
 
-  message("[geco_prepare] Writing cell-level data to fst (",
-          nrow(data), " cells x ", length(genes), " genes)...")
-  fst::write_fst(as.data.frame(data),
+  ## Basic bookkeeping (cheap; fails fast if ind_col/ct_col are wrong).
+  if (!(ind_col %in% colnames(data)))
+    stop("ind_col '", ind_col, "' not in the loaded data.")
+  if (!(ct_col %in% colnames(data)))
+    stop("ct_col '",  ct_col,  "' not in the loaded data.")
+
+  individuals <- as.character(unique(data[[ind_col]]))
+  cts_raw     <- as.character(unique(data[[ct_col]]))   # straight from h5ad
+
+  ## Write cell_data.fst FIRST — worker jobs need it to compute cov12
+  ## per pair, and having it on disk early lets us free the in-memory
+  ## copy for the subsequent big computations if needed. We only write
+  ## the columns workers actually use (ind_col, ct_col, gene columns);
+  ## other metadata columns are dropped.
+  worker_cols <- c(ind_col, ct_col, genes)
+  keep <- intersect(worker_cols, colnames(data))
+  cell_data <- as.data.frame(data)[, keep, drop = FALSE]
+  message("[geco_prepare] Writing cell_data.fst (",
+          nrow(cell_data), " cells x ", ncol(cell_data),
+          " cols = ind_col + ct_col + ", length(genes), " genes)...")
+  fst::write_fst(cell_data,
                  path = file.path(work_dir, "cell_data.fst"),
                  compress = 50)
+  rm(cell_data); invisible(gc(verbose = FALSE))
 
   message("[geco_prepare] Computing OPms...")
   opms <- compute_OPms(data, genes, ind_col = ind_col)
@@ -96,9 +115,6 @@ geco_prepare <- function(h5ad_file,
   fixed_cov <- resolve_fixed_covariates(data, genes,
                                         fixed_covariates = fixed_covariates,
                                         ind_col = ind_col)
-
-  individuals <- as.character(unique(data[[ind_col]]))
-  cts_raw     <- as.character(unique(data[[ct_col]]))   # straight from h5ad
 
   ## Precompute Y (per-(ind, gene, ct) means) and VS_diag (per-(ind, ct,
   ## gene) within-group variance). Doing both once here means every
@@ -149,8 +165,9 @@ geco_prepare <- function(h5ad_file,
 
   saveRDS(prep,       file.path(work_dir, "prep.rds"))
   saveRDS(gene_pairs, file.path(work_dir, "gene_pairs.rds"))
+
   message("[geco_prepare] Wrote ", work_dir,
-          "/{cell_data.fst, prep.rds, gene_pairs.rds, Y.rds, VS_diag.rds}. ",
+          "/{cell_data.fst, Y.rds, VS_diag.rds, prep.rds, gene_pairs.rds}. ",
           ncol(gene_pairs), " gene pairs total.")
   invisible(prep)
 }
