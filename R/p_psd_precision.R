@@ -18,10 +18,41 @@ compute_p_matrix <- function(cov, se) {
 #' @param mat Symmetric matrix.
 #' @param thr Threshold below which eigenvalues are replaced. Default 0.
 #' @param set_value Replacement value (default 0).
+#' @param na_action What to do when `mat` contains non-finite entries
+#'   (`NA`, `NaN`, `Inf`). One of:
+#'   - `"zero"` (default): replace them with `0` and print a warning
+#'     with the count and a preview of affected `(row, col)` pairs.
+#'   - `"error"`: stop with a helpful diagnostic (previous behaviour).
 #'
 #' @return A symmetric matrix of the same dimensions.
 #' @export
-transform_psd <- function(mat, thr = 0, set_value = 0) {
+transform_psd <- function(mat, thr = 0, set_value = 0,
+                          na_action = c("zero", "error")) {
+  na_action <- match.arg(na_action)
+
+  bad <- !is.finite(mat)
+  if (any(bad)) {
+    n_bad <- sum(bad)
+    idx   <- which(bad, arr.ind = TRUE)
+    preview <- utils::head(idx, 5)
+    if (!is.null(dimnames(mat))) {
+      pv <- sprintf("[%s, %s]",
+                    rownames(mat)[preview[, 1]],
+                    colnames(mat)[preview[, 2]])
+    } else {
+      pv <- sprintf("[%d, %d]", preview[, 1], preview[, 2])
+    }
+    msg <- sprintf(paste0("transform_psd(): %d non-finite entries in the ",
+                          "input covariance (first few: %s%s)."),
+                   n_bad,
+                   paste(pv, collapse = ", "),
+                   if (n_bad > 5L) sprintf(", ... and %d more", n_bad - 5L)
+                   else "")
+    if (na_action == "error") stop(msg, call. = FALSE)
+    warning(msg, "  Replacing with 0 and continuing.", call. = FALSE)
+    mat[bad] <- 0
+  }
+
   eig <- eigen(mat, symmetric = TRUE)
   val <- eig$values
   vec <- eig$vectors
