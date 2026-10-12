@@ -4,17 +4,6 @@
 interindividual gene-by-gene coexpression into cell-type-shared and cell-type-specific components, and turns the result into cell-type-shared and per-cell-type-specific sparse precision matrices and node
 degrees.
 
-## Contents
-
-- [Inputs and outputs](#inputs-and-outputs)
-- [Installation](#installation)
-- [Running on a cluster](#running-on-a-cluster)
-  - [Running it](#running-it)
-  - [Choosing which covariates to adjust](#choosing-which-covariates-to-adjust)
-  - [What ends up where on disk](#what-ends-up-where-on-disk)
-  - [Wall-time breakdown](#wall-time-breakdown)
-  - [Common pitfalls](#common-pitfalls)
-
 ## Inputs and outputs
 
 **Input.** A `.h5ad` file. Cell-level metadata is read from
