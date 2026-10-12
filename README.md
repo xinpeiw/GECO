@@ -6,7 +6,7 @@ degrees.
 
 ## Inputs and outputs
 
-**Input.** A `.h5ad` file, read directly as HDF5 (no Python needed).
+**Input.** A `.h5ad` file, read directly as HDF5.
 Cell-level metadata is read from `obs`; the expression matrix from
 `X` (or a named `layers` entry, or `raw.X`); gene IDs from the `var`
 index (or a named `var` column). The column names for the individual
