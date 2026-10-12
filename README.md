@@ -6,9 +6,11 @@ degrees.
 
 ## Inputs and outputs
 
-**Input.** A `.h5ad` file. Cell-level metadata is read from
-`obs`/`colData`; the expression matrix is read from the chosen assay.
-Column names for the individual ID and cell-type are configurable.
+**Input.** A `.h5ad` file, read directly as HDF5 (no Python needed).
+Cell-level metadata is read from `obs`; the expression matrix from
+`X` (or a named `layers` entry, or `raw.X`); gene IDs from the `var`
+index (or a named `var` column). The column names for the individual
+ID and cell type are configurable.
 
 **Outputs.** For every cell-type-specific plus the cell-type-shared component:
 
@@ -155,8 +157,11 @@ scale linearly with total cell count.
   a gene list. Either pass a character vector or use
   `read_gene_list("genelist.txt")`.
 - **"X requested genes are not in the h5ad"**. Your gene IDs in the
-  list don't match `rowData(adata)$gene_ids` (or whatever
-  `gene_id_col` resolves to). Check with `rownames(SummarizedExperiment::assay(zellkonverter::readH5AD("file.h5ad")))[1:10]`.
+  list don't match the IDs GECO reads from the file (the `var` index
+  by default). The error shows what the file's IDs look like and
+  which other `var` columns exist; pass the right one with
+  `gene_id_col = "..."` (via `prepare_args` in
+  `generate_slurm_pipeline()`).
 - **"individual(s) in the data have no row in `fixed_covariates`"**.
   The row names of your covariate matrix don't match the values of
   `ind_col` in the h5ad (check for type coercion, e.g. numeric IDs
@@ -173,30 +178,3 @@ scale linearly with total cell count.
 - **Out-of-memory in a chunk**. The chunk worker holds `Y` +
   `VS_diag` + the cell-data metadata (~2 GB for n_ind=1000,
   n_gene=11k, n_ct=7). Bump `slurm$mem` to 8 GB if you see OOM kills.
-- **`zellkonverter` tries to build Python 3.x and fails on the HPC**
-  (`BUILD FAILED (RedHatEnterprise ... _tkinter... No such file or
-  directory`). `zellkonverter` uses `basilisk`, which downloads and
-  compiles its own private Python via `pyenv` on first use — that
-  build often fails on locked-down cluster nodes missing `tk-devel`,
-  `openssl-devel`, or similar. Switch to the `anndata` backend, which
-  uses whatever Python is already on `PATH` (via `reticulate`):
-
-  ```r
-  # R side (asks before installing the 'anndata' R package):
-  GECO::check_dependencies(backend = "anndata")
-
-  # Python side (in your loaded module / conda env):
-  # pip install anndata
-
-  # Then force the backend:
-  geco_prepare(h5ad_file, work_dir, genes,
-               backend = "anndata", ...)
-  # (with generate_slurm_pipeline(): prepare_args = list(backend = "anndata"))
-  ```
-
-  `backend = "auto"` (the default) already prefers `anndata` when both
-  packages are installed, so simply having `anndata` present is
-  usually enough. Point reticulate at your Python with
-  `Sys.setenv(RETICULATE_PYTHON = "/path/to/python")` or
-  `reticulate::use_python("/path/to/python", required = TRUE)` if it
-  picks the wrong one.

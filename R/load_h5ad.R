@@ -1,195 +1,311 @@
-## Internal: message used when no .h5ad backend is available. The
-## install itself is handled (with consent) by check_dependencies().
-.h5ad_install_msg <- function(which = "auto") {
-  paste0(
-    switch(which,
-      auto          = "No .h5ad reader is installed (need the 'anndata' R package, or zellkonverter + SingleCellExperiment + SummarizedExperiment).",
-      anndata       = "backend = 'anndata' requested but the 'anndata' R package isn't installed.",
-      zellkonverter = "backend = 'zellkonverter' requested but zellkonverter / SingleCellExperiment / SummarizedExperiment aren't all installed."),
-    "\n  Run GECO::check_dependencies(backend = \"", which,
-    "\") to install it (you will be asked for confirmation)."
-  )
+## ---------------------------------------------------------------------
+##  Pure-R .h5ad reader (rhdf5), no Python.
+##
+##  An .h5ad file is HDF5. We read only what the pipeline needs:
+##    * the requested obs columns (individual, cell type),
+##    * the requested genes from X / a layer / raw.X,
+##  without ever materialising the full expression matrix.
+##
+##  On-disk layouts handled (anndata >= 0.7):
+##    dataframe  : group with attrs `_index`, `column-order`; one child
+##                 per column; or (very old) a compound dataset
+##    column     : dataset (numeric / string / bool-enum)
+##                 group "categorical"  = codes (+ -1 = NA) & categories
+##                 group "nullable-*"   = values & mask
+##                 old 0.7 categorical  = int codes dataset whose
+##                                        categories live in __categories/<col>
+##    matrix     : dense dataset, or group "csr_matrix"/"csc_matrix"
+##                 (data, indices, indptr; attr `shape`), or the older
+##                 h5sparse_format / h5sparse_shape attrs
+## ---------------------------------------------------------------------
+
+`%||%` <- function(a, b) if (is.null(a)) b else a
+
+## Listing of the file as a data.frame with a full `path` column.
+.h5_ls <- function(file) {
+  ls <- rhdf5::h5ls(file, all = FALSE)
+  ls$path <- paste0(sub("/$", "", ls$group), "/", ls$name)
+  ls
+}
+.h5_entry <- function(ls, path) ls[ls$path == path, , drop = FALSE]
+.h5_exists <- function(ls, path) any(ls$path == path)
+.h5_is_group <- function(ls, path) {
+  e <- .h5_entry(ls, path); nrow(e) == 1L && e$otype == "H5I_GROUP"
+}
+.h5_attrs <- function(file, path) {
+  tryCatch(rhdf5::h5readAttributes(file, path), error = function(e) list())
+}
+.h5_children <- function(ls, path) ls$name[ls$group == path]
+
+## Read a 1-D dataset as a plain R vector (int64 -> double, bool -> logical).
+.h5_vec <- function(file, path, ...) {
+  x <- rhdf5::h5read(file, path, bit64conversion = "double", ...)
+  if (is.factor(x)) {                          # HDF5 enum (numpy bool)
+    lv <- levels(x)
+    if (all(lv %in% c("FALSE", "TRUE"))) return(as.character(x) == "TRUE")
+    return(as.character(x))
+  }
+  as.vector(x)
+}
+
+## Read one column of an anndata dataframe (obs or var) as a vector.
+.h5ad_read_col <- function(file, df_path, col, ls) {
+  path <- paste0(df_path, "/", col)
+  if (!.h5_exists(ls, path)) {
+    stop("load_h5ad(): column '", col, "' not found in ", df_path, ". ",
+         "Available: ", .preview(setdiff(.h5_children(ls, df_path),
+                                         "__categories"), 20), ".",
+         call. = FALSE)
+  }
+  if (.h5_is_group(ls, path)) {
+    enc <- .h5_attrs(file, path)[["encoding-type"]] %||% ""
+    kids <- .h5_children(ls, path)
+    if (enc == "categorical" || all(c("codes", "categories") %in% kids)) {
+      codes <- .h5_vec(file, paste0(path, "/codes"))
+      cats  <- .h5_vec(file, paste0(path, "/categories"))
+      codes[codes < 0] <- NA
+      return(cats[codes + 1L])
+    }
+    if (grepl("^nullable", enc) || all(c("values", "mask") %in% kids)) {
+      v <- .h5_vec(file, paste0(path, "/values"))
+      m <- .h5_vec(file, paste0(path, "/mask"))
+      v[as.logical(m)] <- NA
+      return(v)
+    }
+    stop("load_h5ad(): column '", col, "' in ", df_path, " has an ",
+         "unsupported encoding ('", enc, "'; children: ",
+         paste(kids, collapse = ", "), ").", call. = FALSE)
+  }
+  x <- .h5_vec(file, path)
+  ## anndata 0.7 categorical: integer codes + categories under __categories
+  cat_path <- paste0(df_path, "/__categories/", col)
+  if (!is.null(.h5_attrs(file, path)[["categories"]]) && .h5_exists(ls, cat_path)) {
+    cats <- .h5_vec(file, cat_path)
+    x[x < 0] <- NA
+    x <- cats[x + 1L]
+  }
+  x
+}
+
+## Index (row names) of an anndata dataframe.
+.h5ad_read_index <- function(file, df_path, ls) {
+  e <- .h5_entry(ls, df_path)
+  if (nrow(e) == 0L) stop("load_h5ad(): no '", df_path, "' in the file.", call. = FALSE)
+  if (e$otype != "H5I_GROUP") {                 # ancient compound layout
+    df <- rhdf5::h5read(file, df_path)
+    idx <- .h5_attrs(file, df_path)[["_index"]] %||% colnames(df)[1L]
+    return(as.character(df[[idx]]))
+  }
+  idx <- .h5_attrs(file, df_path)[["_index"]] %||% "_index"
+  if (!.h5_exists(ls, paste0(df_path, "/", idx))) {
+    stop("load_h5ad(): ", df_path, " has no index dataset '", idx, "'.",
+         call. = FALSE)
+  }
+  as.character(.h5ad_read_col(file, df_path, idx, ls))
+}
+
+.h5ad_df_col <- function(file, df_path, col, ls) {
+  e <- .h5_entry(ls, df_path)
+  if (e$otype != "H5I_GROUP") {
+    df <- rhdf5::h5read(file, df_path)
+    if (!(col %in% colnames(df))) {
+      stop("load_h5ad(): column '", col, "' not found in ", df_path,
+           ". Available: ", .preview(colnames(df), 20), ".", call. = FALSE)
+    }
+    return(as.vector(df[[col]]))
+  }
+  .h5ad_read_col(file, df_path, col, ls)
+}
+
+## What kind of matrix lives at `path`, and its (n_obs, n_var) shape.
+.h5ad_matrix_info <- function(file, path, ls) {
+  e <- .h5_entry(ls, path)
+  if (nrow(e) == 0L) stop("load_h5ad(): no matrix at '", path, "'.", call. = FALSE)
+  at <- .h5_attrs(file, path)
+  if (e$otype == "H5I_GROUP") {
+    kind  <- at[["encoding-type"]] %||% at[["h5sparse_format"]] %||% ""
+    kind  <- sub("_matrix$", "", kind)
+    shape <- at[["shape"]] %||% at[["h5sparse_shape"]]
+    if (!(kind %in% c("csr", "csc")) || is.null(shape)) {
+      stop("load_h5ad(): '", path, "' is a group but not a recognised ",
+           "sparse matrix (encoding '", kind, "').", call. = FALSE)
+    }
+    return(list(kind = kind, n_obs = as.integer(shape[1]),
+                n_var = as.integer(shape[2])))
+  }
+  d <- as.integer(strsplit(e$dim, " x ")[[1]])   # rhdf5 reports R (reversed) dims
+  if (length(d) != 2L) {
+    stop("load_h5ad(): '", path, "' is not a 2-D matrix (dim ", e$dim, ").",
+         call. = FALSE)
+  }
+  list(kind = "dense", n_obs = d[2], n_var = d[1])
+}
+
+## Read the columns `gene_idx` (1-based, in var order) for all cells into
+## an n_obs x length(gene_idx) dense double matrix.
+.h5ad_read_genes <- function(file, path, info, gene_idx, cells_per_block) {
+  n_obs <- info$n_obs; k <- length(gene_idx)
+  out <- matrix(0, n_obs, k)
+  blocks <- split(seq_len(n_obs), ceiling(seq_len(n_obs) / cells_per_block))
+
+  if (info$kind == "dense") {
+    for (rows in blocks) {
+      ## rhdf5 returns the dataset with dims reversed: [n_var, n_obs]
+      blk <- rhdf5::h5read(file, path, index = list(gene_idx, rows),
+                           bit64conversion = "double")
+      out[rows, ] <- t(matrix(as.numeric(blk), nrow = k))
+    }
+  } else if (info$kind == "csr") {
+    indptr <- .h5_vec(file, paste0(path, "/indptr"))
+    for (rows in blocks) {
+      a <- rows[1L]; b <- rows[length(rows)]
+      s <- indptr[a] + 1; n <- indptr[b + 1L] - indptr[a]
+      if (n == 0) next
+      dat <- .h5_vec(file, paste0(path, "/data"),    start = s, count = n)
+      ind <- .h5_vec(file, paste0(path, "/indices"), start = s, count = n)
+      row <- rep(rows, diff(indptr[a:(b + 1L)]))
+      jj  <- match(ind + 1, gene_idx)
+      sel <- !is.na(jj)
+      if (any(sel)) out[cbind(row[sel], jj[sel])] <- dat[sel]
+    }
+  } else {                                        # csc: columns are contiguous
+    indptr <- .h5_vec(file, paste0(path, "/indptr"))
+    for (j in seq_len(k)) {
+      g <- gene_idx[j]
+      s <- indptr[g] + 1; n <- indptr[g + 1L] - indptr[g]
+      if (n == 0) next
+      dat <- .h5_vec(file, paste0(path, "/data"),    start = s, count = n)
+      ind <- .h5_vec(file, paste0(path, "/indices"), start = s, count = n)
+      out[ind + 1, j] <- dat
+    }
+  }
+  out
 }
 
 
-#' Load a .h5ad file into a long-format expression data frame
+#' Load the cells x (metadata + selected genes) table from a .h5ad file
 #'
-#' Reads the supplied .h5ad file and returns a single `data.table`
-#' whose columns are the cell-level metadata followed by the gene
-#' expression columns.
+#' Reads the file directly as HDF5 with `rhdf5` (no Python, no
+#' conversion step). Only the requested `obs` columns and the
+#' requested genes are read; the full expression matrix is never
+#' loaded. Dense and sparse (CSR / CSC) matrices are supported, as are
+#' `X`, any entry of `layers`, and `raw.X`.
 #'
-#' Two backends are supported (in this order of preference):
+#' @param h5ad_file Path to the `.h5ad` file.
+#' @param genes Character vector of gene IDs to extract (required).
+#'   Matched against `gene_id_col`. Any gene not found is an error
+#'   that lists the missing IDs and shows what the file's IDs look like.
+#' @param obs_cols Character vector of `obs` column names to return
+#'   (e.g. the individual and cell-type columns). Each must exist; the
+#'   error lists the available columns otherwise. Categorical columns
+#'   are returned as character.
+#' @param layer Which matrix to read: `"X"` (default), the name of an
+#'   entry in `layers`, or `"raw"` for `raw.X` (whose gene IDs then
+#'   come from `raw.var`).
+#' @param gene_id_col Where the gene IDs live: `NULL` (default) uses
+#'   the `var` index (`var_names` in Python); otherwise the name of a
+#'   column in `var` (e.g. `"gene_ids"` or `"gene_symbols"`).
+#' @param cells_per_block Cells read per HDF5 call for dense / CSR
+#'   matrices (controls peak memory of the read, not of the result).
 #'
-#' 1. **anndata** (CRAN). Uses `reticulate` + whatever Python is on your
-#'   `PATH` (or configured via `reticulate::use_python()` /
-#'   `RETICULATE_PYTHON`). This is the recommended backend on HPC
-#'   nodes where you already have a Python environment with the
-#'   `anndata` Python package.
-#'   Install: `install.packages("anndata")` (R) and
-#'   `pip install anndata` (Python).
-#' 2. **zellkonverter** (Bioconductor). Bundles a private Python
-#'   environment via `basilisk`, which builds Python from source on
-#'   first use. This works cleanly on most workstations but often
-#'   fails on locked-down HPC nodes missing Tk / OpenSSL / build
-#'   headers. Prefer the anndata backend there.
-#'
-#' @param h5ad_file Path to a `.h5ad` file. Assumed to have already
-#'   passed the user's QC filtering.
-#' @param genes Character vector of gene IDs to extract from the
-#'   expression matrix. If `NULL`, every gene in the matrix is kept.
-#'   Either pass an in-memory vector or load one from a file with
-#'   [read_gene_list()] first. Any requested gene that's not in the
-#'   matrix raises an error.
-#' @param backend One of `"auto"` (default: try anndata first, then
-#'   zellkonverter), `"anndata"`, or `"zellkonverter"`. Force one
-#'   backend if the automatic choice picks the wrong one.
-#' @param assay Name of the assay layer to extract. Defaults to "X".
-#'   (Only used by the zellkonverter backend.)
-#' @param gene_id_col Column in `rowData(adata)` that holds gene IDs to
-#'   use as gene column names. If `NULL`, `rownames(expr_matrix)` are
-#'   kept as-is. (Only used by the zellkonverter backend.)
-#' @param keep_meta Optional character vector restricting which metadata
-#'   columns are returned. By default, all are kept.
-#' @param subset_col,subset_value Optional: filter cells where
-#'   `metadata[[subset_col]] == subset_value`. NULL means no filtering.
-#'
-#' @return A `data.table` with one row per cell. Columns: all (kept)
-#'   metadata columns first, then one column per requested gene
-#'   (numeric).
+#' @return A `data.table` with one row per cell in file order: the
+#'   `obs_cols` first, then one numeric column per gene (in the order
+#'   of `genes`).
 #' @export
-load_h5ad <- function(h5ad_file,
-                      genes = NULL,
-                      backend = c("auto", "anndata", "zellkonverter"),
-                      assay = "X",
-                      gene_id_col = "gene_ids",
-                      keep_meta = NULL,
-                      subset_col = NULL,
-                      subset_value = NULL) {
+load_h5ad <- function(h5ad_file, genes, obs_cols,
+                      layer = "X", gene_id_col = NULL,
+                      cells_per_block = 20000L) {
 
+  .require_pkg("rhdf5", "load_h5ad", source = "Bioconductor")
   if (!file.exists(h5ad_file)) {
-    stop("h5ad file not found: ", h5ad_file)
+    stop("h5ad file not found: ", h5ad_file, call. = FALSE)
   }
-  backend <- match.arg(backend)
+  if (missing(genes) || is.null(genes) || length(genes) == 0L) {
+    stop("load_h5ad(): `genes` is required.", call. = FALSE)
+  }
+  if (missing(obs_cols) || is.null(obs_cols) || length(obs_cols) == 0L) {
+    stop("load_h5ad(): `obs_cols` is required (e.g. c(ind_col, ct_col)).",
+         call. = FALSE)
+  }
+  genes <- unique(as.character(genes))
+  ls <- .h5_ls(h5ad_file)
 
-  expr_matrix <- NULL
-  metadata    <- NULL
-
-  has_anndata <- requireNamespace("anndata", quietly = TRUE)
-  has_zk <- requireNamespace("zellkonverter",       quietly = TRUE) &&
-            requireNamespace("SingleCellExperiment", quietly = TRUE) &&
-            requireNamespace("SummarizedExperiment", quietly = TRUE)
-
-  ## Decide which backend to actually use.
-  use <- switch(backend,
-    auto          = if (has_anndata) "anndata"
-                    else if (has_zk) "zellkonverter"
-                    else stop(.h5ad_install_msg("auto"), call. = FALSE),
-    anndata       = if (has_anndata) "anndata"
-                    else stop(.h5ad_install_msg("anndata"), call. = FALSE),
-    zellkonverter = if (has_zk) "zellkonverter"
-                    else stop(.h5ad_install_msg("zellkonverter"), call. = FALSE)
-  )
-  message("[load_h5ad] Using backend: ", use)
-
-  if (use == "anndata") {
-    adata <- anndata::read_h5ad(h5ad_file)
-
-    ## var_names / obs_names come through as pandas.Index proxies:
-    ## as.character() on them returns the printed repr, not values.
-    ## Use $tolist() to force a real Python list -> R char vector.
-    as_names <- function(x) {
-      if (inherits(x, "python.builtin.object")) {
-        as.character(unlist(x$tolist()))
-      } else {
-        as.character(x)
-      }
+  ## ---- which matrix -------------------------------------------------
+  if (identical(layer, "X")) {
+    mat_path <- "/X"; var_path <- "/var"
+  } else if (identical(layer, "raw")) {
+    mat_path <- "/raw/X"; var_path <- "/raw/var"
+    if (!.h5_exists(ls, mat_path)) {
+      stop("load_h5ad(): the file has no raw.X.", call. = FALSE)
     }
-    var_names <- as_names(adata$var_names)
-    obs_names <- as_names(adata$obs_names)
-
-    ## Densify sparse X if needed. Dense X comes through as an R
-    ## matrix already in (n_cells x n_genes) orientation.
-    X <- adata$X
-    if (inherits(X, "python.builtin.object") &&
-        any(grepl("scipy\\.sparse", class(X)))) {
-      X <- X$toarray()
-    }
-    X <- as.matrix(X)
-    if (nrow(X) != length(obs_names) || ncol(X) != length(var_names)) {
-      stop("Unexpected X shape: got ", nrow(X), "x", ncol(X),
-           " but obs/var lengths are ", length(obs_names), " / ",
-           length(var_names), ".")
-    }
-    expr_matrix <- t(X)                  # -> genes x cells
-    rownames(expr_matrix) <- var_names
-    colnames(expr_matrix) <- obs_names
-
-    ## adata$obs is usually already an R data.frame; coerce defensively.
-    metadata <- adata$obs
-    if (!is.data.frame(metadata)) metadata <- as.data.frame(metadata)
-    rownames(metadata) <- obs_names
-
   } else {
-    adata <- zellkonverter::readH5AD(h5ad_file)
-    expr_matrix <- SummarizedExperiment::assay(adata, assay)
-    metadata    <- as.data.frame(SummarizedExperiment::colData(adata))
-
-    if (!is.null(gene_id_col)) {
-      rd <- SummarizedExperiment::rowData(adata)
-      if (gene_id_col %in% colnames(rd)) {
-        rownames(expr_matrix) <- rd[[gene_id_col]]
-      }
-    }
-  }
-
-  # Optional gene subsetting (done while still genes x cells, so the
-  # transpose is cheap).
-  if (!is.null(genes)) {
-    avail <- rownames(expr_matrix)
-    if (is.null(avail)) {
-      stop("Cannot select genes by name: expression matrix has no rownames. ",
-           "Check the gene_id_col argument.")
-    }
-    miss <- setdiff(genes, avail)
-    if (length(miss) > 0L) {
-      n <- length(miss)
-      preview <- paste(utils::head(miss, 5), collapse = ", ")
-      stop(n, " requested gene", if (n > 1L) "s are" else " is",
-           " not in the h5ad: ", preview,
-           if (n > 5L) sprintf(" (... and %d more)", n - 5L) else "",
+    mat_path <- paste0("/layers/", layer); var_path <- "/var"
+    if (!.h5_exists(ls, mat_path)) {
+      stop("load_h5ad(): no layer '", layer, "'. Available layers: ",
+           .preview(.h5_children(ls, "/layers"), 20),
+           if (.h5_exists(ls, "/raw/X")) "; also \"raw\"" else "", ".",
            call. = FALSE)
     }
-    expr_matrix <- expr_matrix[genes, , drop = FALSE]
+  }
+  info <- .h5ad_matrix_info(h5ad_file, mat_path, ls)
+
+  ## ---- gene IDs -----------------------------------------------------
+  var_ids <- if (is.null(gene_id_col)) {
+    .h5ad_read_index(h5ad_file, var_path, ls)
+  } else {
+    as.character(.h5ad_df_col(h5ad_file, var_path, gene_id_col, ls))
+  }
+  if (length(var_ids) != info$n_var) {
+    stop("load_h5ad(): ", var_path, " has ", length(var_ids), " gene IDs but ",
+         mat_path, " has ", info$n_var, " columns.", call. = FALSE)
+  }
+  id_src <- if (is.null(gene_id_col)) paste0(var_path, " index") else
+            paste0(var_path, "/", gene_id_col)
+  miss <- setdiff(genes, var_ids)
+  if (length(miss) > 0L) {
+    var_cols <- setdiff(.h5_children(ls, var_path),
+                        c("__categories", .h5_attrs(h5ad_file, var_path)[["_index"]] %||% "_index"))
+    stop("load_h5ad(): ", length(miss), " of ", length(genes), " requested ",
+         "gene(s) are not in ", id_src, ": ", .preview(miss),
+         ".\n  IDs in the file look like: ", .preview(var_ids, 5),
+         if (length(var_cols)) paste0("\n  Other var columns you could use ",
+                                      "via gene_id_col: ", .preview(var_cols, 10)) else "",
+         call. = FALSE)
+  }
+  gene_idx <- match(genes, var_ids)
+  dup <- genes[genes %in% var_ids[duplicated(var_ids)]]
+  if (length(dup) > 0L) {
+    stop("load_h5ad(): ", length(dup), " requested gene ID(s) occur more than ",
+         "once in ", id_src, ": ", .preview(dup), ". Use a unique ID column.",
+         call. = FALSE)
   }
 
-  # genes x cells -> cells x genes
-  expr_df <- t(as.matrix(expr_matrix))
-
-  # align cell order to metadata
-  if (!is.null(rownames(metadata)) && !is.null(rownames(expr_df))) {
-    common <- intersect(rownames(metadata), rownames(expr_df))
-    if (length(common) > 0) {
-      expr_df  <- expr_df[common, , drop = FALSE]
-      metadata <- metadata[common, , drop = FALSE]
+  ## ---- obs columns --------------------------------------------------
+  obs <- lapply(obs_cols, function(col) {
+    v <- .h5ad_df_col(h5ad_file, "/obs", col, ls)
+    if (length(v) != info$n_obs) {
+      stop("load_h5ad(): obs column '", col, "' has ", length(v),
+           " values but ", mat_path, " has ", info$n_obs, " rows.", call. = FALSE)
     }
-  }
+    v
+  })
+  names(obs) <- obs_cols
 
-  if (!is.null(keep_meta)) {
-    keep_meta <- intersect(keep_meta, colnames(metadata))
-    metadata  <- metadata[, keep_meta, drop = FALSE]
-  }
+  message(sprintf(paste0("[load_h5ad] %s: %d cells x %d genes; %s is %s; ",
+                         "gene IDs from %s (e.g. %s); reading %d gene(s) ",
+                         "and obs column(s) %s."),
+                  basename(h5ad_file), info$n_obs, info$n_var, mat_path,
+                  info$kind, id_src, .preview(var_ids, 3), length(genes),
+                  paste(obs_cols, collapse = ", ")))
 
-  data_all <- cbind(metadata, expr_df)
-  data_all <- data.table::as.data.table(data_all)
+  ## ---- expression ---------------------------------------------------
+  expr <- .h5ad_read_genes(h5ad_file, mat_path, info, gene_idx,
+                           cells_per_block = as.integer(cells_per_block))
+  cols <- vector("list", length(genes)); names(cols) <- genes
+  for (j in seq_along(genes)) cols[[j]] <- expr[, j]
+  rm(expr)
 
-  if (!is.null(subset_col) && !is.null(subset_value)) {
-    if (!(subset_col %in% colnames(data_all))) {
-      stop("subset_col '", subset_col, "' not in metadata columns.")
-    }
-    data_all <- data_all[data_all[[subset_col]] == subset_value, ]
-  }
-
-  data_all
+  data.table::setDT(c(obs, cols))[]
 }
 
 
@@ -231,7 +347,7 @@ read_gene_list <- function(path, comment.char = "#") {
 #'   plain-text `.txt` file: tab- or whitespace-separated, a header row
 #'   with the covariate names, and the individual ID in the first
 #'   column (one row per individual), e.g. as written by
-#'   `write.table(m, "covariates.txt", sep = "\t", quote = FALSE,
+#'   `write.table(m, "covariates.txt", sep = "\\t", quote = FALSE,
 #'   col.names = NA)`. Also accepted, detected from the extension:
 #'   `.tsv` (tab), `.csv` (comma), and `.rds` (a saved numeric matrix
 #'   or `data.frame` with row names).

@@ -48,8 +48,9 @@
 #'   passes the matrix to `geco_prepare(fixed_covariates = )`. `NULL`
 #'   (default) means no covariate regression. Must exist if given.
 #' @param prepare_args Named list of additional scalar args injected
-#'   into the `geco_prepare()` call (e.g. `subset_col = "SLE_status"`,
-#'   `backend = "anndata"`). Do not put `fixed_covariates` here; use
+#'   into the `geco_prepare()` call (e.g. `ind_col = "donor"`,
+#'   `layer = "lognorm"`, `gene_id_col = "gene_ids"`). Do not put
+#'   `fixed_covariates` here; use
 #'   `fixed_covariates_file`.
 #' @param slurm Named list of SLURM options. Any subset of
 #'   `partition`, `time`, `mem`, `cpus` may be given; entries you omit
@@ -85,8 +86,7 @@ generate_slurm_pipeline <- function(scripts_dir,
 
   ## Check run-time dependencies now (interactively, so the user can
   ## agree to install them) rather than inside the first SLURM job.
-  backend <- if (!is.null(prepare_args$backend)) prepare_args$backend else "auto"
-  check_dependencies(backend = backend, install = "ask")
+  check_dependencies(install = "ask")
 
   ## Merge user SLURM options over the defaults, so a partial list such
   ## as list(mem = "64G") does not leave the other #SBATCH lines empty.

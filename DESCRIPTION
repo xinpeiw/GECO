@@ -26,10 +26,6 @@ Imports:
     utils
 Suggests:
     fst,
-    anndata,
-    reticulate,
-    zellkonverter,
-    SingleCellExperiment,
-    SummarizedExperiment,
+    rhdf5,
     BiocManager
 RoxygenNote: 7.3.1
