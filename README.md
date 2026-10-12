@@ -125,8 +125,8 @@ work_dir/
 ├── gene_pairs.rds        # 2 x M matrix of all pairs to estimate
 ├── Y.rds                 # [n_ind, n_gene, n_ct] precomputed means
 ├── VS_diag.rds           # [n_ind, n_ct, n_gene] precomputed variances
-├── chunks/               # transient — deleted automatically by step 02
-│   ├── chunk_00001.rds   # (pass cleanup_chunks = FALSE to keep)
+├── chunks/               # transient — (pass cleanup_chunks = FALSE to keep)
+│   ├── chunk_00001.rds   
 │   ├── chunk_00002.rds
 │   └── ...               # one per SLURM array task
 ├── cell_type_order.rds   # ordered names of "shared" + each cell type
