@@ -465,8 +465,9 @@ geco_finalize_estimates <- function(work_dir, output_dir,
          if (!is.na(n_jobs_guess)) paste0("; chunk size suggests n_jobs ~ ",
            ceiling(prep$n_pairs / n_jobs_guess)) else "",
          ". Some SLURM array tasks did not finish; check their .out files ",
-         "and resubmit the missing task_ids (see README, 'Resuming after a ",
-         "partial failure').", call. = FALSE)
+         "and resubmit just those task_ids, e.g. ",
+         "`sbatch --array=<id1>,<id2> 01_chunk.sh`, then re-run this step.",
+         call. = FALSE)
   }
 
   cov_df <- do.call(rbind, cov_parts)

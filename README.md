@@ -13,7 +13,6 @@ degrees.
   - [Choosing which covariates to adjust](#choosing-which-covariates-to-adjust)
   - [What ends up where on disk](#what-ends-up-where-on-disk)
   - [Wall-time breakdown](#wall-time-breakdown)
-  - [Resuming after a partial failure](#resuming-after-a-partial-failure)
   - [Common pitfalls](#common-pitfalls)
 - [Notes and caveats](#notes-and-caveats)
 
@@ -161,37 +160,6 @@ scale linearly with total cell count.
 | 5,000   |  ~5 m    | 12,500,000 |  ~45 m / task  | ~15 m   | ~10 m  |  ~5 m  |
 | 10,000  | ~10 m    | 49,995,000 |   ~3 h / task  |  ~1 h   | ~35 m  | ~20 m  |
 | 20,000  | ~20 m    |     ~200M  |  ~11 h / task  |  ~4 h   | ~2.5 h |  ~1 h  |
-
-### Resuming after a partial failure
-
-Each stage is idempotent and reads everything it needs from
-`work_dir/`. To resume:
-
-- **A few `chunk_*.rds` files failed.** Look at the SLURM output to
-  find which task IDs failed, then resubmit just those (note: step 02
-  deletes chunks on success, so this only works if step 02 hasn't run
-  or you passed `cleanup_chunks = FALSE`):
-
-  ```bash
-  sbatch --array=37,42,108 01_chunk.sh
-  # then re-run step 02 by hand or via sbatch --dependency
-  bash -c 'sbatch --parsable --dependency=afterok:<chunk_jobid> 02_finalize_estimates.sh'
-  ```
-
-- **Step 02 finished, one or more `precision_<ct>.rds` failed.**
-  Resubmit only that cell type:
-
-  ```bash
-  sbatch --array=3 03_precision.sh                # ct_idx = 3
-  sbatch --dependency=afterok:<above> 04_finalize_outputs.sh
-  ```
-
-- **Step 04 failed but everything upstream succeeded.** Just run it
-  again: `bash 04_finalize_outputs.sh` (or
-  `Rscript 04_finalize_outputs.R "$WORK_DIR" "$OUTPUT_DIR"`).
-
-If you want to start over, `rm -rf work_dir/` and rerun
-`bash pipeline.sh`.
 
 ### Common pitfalls
 
