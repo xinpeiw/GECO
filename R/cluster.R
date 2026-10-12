@@ -73,10 +73,10 @@ geco_prepare <- function(h5ad_file,
                          fixed_covariates = NULL,
                          backend = c("auto", "anndata", "zellkonverter")) {
 
-  if (!requireNamespace("fst", quietly = TRUE)) {
-    stop("Cluster mode requires the 'fst' package. install.packages('fst').")
-  }
   backend <- match.arg(backend)
+  ## Verify (and, with consent, install) fst + an .h5ad reader before
+  ## doing anything else.
+  check_dependencies(backend = backend, install = "ask")
   if (missing(genes) || is.null(genes)) {
     stop("`genes` is required. Pass a character vector of gene IDs ",
          "(or use read_gene_list() to load one from a .txt file).",
@@ -218,9 +218,7 @@ geco_prepare <- function(h5ad_file,
 #' @export
 geco_chunk <- function(work_dir, task_id, n_jobs, verbose = 100) {
 
-  if (!requireNamespace("fst", quietly = TRUE)) {
-    stop("Cluster mode requires the 'fst' package.")
-  }
+  .require_pkg("fst", "geco_chunk")
 
   prep       <- readRDS(file.path(work_dir, "prep.rds"))
   gene_pairs <- readRDS(file.path(work_dir, "gene_pairs.rds"))

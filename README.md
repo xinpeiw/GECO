@@ -37,44 +37,30 @@ Plus a single workbook:
 ## Installation
 
 ```r
-# Dependencies (CRAN)
-install.packages(c("Matrix", "data.table", "glassoFast", "openxlsx"))
-
-# For reading .h5ad: one of the two backends below.
-#
-# (Recommended, especially on HPC) anndata — CRAN, uses whatever
-# Python is already on your PATH via reticulate. Fast install, no
-# private Python compile:
-install.packages("anndata")
-# And in your Python environment: pip install anndata
-
-# Alternatively: zellkonverter (Bioconductor). Bundles its own private
-# Python via basilisk. Works cleanly on workstations, but on HPC
-# nodes the private Python build often fails (missing Tk / OpenSSL /
-# build headers). Prefer the anndata backend there.
-# if (!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-# BiocManager::install(c("zellkonverter", "SingleCellExperiment",
-#                        "SummarizedExperiment"))
-
-# Install GECO from GitHub (recommended)
 # install.packages("remotes")            # if you don't have it
 remotes::install_github("xinpeiw/GECO")
-# or with devtools:
-# devtools::install_github("xinpeiw/GECO")
-
-# Alternatively, from a local clone:
-# install.packages("path/to/GECO", repos = NULL, type = "source")
-# devtools::install("path/to/GECO")
 ```
 
 Repository: <https://github.com/xinpeiw/GECO> (private — collaborators
 will need a GitHub PAT with `repo` scope to `remotes::install_github()`,
 e.g. via `Sys.setenv(GITHUB_PAT = "...")`).
 
-## Running on a cluster
+Everything else GECO needs is checked the first time you call
+`generate_slurm_pipeline()` or `geco_prepare()`: if a required package
+is missing, GECO lists it and asks for your permission before
+installing it. To do this ahead of time, or in a non-interactive
+session, run:
 
-The pipeline requires `fst` (`install.packages("fst")`) for
-column-selectable on-disk cell data.
+```r
+GECO::check_dependencies()                      # report + ask
+GECO::check_dependencies(install = "always")    # install without asking
+```
+
+The one thing GECO cannot install for you is the Python side of the
+`.h5ad` reader: if it is missing, the check tells you the exact
+`pip install` command to run in the Python environment R uses.
+
+## Running on a cluster
 
 ### Running it
 
@@ -285,10 +271,12 @@ If you want to start over, `rm -rf work_dir/` and rerun
 - **Step 03 array bound off**. The auto-sized array uses the number
   of cell types in `work_dir/cell_type_order.rds`. If something looks
   wrong there, open it with `readRDS()` to see the names.
-- **`fst` not installed on worker nodes**. The R install used by the
-  worker (often a module load or conda env) must have `fst`. Set
+- **"package 'fst' is not installed in this R library" in a chunk
+  job**. The R the workers run (often a module load or conda env) is
+  not the one where you ran `check_dependencies()`. Run
+  `GECO::check_dependencies()` from that R, or set
   `r_executable = "micromamba run -n my_env Rscript"` in
-  `generate_slurm_pipeline()` if you use conda/micromamba.
+  `generate_slurm_pipeline()` so every step uses the same R.
 - **Out-of-memory in a chunk**. The chunk worker holds `Y` +
   `VS_diag` + the cell-data metadata (~2 GB for n_ind=1000,
   n_gene=11k, n_ct=7). Bump `slurm$mem` to 8 GB if you see OOM kills.
@@ -301,13 +289,13 @@ If you want to start over, `rm -rf work_dir/` and rerun
   uses whatever Python is already on `PATH` (via `reticulate`):
 
   ```r
-  # R side
-  install.packages("anndata")
+  # R side (asks before installing the 'anndata' R package):
+  GECO::check_dependencies(backend = "anndata")
 
-  # Python side (in your loaded module / conda env)
+  # Python side (in your loaded module / conda env):
   # pip install anndata
 
-  # Then in R, force the backend:
+  # Then force the backend:
   geco_prepare(h5ad_file, work_dir, genes,
                backend = "anndata", ...)
   # (with generate_slurm_pipeline(): prepare_args = list(backend = "anndata"))

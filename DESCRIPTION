@@ -19,17 +19,17 @@ LazyData: true
 Depends:
     R (>= 4.0.0)
 Imports:
-    Matrix,
     data.table,
     glassoFast,
     openxlsx,
     stats,
     utils
 Suggests:
+    fst,
+    anndata,
+    reticulate,
     zellkonverter,
     SingleCellExperiment,
     SummarizedExperiment,
-    rhdf5,
-    anndata,
-    fst
+    BiocManager
 RoxygenNote: 7.3.1

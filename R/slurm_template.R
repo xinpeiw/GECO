@@ -82,6 +82,11 @@ generate_slurm_pipeline <- function(scripts_dir,
          call. = FALSE)
   }
 
+  ## Check run-time dependencies now (interactively, so the user can
+  ## agree to install them) rather than inside the first SLURM job.
+  backend <- if (!is.null(prepare_args$backend)) prepare_args$backend else "auto"
+  check_dependencies(backend = backend, install = "ask")
+
   ## Merge user SLURM options over the defaults, so a partial list such
   ## as list(mem = "64G") does not leave the other #SBATCH lines empty.
   slurm_defaults <- list(partition = "general",

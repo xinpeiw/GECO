@@ -1,14 +1,13 @@
-## Internal: install-instructions message used when no backend is available.
-.h5ad_install_msg <- function() {
+## Internal: message used when no .h5ad backend is available. The
+## install itself is handled (with consent) by check_dependencies().
+.h5ad_install_msg <- function(which = "auto") {
   paste0(
-    "No .h5ad backend available. Install one of:\n",
-    "  * anndata (recommended on HPC):\n",
-    "      install.packages(\"anndata\")\n",
-    "      # then in Python: pip install anndata\n",
-    "  * zellkonverter (Bioconductor, bundles its own Python):\n",
-    "      BiocManager::install(c(\"zellkonverter\",\n",
-    "                             \"SingleCellExperiment\",\n",
-    "                             \"SummarizedExperiment\"))"
+    switch(which,
+      auto          = "No .h5ad reader is installed (need the 'anndata' R package, or zellkonverter + SingleCellExperiment + SummarizedExperiment).",
+      anndata       = "backend = 'anndata' requested but the 'anndata' R package isn't installed.",
+      zellkonverter = "backend = 'zellkonverter' requested but zellkonverter / SingleCellExperiment / SummarizedExperiment aren't all installed."),
+    "\n  Run GECO::check_dependencies(backend = \"", which,
+    "\") to install it (you will be asked for confirmation)."
   )
 }
 
@@ -82,20 +81,13 @@ load_h5ad <- function(h5ad_file,
 
   ## Decide which backend to actually use.
   use <- switch(backend,
-    auto        = if (has_anndata) "anndata"
-                  else if (has_zk) "zellkonverter"
-                  else stop(.h5ad_install_msg()),
-    anndata     = if (has_anndata) "anndata"
-                  else stop("backend = 'anndata' requested but the 'anndata' ",
-                            "R package isn't installed.\n  ",
-                            "install.packages(\"anndata\")  # then in Python: ",
-                            "pip install anndata"),
+    auto          = if (has_anndata) "anndata"
+                    else if (has_zk) "zellkonverter"
+                    else stop(.h5ad_install_msg("auto"), call. = FALSE),
+    anndata       = if (has_anndata) "anndata"
+                    else stop(.h5ad_install_msg("anndata"), call. = FALSE),
     zellkonverter = if (has_zk) "zellkonverter"
-                    else stop("backend = 'zellkonverter' requested but the ",
-                              "Bioconductor packages aren't installed.\n  ",
-                              "BiocManager::install(c(\"zellkonverter\", ",
-                              "\"SingleCellExperiment\", ",
-                              "\"SummarizedExperiment\"))")
+                    else stop(.h5ad_install_msg("zellkonverter"), call. = FALSE)
   )
   message("[load_h5ad] Using backend: ", use)
 
