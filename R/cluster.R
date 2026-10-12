@@ -36,16 +36,16 @@
 #'   columns in the .h5ad `obs` metadata.
 #' @param subset_col,subset_value Optional metadata filter (see
 #'   [load_h5ad()]).
-#' @param fixed_covariates Which covariates to regress out before
-#'   GeCo estimation. Accepts:
-#'   - `NULL` (default): no regression.
-#'   - A character vector of names from [GECO_COVARIATE_CATALOG],
-#'     e.g. `c("age_group", "sex", "PC1")` (the common case). Call
-#'     [available_covariates()] to see all options.
-#'   - A named list of fully-specified covariate recipes (see
-#'     [build_fixed_cov()] for the spec format).
-#'   - A precomputed numeric matrix / `data.frame` with one row per
-#'     individual (row names = individual IDs), used directly.
+#' @param fixed_covariates Per-individual covariates to regress out
+#'   before GeCo estimation: either `NULL` (default, no regression) or
+#'   a numeric matrix / `data.frame` with one row per individual and
+#'   one column per covariate, row names = individual IDs as they
+#'   appear in `ind_col`. Factors must already be encoded as numeric
+#'   (e.g. 0/1) columns; do not include an intercept column (one is
+#'   fitted per gene and cell type). The matrix is validated (numeric,
+#'   no NA, every individual present, no constant column) and its rows
+#'   are reordered to the data's individual order. See
+#'   [compute_PC1()] if you want an expression PC as a covariate.
 #' @param backend Which .h5ad reader to use; see [load_h5ad()].
 #'
 #' @details The `Y.rds` and `VS_diag.rds` tensors are always computed
@@ -136,9 +136,8 @@ geco_prepare <- function(h5ad_file,
   message("[geco_prepare] Computing OPms...")
   opms <- compute_OPms(data, genes, ind_col = ind_col)
 
-  fixed_cov <- resolve_fixed_covariates(data, genes,
-                                        fixed_covariates = fixed_covariates,
-                                        ind_col = ind_col)
+  message("[geco_prepare] Validating fixed_covariates...")
+  fixed_cov <- .resolve_fixed_cov(data, fixed_covariates, ind_col = ind_col)
 
   ## Precompute Y (per-(ind, gene, ct) means) and VS_diag (per-(ind, ct,
   ## gene) within-group variance). Doing both once here means every

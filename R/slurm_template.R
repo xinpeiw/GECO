@@ -41,8 +41,15 @@
 #' @param n_jobs Number of SLURM array elements for the chunk step.
 #'   Choose this so each chunk runs in a reasonable wall time (e.g.
 #'   300 is a reasonable default for ~10k genes / ~50M pairs).
-#' @param prepare_args Named list of additional args injected into the
-#'   `geco_prepare()` call (e.g. `subset_col = "SLE_status"`).
+#' @param fixed_covariates_file Optional path to the per-individual
+#'   covariate matrix (`.rds`, `.csv` or `.tsv`; see
+#'   [read_covariates()]). The generated `00_prepare.R` reads it and
+#'   passes the matrix to `geco_prepare(fixed_covariates = )`. `NULL`
+#'   (default) means no covariate regression. Must exist if given.
+#' @param prepare_args Named list of additional scalar args injected
+#'   into the `geco_prepare()` call (e.g. `subset_col = "SLE_status"`,
+#'   `backend = "anndata"`). Do not put `fixed_covariates` here; use
+#'   `fixed_covariates_file`.
 #' @param slurm Named list of SLURM options. Any subset of
 #'   `partition`, `time`, `mem`, `cpus` may be given; entries you omit
 #'   keep their defaults (`partition = "general"`, `time = "24:00:00"`,
@@ -59,9 +66,21 @@ generate_slurm_pipeline <- function(scripts_dir,
                                     h5ad_file,
                                     gene_list_file,
                                     n_jobs = 300,
+                                    fixed_covariates_file = NULL,
                                     prepare_args = list(),
                                     slurm = list(),
                                     r_executable = "Rscript") {
+
+  if ("fixed_covariates" %in% names(prepare_args)) {
+    stop("Pass the covariate matrix via `fixed_covariates_file` (a path to ",
+         "an .rds/.csv/.tsv file), not inside `prepare_args`: the matrix ",
+         "would otherwise be pasted into the generated R script.",
+         call. = FALSE)
+  }
+  if (!is.null(fixed_covariates_file) && !file.exists(fixed_covariates_file)) {
+    stop("fixed_covariates_file not found: ", fixed_covariates_file,
+         call. = FALSE)
+  }
 
   ## Merge user SLURM options over the defaults, so a partial list such
   ## as list(mem = "64G") does not leave the other #SBATCH lines empty.
@@ -104,6 +123,8 @@ generate_slurm_pipeline <- function(scripts_dir,
   output_dir     <- as_abs(output_dir)
   h5ad_file      <- as_abs(h5ad_file)
   gene_list_file <- as_abs(gene_list_file)
+  cov_file_arg   <- if (is.null(fixed_covariates_file)) "NONE"
+                    else as_abs(fixed_covariates_file)
 
   dir.create(scripts_dir, showWarnings = FALSE, recursive = TRUE)
 
@@ -123,11 +144,15 @@ generate_slurm_pipeline <- function(scripts_dir,
     "h5ad_file <- args[1]",
     "work_dir  <- args[2]",
     "gene_file <- args[3]",
+    "cov_file  <- args[4]   # 'NONE' = no covariate regression",
     "genes <- GECO::read_gene_list(gene_file)",
+    "fixed_covariates <- if (identical(cov_file, 'NONE')) NULL else",
+    "                    GECO::read_covariates(cov_file)",
     "GECO::geco_prepare(",
     "  h5ad_file = h5ad_file,",
     "  work_dir  = work_dir,",
-    paste0("  genes     = genes", prepare_args_block),
+    "  genes     = genes,",
+    paste0("  fixed_covariates = fixed_covariates", prepare_args_block),
     ")"
   ), file.path(scripts_dir, "00_prepare.R"))
 
@@ -202,7 +227,8 @@ generate_slurm_pipeline <- function(scripts_dir,
     paste0(r_executable, " 00_prepare.R \\"),
     paste0("  ", shQuote(h5ad_file), " \\"),
     paste0("  ", shQuote(work_dir),  " \\"),
-    paste0("  ", shQuote(gene_list_file))
+    paste0("  ", shQuote(gene_list_file), " \\"),
+    paste0("  ", shQuote(cov_file_arg))
   ), file.path(scripts_dir, "00_prepare.sh"))
 
   writeLines(c(

@@ -227,3 +227,53 @@ read_gene_list <- function(path, comment.char = "#") {
   lines <- lines[nzchar(lines)]
   unique(lines)
 }
+
+
+#' Read a per-individual covariate matrix from a file
+#'
+#' Loads the `fixed_covariates` matrix for [geco_prepare()] from disk.
+#' Used by the `00_prepare.R` script that [generate_slurm_pipeline()]
+#' writes, and handy interactively.
+#'
+#' @param path Path to one of:
+#'   - an `.rds` file holding a numeric matrix or `data.frame` whose
+#'     row names are individual IDs;
+#'   - a `.csv` / `.tsv` / `.txt` file whose first column is the
+#'     individual ID and whose header row gives the covariate names
+#'     (tab- or comma-separated, detected from the extension; `.txt`
+#'     is read as whitespace-separated).
+#'
+#' @return A numeric matrix with row names = individual IDs. The
+#'   content is validated later by [geco_prepare()] (numeric, no NA,
+#'   every individual present, no constant column), so this function
+#'   only checks that the file exists and has row names.
+#' @export
+read_covariates <- function(path) {
+  if (!file.exists(path)) stop("Covariate file not found: ", path, call. = FALSE)
+  ext <- tolower(tools::file_ext(path))
+  if (ext == "rds") {
+    m <- readRDS(path)
+  } else {
+    sep <- switch(ext, csv = ",", tsv = "\t", txt = "", "")
+    m <- utils::read.table(path, header = TRUE, sep = sep, row.names = 1,
+                           check.names = FALSE, stringsAsFactors = FALSE,
+                           quote = "\"", comment.char = "")
+  }
+  if (!(is.matrix(m) || is.data.frame(m))) {
+    stop("read_covariates(): ", path, " does not contain a matrix or ",
+         "data.frame (got class '", paste(class(m), collapse = "/"), "').",
+         call. = FALSE)
+  }
+  if (is.null(rownames(m)) ||
+      identical(rownames(m), as.character(seq_len(nrow(m))))) {
+    stop("read_covariates(): ", path, " has no row names. Row names must be ",
+         "the individual IDs (for .csv/.tsv, the first column).",
+         call. = FALSE)
+  }
+  m <- as.matrix(m)
+  if (!is.numeric(m)) {
+    stop("read_covariates(): ", path, " has non-numeric columns. Encode ",
+         "factors as 0/1 columns before saving.", call. = FALSE)
+  }
+  m
+}

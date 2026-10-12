@@ -22,9 +22,6 @@ on a single node, so this is the only supported way to run it.
   - [Choosing which fixed covariates to regress out](#choosing-which-fixed-covariates-to-regress-out)
   - [What ends up where on disk](#what-ends-up-where-on-disk)
   - [Wall-time breakdown](#wall-time-breakdown)
-    - [Total time, all-in-one view](#total-time-all-in-one-view)
-    - [A note on the precision (glasso) step](#a-note-on-the-precision-glasso-step)
-      - [Tuning the lambda line search](#tuning-the-lambda-line-search)
   - [The Y and VS_diag tensors](#the-y-and-vs_diag-tensors)
   - [Memory & disk budget](#memory--disk-budget)
   - [Resuming after a partial failure](#resuming-after-a-partial-failure)
@@ -139,12 +136,10 @@ generate_slurm_pipeline(
   h5ad_file      = "/path/to/data_post_qc.h5ad",
   gene_list_file = "/path/to/genelist.txt",  # one gene ID per line
   n_jobs         = 300,   # number of SLURM array chunks (chunk step)
-  prepare_args   = list(fixed_covariates = c("age_group", "sex", "PC1")),
+  fixed_covariates_file = "/path/to/covariates.rds",  # optional, see below
   slurm = list(partition = "general", time = "24:00:00",
                mem = "32G", cpus = 1)
 )
-# The precision SLURM array is sized automatically by step 02 (after
-# cell_type_order.rds is written), so no `n_cell_types` argument is needed.
 ```
 
 This writes five `.R` + `.sh` files plus a `pipeline.sh` orchestrator
@@ -178,7 +173,7 @@ You can also call the functions directly without the script generator:
 genes <- read_gene_list("genelist.txt")
 geco_prepare(h5ad_file = "...", work_dir = "work/",
              genes = genes,
-             fixed_covariates = c("age_group", "sex", "PC1"))
+             fixed_covariates = read_covariates("covariates.rds"))  # or NULL
 
 # Per chunk (SLURM array, 1..n_jobs)
 geco_chunk(work_dir = "work/", task_id = task_id, n_jobs = 300)
@@ -195,44 +190,48 @@ geco_finalize_outputs(work_dir = "work/", output_dir = "results/")
 
 ### Choosing which fixed covariates to regress out
 
-`geco_prepare()` takes a `fixed_covariates` argument that decides
-which per-individual covariates are regressed out before the GECO
-decomposition runs. With `generate_slurm_pipeline()`, pass it through
-`prepare_args = list(fixed_covariates = ...)`.
+You supply the per-individual covariates yourself, as a numeric
+matrix (or `data.frame`) with one row per individual and one column
+per covariate:
 
-The built-in catalog (see `GECO_COVARIATE_CATALOG` or call
-`available_covariates()`) provides these names:
+- row names = individual IDs exactly as they appear in `ind_col`;
+  every individual in the data must have a row (extra rows are
+  ignored, and rows are reordered to the data's individual order);
+- all columns numeric: encode sex, batch, case/control etc. as 0/1
+  (or dummy) columns yourself; bin or scale age however you prefer;
+- no intercept column (one is fitted per gene and cell type) and no
+  constant column;
+- no NA.
 
-| Name | Source column | What it becomes |
-|------|---------------|-----------------|
-| `age_group` | `Age`        | binned to 1..15 |
-| `sex`       | `Sex`        | 1 if Male, else 0 |
-| `PC1`       | (derived)    | PC1 of per-individual mean expression |
+Anything else is an error that names the offending individuals or
+columns. `fixed_covariates = NULL` (the default) skips the
+regression entirely.
 
-Pick whichever subset you want — the most common cases:
+With `generate_slurm_pipeline()`, save the matrix to a file and
+point to it with `fixed_covariates_file`; the generated
+`00_prepare.R` reads it with `read_covariates()` and hands it to
+`geco_prepare()`. Accepted formats: `.rds` (a matrix or `data.frame`
+with row names) or `.csv` / `.tsv` (first column = individual ID,
+header row = covariate names).
 
 ```r
-# No regression at all (default):
-geco_prepare(..., fixed_covariates = NULL)
+# e.g. build it from the h5ad obs table once, in R:
+obs  <- as.data.frame(anndata::read_h5ad("data_post_qc.h5ad")$obs)
+obs  <- obs[!duplicated(obs$ind_cov), ]
+fcov <- data.frame(row.names = obs$ind_cov,
+                   age  = as.numeric(obs$Age),
+                   male = as.numeric(obs$Sex == "Male"))
+saveRDS(fcov, "covariates.rds")
 
-# Just age and sex:
-geco_prepare(..., fixed_covariates = c("age_group", "sex"))
+generate_slurm_pipeline(..., fixed_covariates_file = "covariates.rds")
 
-# All catalog covariates (the recommended default):
-geco_prepare(..., fixed_covariates = c("age_group", "sex", "PC1"))
-
-# Catalog covariates + a study-specific binary one ("Smoker"):
-geco_prepare(..., fixed_covariates = list(
-  age_group = GECO_COVARIATE_CATALOG$age_group,
-  sex       = GECO_COVARIATE_CATALOG$sex,
-  smoker    = list(col = "Smoker",     type = "binary", positive = "Yes"),
-  cases     = list(col = "SLE_status", type = "binary", positive_not = "Healthy")
-))
-
-# Or compute your own per-individual matrix and pass it directly:
-my_mat <- ...  # n_ind x p numeric matrix, rownames = individual IDs
-geco_prepare(..., fixed_covariates = my_mat)
+# or, calling geco_prepare() directly:
+geco_prepare(..., fixed_covariates = fcov)
 ```
+
+If you want an expression principal component as a covariate, load
+the data with `load_h5ad()`, call `compute_PC1(data, genes)` and
+`cbind()` its `PC1` column (rows named by individual) to the matrix.
 
 ### What ends up where on disk
 
@@ -272,31 +271,6 @@ output_dir/
 
 ### Wall-time breakdown
 
-There are two cost components in the cluster pipeline:
-
-1. **One-time precompute** in `geco_prepare()`: compute `Y` (means per
-   `[ind, gene, ct]`) and `VS_diag` (variances per `[ind, ct, gene]`)
-   over **all** genes, once. This is paid by a single process at the
-   start of the run. Cost ≈ `n_gene × n_cells × constant` —
-   roughly **30–70 ms/gene** at `n_ind = 1000, n_ct = 7, ~100 cells per
-   (ind, ct)` (700k cells), depending on the machine.
-2. **Per-pair work** inside each chunk worker: one column read from
-   `cell_data.fst` (the `g1` column is cached across the run of pairs
-   that share it), the off-diagonal `cov(g1, g2)` aggregation, and
-   the `GeCo()` linear algebra. At the same shape this is
-   **~0.02 s per pair**, split roughly as:
-
-   | sub-step | time | what it does |
-   |---------:|-----:|--------------|
-   | fst read of the `g2` gene column | ~5 ms | I/O |
-   | Y slice from precomputed tensor | <1 ms | array indexing |
-   | per-pair `cov(g1, g2)` per (ind, ct) | ~8 ms | one C-level `rowsum()` over all cells; grouping codes are derived once per chunk |
-   | `GeCo()` QR + decomposition | ~8 ms | core math |
-
-Total cluster wall time = one-time precompute + per-pair × n_pairs / n_jobs.
-
-#### Total time, all-in-one view
-
 The chunk step splits ~`choose(n_gene, 2)` pairs across `n_jobs`
 SLURM array tasks. Pick `n_jobs` so each task runs in a reasonable
 wall time — typically 1–6 hours, well under your queue's time limit.
@@ -309,105 +283,6 @@ scale linearly with total cell count.
 | 5,000   |  ~5 m    | 12,500,000 |  ~45 m / task  | ~15 m   | ~10 m  |  ~5 m  |
 | 10,000  | ~10 m    | 49,995,000 |   ~3 h / task  |  ~1 h   | ~35 m  | ~20 m  |
 | 20,000  | ~20 m    |     ~200M  |  ~11 h / task  |  ~4 h   | ~2.5 h |  ~1 h  |
-
-(Measured at 700k cells on a laptop; ~0.02 s per pair. Scale with your
-cell count. Older versions of the package used a data.table group-by
-per pair and were ~8x slower; if you have timing notes from those,
-divide by 8.)
-
-The precompute is small relative to the chunked work for any real
-gene count, and it's only paid once. If a chunk runs out of time, just
-resubmit only the failed task IDs (see "Resuming after a partial
-failure" below).
-
-#### A note on the precision (glasso) step
-
-The tables above cover the chunk step. Step 03 — fitting a sparse
-precision matrix per cell type with `glassoFast` + eBIC — has a
-**less predictable** runtime that we cannot reduce to a single
-constant, even with the package's optimizations:
-
-- The package already does the obvious work-saving moves: it
-  parallelizes precision fits across cell types (one SLURM array task
-  per cell type), uses `glassoFast` (a C-backed glasso implementation
-  much faster than vanilla `glasso`), and selects lambda with a
-  **two-phase search** — a coarse walk (`coarse_step`) that brackets
-  the minimum in `O(few)` `glassoFast` calls, followed by a discrete
-  binary search on a fine grid (`fine_step`) that refines the answer
-  in `O(log)` more calls. Every lambda that gets evaluated is cached,
-  so `glassoFast()` never runs twice at the same point.
-- What remains data-dependent is the iteration count inside each
-  `glassoFast` call. The per-iteration cost is roughly
-  `O(n_gene²)`–`O(n_gene³)`, but the *number* of iterations until
-  convergence depends on the conditioning of the input covariance
-  and the resulting sparsity pattern: very sparse networks converge
-  in a few sweeps, while denser networks (lots of non-zero
-  off-diagonals) can take orders of magnitude more iterations. The
-  eBIC line search also evaluates `glassoFast` at several lambda
-  values, so the effective cost is "single fit × number of
-  line-search steps".
-- In practice, on `n_gene = 10,000` and well-conditioned input, a
-  single cell type's precision fit ranges from a few minutes to a few
-  hours. Highly correlated genes (e.g. dense co-expression modules)
-  push it toward the upper end. Pathological inputs — covariance
-  with very small or near-zero eigenvalues, or extremely dense
-  ground-truth networks — can occasionally exceed that.
-
-Practical advice: give step 03 a generous `--time=` in your SLURM
-options (e.g. `time = "24:00:00"`), and if a particular cell type
-times out, you can resubmit just that array task ID (see
-"Resuming after a partial failure"). If you need a tighter cap on
-iterations, pass `fit_precision_args = list(maxIt = 5000)` (or
-similar) through to `geco_precision_chunk()`.
-
-##### Tuning the lambda line search
-
-`fit_precision()` selects the lambda multiplier that minimizes eBIC
-using a two-phase search (coarse bracket, then discrete binary
-refine). Every parameter below can be set per cell type via
-`fit_precision_args`:
-
-- **`start_lambda`** (default `1`) — the initial lambda multiplier
-  the search evaluates. If you've already run GECO on a similar
-  dataset and observed the optimum near, say, lambda ≈ 3, setting
-  `start_lambda = 3` lets the search terminate in a handful of
-  evaluations instead of walking there from 1.
-- **`coarse_step`** (default `1`) — step size for phase 1's bracketing
-  walk. Larger values (e.g. `2` or `5`) reach the bracket in fewer
-  `glassoFast` calls when the eBIC minimum lies far from
-  `start_lambda`; smaller values give a tighter bracket to hand to
-  phase 2.
-- **`fine_step`** (default `0.1`) — grid resolution for phase 2's
-  discrete binary search. Also the resolution of the returned
-  optimum. Smaller (e.g. `0.02`) → more precise optimum, more
-  `glassoFast` calls; larger (e.g. `0.2`) → coarser optimum, fewer
-  calls.
-- **`lower` / `upper`** (defaults `0.1` / `50`) — hard bounds on the
-  lambda multiplier. If your prior knowledge says lambda always lies
-  in `[0.5, 5]`, tightening these prevents the search from wandering.
-- **`maxIt`** (default `10000`) — max iterations per single
-  `glassoFast` call. Lower this (e.g. `5000`) if a specific cell
-  type has a slow-converging glasso and you'd rather stop early.
-
-Example: skip the broad search when you already know the good region:
-
-```r
-geco_precision_chunk(
-  work_dir   = "work/",
-  output_dir = "results/",
-  ct_idx     = 1,
-  fit_args   = list(start_lambda = 3.0,     # jump-start near known optimum
-                    coarse_step  = 0.5,     # small coarse step
-                    fine_step    = 0.05,    # tight refinement
-                    lower = 1, upper = 10,  # bound the search
-                    maxIt = 5000)
-)
-```
-
-Each `glassoFast` call is the expensive part of step 03, so reducing
-the number of line-search evaluations is the most direct way to
-accelerate this step. `fit_precision()` returns `n_eval` alongside
-the fit so you can see how many `glassoFast` calls the search made.
 
 ### The Y and VS_diag tensors
 
@@ -502,10 +377,10 @@ override it for any task ID you want.
 - **"X requested genes are not in the h5ad"**. Your gene IDs in the
   list don't match `rowData(adata)$gene_ids` (or whatever
   `gene_id_col` resolves to). Check with `rownames(SummarizedExperiment::assay(zellkonverter::readH5AD("file.h5ad")))[1:10]`.
-- **Covariate column missing**. `build_fixed_cov()` complains that
-  e.g. `"Age"` isn't a column. Either rename your h5ad metadata
-  columns or pass a custom spec (see "Choosing which fixed covariates
-  to regress out").
+- **"individual(s) in the data have no row in `fixed_covariates`"**.
+  The row names of your covariate matrix don't match the values of
+  `ind_col` in the h5ad (check for type coercion, e.g. numeric IDs
+  read as `"1"` vs `"1.0"`, or trailing whitespace).
 - **Step 03 array bound off**. The auto-sized array uses the number
   of cell types in `work_dir/cell_type_order.rds`. If something looks
   wrong there, open it with `readRDS()` to see the names.
@@ -564,8 +439,7 @@ Concretely, before running GECO your data must satisfy:
 | `ind_col` / `ct_col` have no NA | all steps that group by them | number of cells with a missing label |
 | No NA expression values | `compute_OPms()`, `compute_Y()`, `compute_VS_diag()` | the gene(s) |
 | No gene is constant across individuals (`OPsd > 0`) | `compute_OPms()`, `compute_PC1()` | the gene(s) |
-| Covariates are complete (no missing `Age`, `Sex`, ...) | `build_fixed_cov()`, `resolve_fixed_covariates()` | the covariate and the individuals |
-| A user-supplied covariate matrix has one row per individual (row names are matched to individual IDs and reordered) | `resolve_fixed_covariates()` | the individuals without a row |
+| `fixed_covariates` is numeric, complete (no NA), has a row for every individual (row names matched to individual IDs and reordered) and no constant column | `geco_prepare()` | the individuals / columns at fault |
 | `Y.rds` / `VS_diag.rds` in `work_dir` match `prep.rds` and contain no NA | `geco_chunk()` | the dims / the NA positions |
 
 And at the merge / finalize steps:
@@ -593,11 +467,10 @@ data   <- data[data$ind_cov %in% keep, ]
 
 ## Notes and caveats
 
-- `fixed_covariates = c("age_group", "sex", "PC1")` is the
-  default-recommended set. See **Choosing which fixed covariates to
-  regress out** above for the full menu (and how to add study-specific
-  binary covariates like population or case/control). `fixed_covariates
-  = NULL` skips the regression entirely.
+- Covariate effects are modelled per gene and shared across cell
+  types (one coefficient per covariate per gene), with a separate
+  intercept per gene and cell type. `fixed_covariates = NULL` skips
+  the regression entirely.
 - Cell-type names in the output are taken directly from
   `unique(data[[ct_col]])` in the h5ad file — they are not provided
   by the user. The first matrix in every output list is always named

@@ -61,7 +61,7 @@ GeCo <- function(Y, VS, fixed_cov = NA) {
            N, " individuals.", call. = FALSE)
     }
     .check_finite(fixed_cov, "fixed_cov", "GeCo",
-                  hint = "The covariate regression cannot handle missing covariates. See build_fixed_cov().")
+                  hint = "The covariate regression cannot handle missing covariates; impute them or drop the individuals.")
   }
 
   y <- vectorized(Y)

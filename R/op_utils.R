@@ -69,7 +69,10 @@ compute_OPms <- function(data, genes, ind_col = "ind_cov") {
 #' Compute PC1 of the individual-mean gene-expression matrix
 #'
 #' Builds a `length(individuals) x length(genes)` matrix of per-individual
-#' mean expression, then returns the first PC scores.
+#' mean expression, then returns the first PC scores. Helper for
+#' building your own `fixed_covariates` matrix for [geco_prepare()]:
+#' load the data with [load_h5ad()], call this, and `cbind()` the `PC1`
+#' column (rows named by individual) to your other covariates.
 #'
 #' @param data A `data.table` returned by [load_h5ad()].
 #' @param genes Character vector of gene column names to use.
