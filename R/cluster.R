@@ -33,9 +33,8 @@
 #'   matrix is an error. Load from a text file with [read_gene_list()]
 #'   if needed.
 #' @param ind_col,ct_col Names of the individual-ID and cell-type
-#'   columns in the .h5ad `obs` metadata.
-#' @param subset_col,subset_value Optional metadata filter (see
-#'   [load_h5ad()]).
+#'   columns in the .h5ad `obs` metadata. All cells in the file are
+#'   used; subset the .h5ad beforehand if you want fewer.
 #' @param fixed_covariates Per-individual covariates to regress out
 #'   before GeCo estimation: either `NULL` (default, no regression) or
 #'   a numeric matrix / `data.frame` with one row per individual and
@@ -46,7 +45,13 @@
 #'   no NA, every individual present, no constant column) and its rows
 #'   are reordered to the data's individual order. See
 #'   [compute_PC1()] if you want an expression PC as a covariate.
-#' @param backend Which .h5ad reader to use; see [load_h5ad()].
+#' @param layer Which matrix in the .h5ad to use: `"X"` (default), the
+#'   name of an entry in `layers`, or `"raw"` for `raw.X`. See
+#'   [load_h5ad()].
+#' @param gene_id_col Where the gene IDs live in the .h5ad: `NULL`
+#'   (default) uses the `var` index; otherwise the name of a `var`
+#'   column (e.g. `"gene_ids"`). The `genes` vector is matched against
+#'   these IDs. See [load_h5ad()].
 #'
 #' @details The `Y.rds` and `VS_diag.rds` tensors are always computed
 #' here from the loaded cells (the same cells written to
@@ -69,14 +74,13 @@ geco_prepare <- function(h5ad_file,
                          genes,
                          ind_col = "ind_cov",
                          ct_col  = "cg_cov",
-                         subset_col = NULL, subset_value = NULL,
                          fixed_covariates = NULL,
-                         backend = c("auto", "anndata", "zellkonverter")) {
+                         layer = "X",
+                         gene_id_col = NULL) {
 
-  backend <- match.arg(backend)
-  ## Verify (and, with consent, install) fst + an .h5ad reader before
-  ## doing anything else.
-  check_dependencies(backend = backend, install = "ask")
+  ## Verify (and, with consent, install) fst + rhdf5 before doing
+  ## anything else.
+  check_dependencies(install = "ask")
   if (missing(genes) || is.null(genes)) {
     stop("`genes` is required. Pass a character vector of gene IDs ",
          "(or use read_gene_list() to load one from a .txt file).",
@@ -90,10 +94,8 @@ geco_prepare <- function(h5ad_file,
   dir.create(file.path(work_dir, "precision"), showWarnings = FALSE)
 
   message("[geco_prepare] Loading h5ad: ", h5ad_file)
-  data <- load_h5ad(h5ad_file,
-                    genes = genes,
-                    backend = backend,
-                    subset_col = subset_col, subset_value = subset_value)
+  data <- load_h5ad(h5ad_file, genes = genes, obs_cols = c(ind_col, ct_col),
+                    layer = layer, gene_id_col = gene_id_col)
 
   ## Basic bookkeeping (cheap; fails fast if ind_col/ct_col are wrong).
   if (!(ind_col %in% colnames(data)))
