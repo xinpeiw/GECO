@@ -76,22 +76,6 @@ cd /path/to/scripts
 bash pipeline.sh
 ```
 
-`pipeline.sh` chains the first three jobs with `--dependency=afterok`.
-Step 02 then submits steps 03 and 04 itself once it knows the number
-of cell types (read from `cell_type_order.rds`):
-
-```
-00_prepare.sh   →  one-time setup (h5ad → fst + OPms + fixed_cov + gene_pairs)
-01_chunk.sh     →  SLURM array, runs geco_chunk per task_id
-02_finalize_estimates.sh
-                →  merge chunks, reformat into per-cell-type matrices,
-                   compute p-values, PSD-transform; then sbatch:
-   03_precision.sh →  SLURM array (one per "shared" + cell type),
-                      glasso+eBIC
-   04_finalize_outputs.sh
-                   →  build degree.xlsx and write all matrices to output_dir
-```
-
 You can also call the functions directly without the script generator:
 
 ```r
