@@ -188,7 +188,7 @@ wall time — typically 1–6 hours, well under your queue's time limit.
 Numbers assume `n_ind ≈ 1000, n_ct ≈ 7, ~100 cells per (ind, ct)`;
 scale linearly with total cell count.
 
-| n_gene | One-time precompute (Y + VS_diag) | n_pairs |  per-pair: n_jobs = 100 | 300 | 500 | 1000 |
+| n_gene | One-time precompute (Y + VS_diag) | n_pairs | Time per chunk task (n_jobs = 100) | 300 | 500 | 1000 |
 |------:|------:|--------:|------:|------:|------:|------:|
 | 1,000   |  ~1 m    |    500,000 |   ~2 m / task  |  <1 m   |  <1 m  |  <1 m  |
 | 5,000   |  ~5 m    | 12,500,000 |  ~45 m / task  | ~15 m   | ~10 m  |  ~5 m  |
