@@ -1,6 +1,6 @@
 # GECO
 
-**GECO** (**Ge**ne **Co**expression) is an R package that unbiasedly decomposes
+**GECO** (**GE**ne **CO**expression) is an R package that unbiasedly decomposes
 interindividual gene-by-gene coexpression into cell-type-shared and cell-type-specific components, and turns the result into cell-type-shared and per-cell-type-specific sparse precision matrices and node
 degrees.
 
