@@ -17,7 +17,6 @@ on a single node, so this is the only supported way to run it.
 - [Inputs and outputs](#inputs-and-outputs)
 - [Installation](#installation)
 - [Running on a cluster](#running-on-a-cluster)
-  - [The five stages](#the-five-stages)
   - [Running it](#running-it)
   - [Choosing which fixed covariates to regress out](#choosing-which-fixed-covariates-to-regress-out)
   - [What ends up where on disk](#what-ends-up-where-on-disk)
@@ -87,38 +86,6 @@ e.g. via `Sys.setenv(GITHUB_PAT = "...")`).
 
 The pipeline requires `fst` (`install.packages("fst")`) for
 column-selectable on-disk cell data.
-
-### The five stages
-
-Each SLURM job is a separate R process that doesn't share memory with
-the others, so the pipeline is split into five disk-backed stages
-that communicate through `work_dir/`:
-
-1. **Prepare** — one process loads the .h5ad, writes a compressed
-   `cell_data.fst` (column-selectable), computes per-gene OPmean/OPsd,
-   builds the fixed covariate matrix, and saves the gene-pair list.
-   Everything that downstream workers might need lands in `work_dir/`.
-2. **Chunk** — a SLURM array (default 300 tasks). Each worker reads
-   `prep.rds` + just the two gene columns it needs for its slice of
-   gene pairs from the fst file, runs `GeCo()` on every pair in the
-   slice, and writes `work_dir/chunks/chunk_<id>.rds`.
-3. **Merge & reformat** — one process concatenates all
-   `chunk_*.rds` into a single long table, reformats it into
-   per-cell-type matrices, computes p-values, and writes
-   `cov_<ct>.rds` / `se_<ct>.rds` / `p_<ct>.rds` for each cell type
-   directly to `output_dir`. A small `work_dir/cell_type_order.rds`
-   records the cell-type ordering for step 4.
-4. **Precision** — a second SLURM array (one task per cell type
-   plus `shared`). Each worker reads `cov_<ct>.rds` and `p_<ct>.rds`
-   from `output_dir`, PSD-clips the covariance on the fly, runs
-   glassoFast + eBIC, and writes `precision_<ct>.rds` back into
-   `output_dir`.
-5. **Finalize** — one process reads the `precision_*.rds` files,
-   computes degrees, and writes `degree.xlsx` to `output_dir`. All
-   other deliverables are already in place from steps 3 and 4.
-
-No single worker ever has to hold the full expression matrix or all
-gene-pair tensors at once.
 
 ### Running it
 
