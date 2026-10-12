@@ -4,14 +4,6 @@
 interindividual gene-by-gene coexpression into cell-type-shared and cell-type-specific components, and turns the result into cell-type-shared and per-cell-type-specific sparse precision matrices and node
 degrees.
 
-The pipeline (data process → Y/VS generation → covariance/se
-estimation → p-values → glasso → degree) runs as a SLURM job chain:
-`geco_prepare()` / `geco_chunk()` / `geco_finalize_estimates()` /
-`geco_precision_chunk()` / `geco_finalize_outputs()`, plus a
-`generate_slurm_pipeline()` helper that emits ready-to-`sbatch`
-scripts. A genome-wide run (~10k genes, ~50M gene pairs) does not fit
-on a single node, so this is the only supported way to run it.
-
 ## Contents
 
 - [Inputs and outputs](#inputs-and-outputs)
