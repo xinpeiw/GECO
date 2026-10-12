@@ -45,21 +45,6 @@ Repository: <https://github.com/xinpeiw/GECO> (private — collaborators
 will need a GitHub PAT with `repo` scope to `remotes::install_github()`,
 e.g. via `Sys.setenv(GITHUB_PAT = "...")`).
 
-Everything else GECO needs is checked the first time you call
-`generate_slurm_pipeline()` or `geco_prepare()`: if a required package
-is missing, GECO lists it and asks for your permission before
-installing it. To do this ahead of time, or in a non-interactive
-session, run:
-
-```r
-GECO::check_dependencies()                      # report + ask
-GECO::check_dependencies(install = "always")    # install without asking
-```
-
-The one thing GECO cannot install for you is the Python side of the
-`.h5ad` reader: if it is missing, the check tells you the exact
-`pip install` command to run in the Python environment R uses.
-
 ## Running on a cluster
 
 ### Running it
