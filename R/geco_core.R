@@ -12,6 +12,14 @@
 #' @param fixed_cov Optional individual-level covariate matrix
 #'   (`N x p`) to regress out. `NA` (default) means no regression.
 #'
+#' @section Errors instead of NA:
+#' The estimator needs a complete, finite `Y` and `VS` and at least 2
+#' cell types; the covariate regression needs a finite `fixed_cov`
+#' with one row per individual. Each of these is checked up front and
+#' violated conditions stop with a message naming the offending
+#' entries, instead of letting `qr.resid()` fail or NA propagate into
+#' the estimates.
+#'
 #' @return A list with elements:
 #' \describe{
 #'   \item{V_shared}{`G x G` matrix of across-individual variances/covariances.}
@@ -22,10 +30,42 @@
 #' @export
 GeCo <- function(Y, VS, fixed_cov = NA) {
 
+  if (length(dim(Y)) != 3L) {
+    stop("GeCo(): `Y` must be a 3-D array [N, G, C].", call. = FALSE)
+  }
   N <- dim(Y)[1]; G <- dim(Y)[2]; C <- dim(Y)[3]
+  if (C < 2L) {
+    stop("GeCo(): only ", C, " cell type in `Y`; the shared/specific ",
+         "decomposition needs at least 2 cell types (it divides by C*(C-1)).",
+         call. = FALSE)
+  }
+  if (N < 2L) {
+    stop("GeCo(): only ", N, " individual in `Y`; need at least 2 to ",
+         "estimate across-individual covariance and its SE.", call. = FALSE)
+  }
+  if (!identical(as.integer(dim(VS)), as.integer(c(N, C, G, G)))) {
+    stop("GeCo(): `VS` has dims [", paste(dim(VS), collapse = ", "),
+         "] but must be [N, C, G, G] = [", paste(c(N, C, G, G), collapse = ", "),
+         "] to match `Y`.", call. = FALSE)
+  }
+  .check_finite(Y,  "Y",  "GeCo",
+                hint = "Some (individual, cell type) mean is missing; GECO needs a complete individual x cell-type grid. See compute_Y().")
+  .check_finite(VS, "VS", "GeCo",
+                hint = "Some (individual, cell type) within-group variance is missing (group with < 2 cells?). See compute_VS_diag().")
+
+  no_cov <- .no_fixed_cov(fixed_cov)
+  if (!no_cov) {
+    fixed_cov <- as.matrix(fixed_cov)
+    if (nrow(fixed_cov) != N) {
+      stop("GeCo(): `fixed_cov` has ", nrow(fixed_cov), " rows but `Y` has ",
+           N, " individuals.", call. = FALSE)
+    }
+    .check_finite(fixed_cov, "fixed_cov", "GeCo",
+                  hint = "The covariate regression cannot handle missing covariates. See build_fixed_cov().")
+  }
 
   y <- vectorized(Y)
-  if (is.na(fixed_cov)[1]) {
+  if (no_cov) {
     X <- kronecker(matrix(1, ncol = 1, nrow = N), diag(G * C))
   } else {
     X <- cbind(

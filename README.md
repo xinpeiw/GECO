@@ -30,12 +30,13 @@ covariance/se estimation → p-values → glasso → degree) is exposed in two w
     - [Total time, all-in-one view](#total-time-all-in-one-view)
     - [A note on the precision (glasso) step](#a-note-on-the-precision-glasso-step)
       - [Tuning the lambda line search](#tuning-the-lambda-line-search)
-  - [Supplying your own Y or VS_diag](#supplying-your-own-y-or-vs_diag)
+  - [The Y and VS_diag tensors](#the-y-and-vs_diag-tensors)
   - [Memory & disk budget](#memory--disk-budget)
   - [Resuming after a partial failure](#resuming-after-a-partial-failure)
   - [Smoke-testing on your laptop first](#smoke-testing-on-your-laptop-first)
   - [Running a single SLURM chunk manually](#running-a-single-slurm-chunk-manually)
   - [Common pitfalls](#common-pitfalls)
+- [Input requirements and the "error instead of NA" policy](#input-requirements-and-the-error-instead-of-na-policy)
 - [Notes and caveats](#notes-and-caveats)
 
 ## Inputs and outputs
@@ -348,19 +349,20 @@ There are two cost components in the cluster pipeline:
    `[ind, gene, ct]`) and `VS_diag` (variances per `[ind, ct, gene]`)
    over **all** genes, once. This is paid by a single process at the
    start of the run. Cost ≈ `n_gene × n_cells × constant` —
-   roughly **70 ms/gene** at `n_ind = 1000, n_ct = 7, ~100 cells per
-   (ind, ct)`.
+   roughly **30–70 ms/gene** at `n_ind = 1000, n_ct = 7, ~100 cells per
+   (ind, ct)` (700k cells), depending on the machine.
 2. **Per-pair work** inside each chunk worker: one column read from
-   `cell_data.fst`, the off-diagonal `cov(g1, g2)` aggregation, and
+   `cell_data.fst` (the `g1` column is cached across the run of pairs
+   that share it), the off-diagonal `cov(g1, g2)` aggregation, and
    the `GeCo()` linear algebra. At the same shape this is
-   **~0.16 s per pair**, split roughly as:
+   **~0.02 s per pair**, split roughly as:
 
    | sub-step | time | what it does |
    |---------:|-----:|--------------|
-   | fst read of 2 gene columns | ~5 ms | I/O |
+   | fst read of the `g2` gene column | ~5 ms | I/O |
    | Y slice from precomputed tensor | <1 ms | array indexing |
-   | per-pair `cov(g1, g2)` per (ind, ct) | ~150 ms | data.table group-by — dominant |
-   | `GeCo()` QR + decomposition | ~9 ms | core math |
+   | per-pair `cov(g1, g2)` per (ind, ct) | ~8 ms | one C-level `rowsum()` over all cells; grouping codes are derived once per chunk |
+   | `GeCo()` QR + decomposition | ~8 ms | core math |
 
 Total cluster wall time = one-time precompute + per-pair × n_pairs / n_jobs.
 
@@ -368,16 +370,21 @@ Total cluster wall time = one-time precompute + per-pair × n_pairs / n_jobs.
 
 The chunk step splits ~`choose(n_gene, 2)` pairs across `n_jobs`
 SLURM array tasks. Pick `n_jobs` so each task runs in a reasonable
-wall time — typically 6–24 hours, well under your queue's time limit.
+wall time — typically 1–6 hours, well under your queue's time limit.
 Numbers assume `n_ind ≈ 1000, n_ct ≈ 7, ~100 cells per (ind, ct)`;
 scale linearly with total cell count.
 
 | n_gene | One-time precompute (Y + VS_diag) | n_pairs |  per-pair: n_jobs = 100 | 300 | 500 | 1000 |
 |------:|------:|--------:|------:|------:|------:|------:|
-| 1,000   |  ~1.2 m  |    500,000 |   ~12 m / task |  ~4 m  |  ~3 m  |  ~1 m  |
-| 5,000   |  ~6 m    | 12,500,000 |   ~5 h  / task |  ~1.7 h |  ~1 h  | ~30 m  |
-| 10,000  | ~12 m    | 49,995,000 |  ~21 h  / task |  ~7 h   |  ~4 h  |  ~2 h  |
-| 20,000  | ~24 m    |     ~200M  |  ~83 h  / task | ~28 h   | ~17 h  |  ~8 h  |
+| 1,000   |  ~1 m    |    500,000 |   ~2 m / task  |  <1 m   |  <1 m  |  <1 m  |
+| 5,000   |  ~5 m    | 12,500,000 |  ~45 m / task  | ~15 m   | ~10 m  |  ~5 m  |
+| 10,000  | ~10 m    | 49,995,000 |   ~3 h / task  |  ~1 h   | ~35 m  | ~20 m  |
+| 20,000  | ~20 m    |     ~200M  |  ~11 h / task  |  ~4 h   | ~2.5 h |  ~1 h  |
+
+(Measured at 700k cells on a laptop; ~0.02 s per pair. Scale with your
+cell count. Older versions of the package used a data.table group-by
+per pair and were ~8x slower; if you have timing notes from those,
+divide by 8.)
 
 The precompute is small relative to the chunked work for any real
 gene count, and it's only paid once. If a chunk runs out of time, just
@@ -473,7 +480,7 @@ the number of line-search evaluations is the most direct way to
 accelerate this step. `fit_precision()` returns `n_eval` alongside
 the fit so you can see how many `glassoFast` calls the search made.
 
-### Supplying your own Y or VS_diag
+### The Y and VS_diag tensors
 
 `geco_prepare()` precomputes two large tensors once before the chunk
 step and reuses them for every gene pair:
@@ -481,29 +488,13 @@ step and reuses them for every gene pair:
 - `Y.rds` — `[n_ind, n_gene, n_ct]` per-(individual, gene, cell-type) means
 - `VS_diag.rds` — `[n_ind, n_ct, n_gene]` per-(individual, cell-type) variances
 
-If you already have these (e.g. precomputed on a different machine
-or from a non-`.h5ad` source) you can hand them to `geco_prepare()`
-via `Y_path` / `VS_diag_path` and skip the recompute:
-
-```r
-geco_prepare(
-  h5ad_file        = "data.h5ad",
-  work_dir         = "work/",
-  genes            = read_gene_list("genelist.txt"),
-  fixed_covariates = c("age_group", "sex", "PC1"),
-  Y_path           = "/path/to/my_Y.rds",
-  VS_diag_path     = "/path/to/my_VS_diag.rds"
-)
-```
-
-The two `.rds` files are simply copied into `work_dir/Y.rds` and
-`work_dir/VS_diag.rds`. Make sure their shapes/orderings match the
-gene and individual order in `prep$genes` / `prep$individuals` — the
-chunk step indexes them positionally.
-
-For in-memory mode, `run_geco()` exposes the same hand-off via
-`Y_all = ...` and `VS_diag = ...` arguments (in-memory arrays, not
-file paths).
+They are always computed from the cells that were just written to
+`cell_data.fst`, and there is deliberately no way to supply them from
+outside: the estimator (and the per-pair covariance, which uses the
+`Y` means for its centering) requires that the means, the variances
+and the cell-level data all describe exactly the same cells. The
+precompute is cheap relative to the chunk step (see the wall-time
+table above).
 
 ### Memory & disk budget
 
@@ -663,6 +654,53 @@ override it for any task ID you want.
   `Sys.setenv(RETICULATE_PYTHON = "/path/to/python")` or
   `reticulate::use_python("/path/to/python", required = TRUE)` if it
   picks the wrong one.
+
+## Input requirements and the "error instead of NA" policy
+
+GECO's model needs a complete individual x cell-type grid, and
+several downstream steps (the covariate regression in `GeCo()`, the
+`glassoFast` C code) cannot consume NA at all. Rather than letting a
+single NA propagate into an all-NA output or a crash deep inside
+glasso, **every step stops as soon as it would produce an NA and
+tells you why** (which individuals, cell types, genes or gene pairs
+are affected, and what to do). There is no "skip and continue"
+default anywhere in the pipeline.
+
+Concretely, before running GECO your data must satisfy:
+
+| Requirement | Checked by | What the error names |
+|---|---|---|
+| Every individual has **>= 2 cells in every cell type** | `compute_Y()`, `compute_VS_diag()`, `geco_prepare()` | the (individual, cell type) groups with 0 or 1 cells, and the individuals to drop |
+| At least 2 cell types | `estimate_geco()`, `geco_prepare()`, `GeCo()` | - |
+| `ind_col` / `ct_col` have no NA | all steps that group by them | number of cells with a missing label |
+| No NA expression values | `compute_OPms()`, `compute_Y()`, `compute_VS_diag()` | the gene(s) |
+| No gene is constant across individuals (`OPsd > 0`) | `compute_OPms()`, `compute_PC1()` | the gene(s) |
+| Covariates are complete (no missing `Age`, `Sex`, ...) | `build_fixed_cov()`, `resolve_fixed_covariates()` | the covariate and the individuals |
+| A user-supplied covariate matrix has one row per individual (row names are matched to individual IDs and reordered) | `resolve_fixed_covariates()` | the individuals without a row |
+| `Y.rds` / `VS_diag.rds` in `work_dir` match `prep.rds` and contain no NA | `geco_chunk()` | the dims / the NA positions |
+
+And in cluster mode:
+
+- `geco_finalize_estimates()` verifies that the `chunk_*.rds` files
+  cover every gene pair exactly once and stops listing the uncovered
+  pair ranges and the task_ids it found, so a SLURM task killed by OOM
+  or a time limit cannot silently drop its pairs.
+- `geco_finalize_outputs()` stops if any `precision_<ct>.rds` is
+  missing, naming the cell type and the step-03 `ct_idx` to resubmit.
+- `reformat_to_matrices()`, `compute_p_matrix()`, `transform_psd()`
+  and `fit_precision()` all refuse NA input. `transform_psd()` keeps an
+  explicit opt-in `na_action = "zero"` if you know why entries are
+  missing.
+
+The usual fix for the most common error (incomplete grid) is to
+filter individuals before loading, e.g.
+
+```r
+data <- load_h5ad("data_post_qc.h5ad", genes = genes)
+counts <- table(data$ind_cov, data$cg_cov)
+keep   <- rownames(counts)[apply(counts >= 2, 1, all)]
+data   <- data[data$ind_cov %in% keep, ]
+```
 
 ## Notes and caveats
 

@@ -9,18 +9,62 @@
 #'
 #' @param data,genes,ind_col Passed through from the caller.
 #' @param fixed_covariates See [run_geco()].
+#'
+#' @section Errors instead of NA:
+#' A precomputed matrix / `data.frame` is validated before use: it
+#' must be numeric, contain no NA, and have one row per individual.
+#' If it has row names they are matched to the individual IDs in
+#' `data` (and reordered to the data's order); without row names the
+#' rows are taken positionally and must equal the number of
+#' individuals. Covariates built from the catalog are checked for NA
+#' by [build_fixed_cov()]. Any failure stops with the offending
+#' individuals / columns named.
+#'
 #' @return A numeric matrix, or `NA`.
 #' @export
 resolve_fixed_covariates <- function(data, genes,
                                      fixed_covariates = NULL,
                                      ind_col = "ind_cov") {
-  if (is.null(fixed_covariates) ||
-      (length(fixed_covariates) == 1L && is.na(fixed_covariates)) ||
+  if (.no_fixed_cov(fixed_covariates) ||
       (is.character(fixed_covariates) && length(fixed_covariates) == 0L)) {
     return(NA)
   }
   if (is.matrix(fixed_covariates) || is.data.frame(fixed_covariates)) {
-    return(as.matrix(fixed_covariates))
+    m <- as.matrix(fixed_covariates)
+    if (!is.numeric(m)) {
+      stop("resolve_fixed_covariates(): the supplied covariate matrix is not ",
+           "numeric (storage mode '", storage.mode(m), "'). Encode factors ",
+           "as 0/1 columns first.", call. = FALSE)
+    }
+    inds <- as.character(unique(data[[ind_col]]))
+    if (!is.null(rownames(m))) {
+      miss <- setdiff(inds, rownames(m))
+      if (length(miss) > 0L) {
+        stop("resolve_fixed_covariates(): ", length(miss), " individual(s) in ",
+             "the data have no row in the supplied covariate matrix: ",
+             .preview(miss), ".", call. = FALSE)
+      }
+      m <- m[inds, , drop = FALSE]
+    } else if (nrow(m) != length(inds)) {
+      stop("resolve_fixed_covariates(): the supplied covariate matrix has ",
+           nrow(m), " rows but the data has ", length(inds), " individuals. ",
+           "Give it row names = individual IDs, or one row per individual ",
+           "in the order of unique(data[['", ind_col, "']]).", call. = FALSE)
+    } else {
+      message("[GECO] Covariate matrix has no row names; rows are taken in ",
+              "the order of unique(data[['", ind_col, "']]).")
+    }
+    bad <- which(!is.finite(m), arr.ind = TRUE)
+    if (nrow(bad) > 0L) {
+      cols <- colnames(m); if (is.null(cols)) cols <- paste0("col", seq_len(ncol(m)))
+      stop("resolve_fixed_covariates(): the supplied covariate matrix has ",
+           nrow(bad), " NA/NaN/Inf value(s), e.g. individual ",
+           .preview(unique(rownames(m)[bad[, 1]]), 5), " in column ",
+           .preview(unique(cols[bad[, 2]]), 5), ". The regression step cannot ",
+           "handle missing covariates; impute them or drop these individuals.",
+           call. = FALSE)
+    }
+    return(m)
   }
 
   ## character vector or named list -> hand off to build_fixed_cov.
@@ -115,6 +159,14 @@ available_covariates <- function() names(GECO_COVARIATE_CATALOG)
 #' @return A numeric matrix with one row per individual, one column
 #'   per requested covariate. Row names are individual IDs.
 #'
+#' @section Errors instead of NA:
+#' Every covariate column is checked after construction. If it is NA
+#' for any individual (missing `Age`, an age outside `breaks`, a
+#' non-numeric value, an individual absent from `pc1`, ...), the
+#' function stops and names the covariate and the individuals, because
+#' a single NA would make the covariate regression fail for every gene
+#' pair.
+#'
 #' @examples
 #' \dontrun{
 #' # Use just age and sex:
@@ -204,6 +256,21 @@ build_fixed_cov <- function(data,
         "numeric" = as.numeric(raw),
         stop("Unknown covariate type for '", name, "': ", spec$type)
       )
+    }
+
+    bad <- !is.finite(val)
+    if (any(bad)) {
+      src <- if (identical(spec$type, "pc1")) {
+        "individual not found in `pc1$ind`"
+      } else {
+        paste0("source column '", spec$col, "' is NA, non-numeric",
+               if (identical(spec$type, "age_bins")) " or outside `breaks`" else "")
+      }
+      stop("build_fixed_cov(): covariate '", name, "' is NA for ", sum(bad),
+           " of ", length(val), " individual(s): ", .preview(inds[bad]),
+           " (", src, "). The covariate regression cannot handle missing ",
+           "values; fill them in or drop these individuals before running GECO.",
+           call. = FALSE)
     }
     out[[name]] <- val
   }

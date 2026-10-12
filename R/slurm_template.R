@@ -43,8 +43,11 @@
 #'   300 is a reasonable default for ~10k genes / ~50M pairs).
 #' @param prepare_args Named list of additional args injected into the
 #'   `geco_prepare()` call (e.g. `subset_col = "SLE_status"`).
-#' @param slurm Named list of SLURM options. Defaults are reasonable
-#'   starting points; tune for your cluster.
+#' @param slurm Named list of SLURM options. Any subset of
+#'   `partition`, `time`, `mem`, `cpus` may be given; entries you omit
+#'   keep their defaults (`partition = "general"`, `time = "24:00:00"`,
+#'   `mem = "32G"`, `cpus = 1`), so `slurm = list(mem = "64G")` changes
+#'   only the memory. Unknown names are an error.
 #' @param r_executable Command used to run R, e.g. `"Rscript"` or
 #'   `"micromamba run -n r Rscript"`.
 #'
@@ -57,13 +60,34 @@ generate_slurm_pipeline <- function(scripts_dir,
                                     gene_list_file,
                                     n_jobs = 300,
                                     prepare_args = list(),
-                                    slurm = list(
-                                      partition = "general",
-                                      time      = "24:00:00",
-                                      mem       = "32G",
-                                      cpus      = 1
-                                    ),
+                                    slurm = list(),
                                     r_executable = "Rscript") {
+
+  ## Merge user SLURM options over the defaults, so a partial list such
+  ## as list(mem = "64G") does not leave the other #SBATCH lines empty.
+  slurm_defaults <- list(partition = "general",
+                         time      = "24:00:00",
+                         mem       = "32G",
+                         cpus      = 1)
+  if (!is.list(slurm) ||
+      (length(slurm) > 0L && (is.null(names(slurm)) || any(!nzchar(names(slurm)))))) {
+    stop("`slurm` must be a named list, e.g. list(mem = \"64G\", time = \"12:00:00\").",
+         call. = FALSE)
+  }
+  unknown <- setdiff(names(slurm), names(slurm_defaults))
+  if (length(unknown) > 0L) {
+    stop("Unknown `slurm` option(s): ", paste(unknown, collapse = ", "),
+         ". Allowed: ", paste(names(slurm_defaults), collapse = ", "), ".",
+         call. = FALSE)
+  }
+  slurm <- utils::modifyList(slurm_defaults, slurm)
+  empty <- vapply(slurm, function(v) is.null(v) || length(v) == 0L ||
+                                      is.na(v) || !nzchar(as.character(v)),
+                  logical(1))
+  if (any(empty)) {
+    stop("`slurm` option(s) must not be empty/NA: ",
+         paste(names(slurm)[empty], collapse = ", "), ".", call. = FALSE)
+  }
 
   ## Resolve every path argument to an absolute path so the generated
   ## .sh files work no matter where the user launches sbatch from.

@@ -3,11 +3,21 @@
 #' @param cov Symmetric covariance matrix.
 #' @param se  Matching SE matrix.
 #' @return A matrix of two-sided p-values with the same dimnames as
-#'   `cov`.
+#'   `cov`. Stops (naming the entries) if `cov` or `se` contain NA, or
+#'   if any `se` is zero while `cov` is also zero (0/0 = NaN).
 #' @export
 compute_p_matrix <- function(cov, se) {
+  if (!identical(dim(cov), dim(se))) {
+    stop("compute_p_matrix(): `cov` and `se` have different dimensions.",
+         call. = FALSE)
+  }
+  .check_finite(cov, "cov", "compute_p_matrix")
+  .check_finite(se,  "se",  "compute_p_matrix")
   z <- cov / se
-  stats::pnorm(-abs(z)) * 2
+  p <- stats::pnorm(-abs(z)) * 2
+  .check_finite(p, "p", "compute_p_matrix",
+                hint = "An SE of 0 with a covariance of 0 gives 0/0. These entries have no sampling variation across individuals (degenerate gene pair).")
+  p
 }
 
 #' Clip eigenvalues to enforce positive (semi-)definiteness
@@ -20,14 +30,17 @@ compute_p_matrix <- function(cov, se) {
 #' @param set_value Replacement value (default 0).
 #' @param na_action What to do when `mat` contains non-finite entries
 #'   (`NA`, `NaN`, `Inf`). One of:
-#'   - `"zero"` (default): replace them with `0` and print a warning
-#'     with the count and a preview of affected `(row, col)` pairs.
-#'   - `"error"`: stop with a helpful diagnostic (previous behaviour).
+#'   - `"error"` (default): stop with the count and a preview of the
+#'     affected `(row, col)` pairs. A non-finite covariance entry means
+#'     an upstream step failed for that gene pair, and glasso cannot
+#'     consume it.
+#'   - `"zero"`: replace them with `0` and continue with a warning.
+#'     Opt in only if you know why the entries are missing.
 #'
 #' @return A symmetric matrix of the same dimensions.
 #' @export
 transform_psd <- function(mat, thr = 0, set_value = 0,
-                          na_action = c("zero", "error")) {
+                          na_action = c("error", "zero")) {
   na_action <- match.arg(na_action)
 
   bad <- !is.finite(mat)
@@ -156,7 +169,7 @@ edge_count <- function(Omega) {
       if (cur_x < lower) { left <- lower; right <- prev_x + coarse_step; break }
     }
   }
-  if (!exists("left") || !exists("right")) {
+  if (!exists("left", inherits = FALSE) || !exists("right", inherits = FALSE)) {
     stop("Failed to bracket the minimum within max_iter=", max_iter, ".")
   }
 
@@ -233,11 +246,23 @@ fit_precision <- function(cov, p, n_ind,
   if (!requireNamespace("glassoFast", quietly = TRUE)) {
     stop("Package 'glassoFast' is required. install.packages('glassoFast').")
   }
+  if (!identical(dim(cov), dim(p))) {
+    stop("fit_precision(): `cov` and `p` have different dimensions.",
+         call. = FALSE)
+  }
   n_gene <- nrow(p)
+
+  ## glassoFast is C code: an NA in `S` or `rho` crashes it with an
+  ## uninformative "NA/NaN/Inf in foreign function call". Check first.
+  .check_finite(cov, "cov", "fit_precision",
+                hint = "The covariance matrix must be complete; see transform_psd() / reformat_to_matrices().")
+  .check_finite(p, "p", "fit_precision",
+                hint = "The p-value matrix must be complete; a missing p means the gene pair's estimate is missing upstream.")
 
   q   <- bh_q_matrix(p)
   z   <- abs(stats::qnorm(q / 2))
   rho_ori <- 1 / (z + c)
+  .check_finite(rho_ori, "penalty matrix rho", "fit_precision")
 
   eBIC <- function(Theta, S, E) {
     log_det <- as.numeric(determinant(Theta, logarithm = TRUE)$modulus)
@@ -256,6 +281,13 @@ fit_precision <- function(cov, p, n_ind,
   f <- function(coe) {
     fit <- glassoFast::glassoFast(S = cov, rho = rho_ori * coe,
                                   thr = thr, maxIt = maxIt)
+    if (!all(is.finite(fit$wi))) {
+      stop("fit_precision(): glassoFast returned a non-finite precision ",
+           "matrix at lambda = ", coe, " (", sum(!is.finite(fit$wi)),
+           " entries). The input covariance is probably ill-conditioned; ",
+           "check transform_psd() output or raise `c` / `lower`.",
+           call. = FALSE)
+    }
     E   <- edge_count(fit$wi)
     val <- eBIC(fit$wi, cov, E)
     if (is.finite(val) && val < best$eBIC) {

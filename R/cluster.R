@@ -41,12 +41,20 @@
 #'   GeCo estimation. See [run_geco()] for accepted forms (a character
 #'   vector of catalog names is the common case, e.g.
 #'   `c("age_group", "sex", "PC1")`).
-#' @param Y_path Optional path to a precomputed Y tensor `.rds`
-#'   (shape `[n_ind, n_gene, n_ct]`). If supplied, copied into
-#'   `work_dir/Y.rds` instead of recomputing from the .h5ad.
-#' @param VS_diag_path Optional path to a precomputed VS_diag tensor
-#'   `.rds` (shape `[n_ind, n_ct, n_gene]`). If supplied, copied into
-#'   `work_dir/VS_diag.rds` instead of recomputing.
+#' @param backend Which .h5ad reader to use; see [load_h5ad()].
+#'
+#' @details The `Y.rds` and `VS_diag.rds` tensors are always computed
+#' here from the loaded cells (the same cells written to
+#' `cell_data.fst`); they cannot be supplied from outside, because the
+#' chunk workers rely on them being the group means / variances of
+#' exactly those cells.
+#'
+#' @section Errors instead of NA:
+#' Before writing anything, the loaded data are checked for a complete
+#' individual x cell-type grid with at least 2 cells per group.
+#' Violations stop with the affected individuals / cell types named,
+#' so the failure surfaces here rather than in every chunk worker
+#' hours later.
 #'
 #' @return Invisibly, the prepared `prep` metadata list (also saved to
 #'   `work_dir/prep.rds`).
@@ -58,8 +66,6 @@ geco_prepare <- function(h5ad_file,
                          ct_col  = "cg_cov",
                          subset_col = NULL, subset_value = NULL,
                          fixed_covariates = NULL,
-                         Y_path = NULL,
-                         VS_diag_path = NULL,
                          backend = c("auto", "anndata", "zellkonverter")) {
 
   if (!requireNamespace("fst", quietly = TRUE)) {
@@ -90,8 +96,21 @@ geco_prepare <- function(h5ad_file,
   if (!(ct_col %in% colnames(data)))
     stop("ct_col '",  ct_col,  "' not in the loaded data.")
 
+  .check_group_col(data, ind_col, "individual", "geco_prepare")
+  .check_group_col(data, ct_col,  "cell-type",  "geco_prepare")
   individuals <- as.character(unique(data[[ind_col]]))
   cts_raw     <- as.character(unique(data[[ct_col]]))   # straight from h5ad
+  if (length(cts_raw) < 2L) {
+    stop("geco_prepare(): only ", length(cts_raw), " cell type in column '",
+         ct_col, "'; GECO needs at least 2.", call. = FALSE)
+  }
+  ## Fail fast (before writing anything) if the individual x cell-type
+  ## grid is incomplete or has singleton groups — otherwise every chunk
+  ## worker would fail with the same error hours later.
+  codes  <- .group_codes(data, ind_col, ct_col, individuals, cts_raw,
+                         where = "geco_prepare")
+  .check_group_sizes(.group_counts(codes, length(individuals), length(cts_raw)),
+                     individuals, cts_raw, min_cells = 2L, where = "geco_prepare")
 
   ## Write cell_data.fst FIRST — worker jobs need it to compute cov12
   ## per pair, and having it on disk early lets us free the in-memory
@@ -119,33 +138,23 @@ geco_prepare <- function(h5ad_file,
   ## Precompute Y (per-(ind, gene, ct) means) and VS_diag (per-(ind, ct,
   ## gene) within-group variance). Doing both once here means every
   ## chunk worker only has to compute the off-diagonal cov12 per pair.
-  Y_out_path <- file.path(work_dir, "Y.rds")
-  if (!is.null(Y_path)) {
-    message("[geco_prepare] Copying user-supplied Y from ", Y_path)
-    file.copy(Y_path, Y_out_path, overwrite = TRUE)
-  } else {
-    message("[geco_prepare] Computing Y tensor [n_ind=", length(individuals),
-            ", n_gene=", length(genes), ", n_ct=", length(cts_raw), "]...")
-    Y_obj <- compute_Y(data, genes,
-                       ind_col = ind_col, ct_col = ct_col,
-                       individuals = individuals, cell_types = cts_raw)
-    saveRDS(Y_obj$Y, Y_out_path)
-  }
+  message("[geco_prepare] Computing Y tensor [n_ind=", length(individuals),
+          ", n_gene=", length(genes), ", n_ct=", length(cts_raw), "]...")
+  Y_obj <- compute_Y(data, genes,
+                     ind_col = ind_col, ct_col = ct_col,
+                     individuals = individuals, cell_types = cts_raw)
+  saveRDS(Y_obj$Y, file.path(work_dir, "Y.rds"))
+  rm(Y_obj)
 
-  VS_out_path <- file.path(work_dir, "VS_diag.rds")
-  if (!is.null(VS_diag_path)) {
-    message("[geco_prepare] Copying user-supplied VS_diag from ", VS_diag_path)
-    file.copy(VS_diag_path, VS_out_path, overwrite = TRUE)
-  } else {
-    message("[geco_prepare] Computing VS_diag tensor [n_ind=",
-            length(individuals), ", n_ct=", length(cts_raw),
-            ", n_gene=", length(genes), "]...")
-    VS_diag <- compute_VS_diag(data, genes,
-                               ind_col = ind_col, ct_col = ct_col,
-                               individuals = individuals,
-                               cell_types  = cts_raw)
-    saveRDS(VS_diag, VS_out_path)
-  }
+  message("[geco_prepare] Computing VS_diag tensor [n_ind=",
+          length(individuals), ", n_ct=", length(cts_raw),
+          ", n_gene=", length(genes), "]...")
+  VS_diag <- compute_VS_diag(data, genes,
+                             ind_col = ind_col, ct_col = ct_col,
+                             individuals = individuals,
+                             cell_types  = cts_raw)
+  saveRDS(VS_diag, file.path(work_dir, "VS_diag.rds"))
+  rm(VS_diag)
 
   gene_pairs <- utils::combn(genes, 2)
 
@@ -224,11 +233,46 @@ geco_chunk <- function(work_dir, task_id, n_jobs, verbose = 100) {
   cts     <- prep$cell_types_raw
   n_ind   <- length(inds);  n_ct   <- length(cts)
 
+  ## Sanity-check the tensors once per worker (cheap) so a corrupt or
+  ## mismatched Y.rds / VS_diag.rds fails here with a clear message
+  ## rather than inside GeCo() for every pair.
+  if (!identical(as.integer(dim(Y_all)),
+                 as.integer(c(n_ind, length(prep$genes), n_ct)))) {
+    stop("geco_chunk(): Y.rds has dims [", paste(dim(Y_all), collapse = ", "),
+         "] but prep.rds implies [", n_ind, ", ", length(prep$genes), ", ",
+         n_ct, "].", call. = FALSE)
+  }
+  if (!identical(as.integer(dim(VS_diag)),
+                 as.integer(c(n_ind, n_ct, length(prep$genes))))) {
+    stop("geco_chunk(): VS_diag.rds has dims [",
+         paste(dim(VS_diag), collapse = ", "), "] but prep.rds implies [",
+         n_ind, ", ", n_ct, ", ", length(prep$genes), "].", call. = FALSE)
+  }
+  .check_finite(Y_all,   "Y.rds",       "geco_chunk")
+  .check_finite(VS_diag, "VS_diag.rds", "geco_chunk")
+  if (!.no_fixed_cov(prep$fixed_cov)) {
+    .check_finite(prep$fixed_cov, "prep$fixed_cov", "geco_chunk")
+  }
+
   ## Map gene name -> column index in Y_all / VS_diag (same order as prep$genes)
   gene_to_idx <- stats::setNames(seq_along(prep$genes), prep$genes)
 
   opms_dt <- data.table::as.data.table(prep$opms)
+  op_bad <- opms_dt$g[!is.finite(opms_dt$OPsd) | opms_dt$OPsd == 0]
+  if (length(op_bad) > 0L) {
+    stop("geco_chunk(): ", length(op_bad), " gene(s) in prep$opms have zero ",
+         "or NA OPsd and cannot be standardized: ", .preview(op_bad), ".",
+         call. = FALSE)
+  }
   data.table::setkey(opms_dt, g)
+
+  ## Re-raise any per-pair error with the gene pair named.
+  with_pair <- function(expr, g1, g2) {
+    tryCatch(expr, error = function(e) {
+      stop("geco_chunk(): gene pair (", g1, ", ", g2, ") failed: ",
+           conditionMessage(e), call. = FALSE)
+    })
+  }
 
   shared_names <- c("shared11", "shared12", "shared22")
   ct_names <- unlist(lapply(seq_len(n_ct), function(c_idx)
@@ -243,9 +287,26 @@ geco_chunk <- function(work_dir, task_id, n_jobs, verbose = 100) {
   lt_shared <- lower.tri(matrix(1, 2, 2), diag = TRUE)
   idxs <- split(seq_len(2 * n_ct), rep(seq_len(n_ct), each = 2))
 
-  # We need ind_col + ct_col every time; pre-read them.
+  ## Group every cell ONCE (integer codes + counts; enforces >= 2 cells
+  ## per group). Per pair we then only need one rowsum() over the cells.
   meta_df <- fst::read_fst(cell_fst, columns = c(ind_col, ct_col))
   meta_df <- data.table::as.data.table(meta_df)
+  setup <- .group_setup(meta_df, ind_col, ct_col, inds, cts,
+                        where = "geco_chunk")
+  rm(meta_df)
+
+  ## Gene columns are read from the fst file on demand. Pairs in a
+  ## chunk are contiguous in combn() order, so g1 stays the same for
+  ## long runs: cache its column and only re-read g2 each pair.
+  read_gene <- function(g) {
+    x <- fst::read_fst(cell_fst, columns = g)[[1L]]
+    if (anyNA(x)) {
+      stop("geco_chunk(): gene '", g, "' has NA expression in ",
+           sum(is.na(x)), " cell(s) in cell_data.fst.", call. = FALSE)
+    }
+    as.numeric(x)
+  }
+  g1_cached <- NA_character_; x1 <- NULL
 
   for (k in seq_len(rng$size)) {
     j  <- rng$start + k - 1L
@@ -260,32 +321,35 @@ geco_chunk <- function(work_dir, task_id, n_jobs, verbose = 100) {
     ms1 <- opms_dt[g1]; ms2 <- opms_dt[g2]
     m1 <- ms1$OPmean; s1 <- ms1$OPsd
     m2 <- ms2$OPmean; s2 <- ms2$OPsd
-    if (is.na(s1) || s1 == 0 || is.na(s2) || s2 == 0) next
+    if (is.na(m1) || is.na(m2)) {
+      stop("geco_chunk(): gene ", if (is.na(m1)) g1 else g2,
+           " has no row in prep$opms.", call. = FALSE)
+    }
 
-    idx1 <- gene_to_idx[[g1]]
-    idx2 <- gene_to_idx[[g2]]
-    if (is.null(idx1) || is.null(idx2)) next
+    idx1 <- gene_to_idx[g1]
+    idx2 <- gene_to_idx[g2]
+    if (is.na(idx1) || is.na(idx2)) {
+      stop("geco_chunk(): gene ", if (is.na(idx1)) g1 else g2,
+           " from gene_pairs.rds is not in prep$genes.", call. = FALSE)
+    }
 
-    ## Pull pre-computed Y means for these two genes; rescale by OP.
-    Y1 <- Y_all[, idx1, , drop = FALSE]; dim(Y1) <- c(n_ind, n_ct)
-    Y2 <- Y_all[, idx2, , drop = FALSE]; dim(Y2) <- c(n_ind, n_ct)
-    Y1 <- (Y1 - m1) / s1
-    Y2 <- (Y2 - m2) / s2
+    ## Pull pre-computed Y means for these two genes (raw = per-group
+    ## means of the fst data, used for the cov12 centering), then
+    ## rescale by OP for the estimator.
+    Y1raw <- Y_all[, idx1, , drop = FALSE]; dim(Y1raw) <- c(n_ind, n_ct)
+    Y2raw <- Y_all[, idx2, , drop = FALSE]; dim(Y2raw) <- c(n_ind, n_ct)
+    Y1 <- (Y1raw - m1) / s1
+    Y2 <- (Y2raw - m2) / s2
     Y_pair <- array(NA_real_, dim = c(n_ind, 2, n_ct))
     Y_pair[, 1, ] <- Y1; Y_pair[, 2, ] <- Y2
 
-    ## Read just the two gene columns for the off-diagonal cov12.
-    dat <- try({
-      gene_df <- fst::read_fst(cell_fst, columns = c(g1, g2))
-      cbind(meta_df, data.table::as.data.table(gene_df))
-    }, silent = TRUE)
-    if (inherits(dat, "try-error")) next
-
-    cov12 <- try(compute_VS_cov_pair(dat, g1, g2,
-                                     ind_col = ind_col, ct_col = ct_col,
-                                     individuals = inds, cell_types = cts),
-                 silent = TRUE)
-    if (inherits(cov12, "try-error")) next
+    ## Off-diagonal cov12: read the gene column(s) and do one rowsum().
+    if (!identical(g1, g1_cached)) {
+      x1 <- with_pair(read_gene(g1), g1, g2)
+      g1_cached <- g1
+    }
+    x2 <- with_pair(read_gene(g2), g1, g2)
+    cov12 <- .group_cov_pair(x1, x2, Y1raw, Y2raw, setup)
 
     VS <- array(NA_real_, dim = c(n_ind, n_ct, 2, 2))
     VS[, , 1, 1] <- VS_diag[, , idx1] / s1^2
@@ -293,9 +357,8 @@ geco_chunk <- function(work_dir, task_id, n_jobs, verbose = 100) {
     VS[, , 1, 2] <- cov12 / s1 / s2
     VS[, , 2, 1] <- VS[, , 1, 2]
 
-    res <- try(GeCo(Y = Y_pair, VS = VS, fixed_cov = prep$fixed_cov),
-               silent = TRUE)
-    if (inherits(res, "try-error")) next
+    res <- with_pair(GeCo(Y = Y_pair, VS = VS, fixed_cov = prep$fixed_cov),
+                     g1, g2)
 
     res_cov[k, 1:2] <- c(g1, g2)
     res_se [k, 1:2] <- c(g1, g2)
@@ -362,11 +425,48 @@ geco_finalize_estimates <- function(work_dir, output_dir,
 
   cov_parts <- vector("list", length(chunk_files))
   se_parts  <- vector("list", length(chunk_files))
+  task_ids  <- integer(length(chunk_files))
+  starts    <- integer(length(chunk_files))
+  ends      <- integer(length(chunk_files))
   for (i in seq_along(chunk_files)) {
     chunk <- readRDS(chunk_files[i])
     cov_parts[[i]] <- chunk$cov
     se_parts [[i]] <- chunk$se
+    task_ids[i] <- chunk$task_id
+    starts[i]   <- chunk$start
+    ends[i]     <- chunk$end
   }
+
+  ## ---- every gene pair must be covered exactly once -------------------
+  ## A SLURM task that was killed (OOM / time limit) leaves no file, and
+  ## the merged table would silently lack its pairs. Fail here instead.
+  if (anyDuplicated(task_ids)) {
+    stop("geco_finalize_estimates(): duplicated task_id in chunk files: ",
+         .preview(unique(task_ids[duplicated(task_ids)])),
+         ". Delete the stale chunk_*.rds and re-run.", call. = FALSE)
+  }
+  covered <- logical(prep$n_pairs)
+  for (i in seq_along(starts)) covered[starts[i]:ends[i]] <- TRUE
+  if (!all(covered)) {
+    miss <- which(!covered)
+    ## collapse to contiguous ranges for readability
+    brk <- c(0L, which(diff(miss) != 1L), length(miss))
+    ranges <- vapply(seq_len(length(brk) - 1L), function(k) {
+      a <- miss[brk[k] + 1L]; b <- miss[brk[k + 1L]]
+      if (a == b) as.character(a) else paste0(a, "-", b)
+    }, character(1))
+    n_jobs_guess <- if (length(starts)) max(ends - starts + 1L) else NA
+    stop("geco_finalize_estimates(): ", length(miss), " of ", prep$n_pairs,
+         " gene pairs are not covered by any chunk_*.rds file (pair index ",
+         "ranges: ", .preview(ranges), "). Found ", length(chunk_files),
+         " chunk file(s) with task_ids ", .preview(sort(task_ids)),
+         if (!is.na(n_jobs_guess)) paste0("; chunk size suggests n_jobs ~ ",
+           ceiling(prep$n_pairs / n_jobs_guess)) else "",
+         ". Some SLURM array tasks did not finish; check their .out files ",
+         "and resubmit the missing task_ids (see README, 'Resuming after a ",
+         "partial failure').", call. = FALSE)
+  }
+
   cov_df <- do.call(rbind, cov_parts)
   se_df  <- do.call(rbind, se_parts)
 
@@ -478,17 +578,29 @@ geco_finalize_outputs <- function(work_dir, output_dir) {
   order <- readRDS(file.path(work_dir, "cell_type_order.rds"))
 
   genes <- prep$genes
+  pfiles <- file.path(output_dir, paste0("precision_", order, ".rds"))
+  missing <- !file.exists(pfiles)
+  if (any(missing)) {
+    stop("geco_finalize_outputs(): precision file(s) missing for ",
+         sum(missing), " of ", length(order), " cell type(s): ",
+         .preview(order[missing]), " (expected ",
+         .preview(basename(pfiles[missing])), " in ", output_dir, "). ",
+         "The corresponding step-03 SLURM tasks (ct_idx = ",
+         .preview(which(missing)), ") did not finish; check their .out ",
+         "files and resubmit them before running this step.", call. = FALSE)
+  }
+
   deg_df <- data.frame(gene = genes, stringsAsFactors = FALSE)
-  for (nm in order) {
-    pf <- file.path(output_dir, paste0("precision_", nm, ".rds"))
-    if (!file.exists(pf)) {
-      warning("Missing precision file for '", nm, "': ", pf,
-              " (degree column set to NA).")
-      deg_df[[nm]] <- NA_integer_
-      next
-    }
-    Omega <- readRDS(pf)
+  for (k in seq_along(order)) {
+    nm <- order[k]
+    Omega <- readRDS(pfiles[k])
+    .check_finite(Omega, paste0("precision_", nm, ".rds"), "geco_finalize_outputs")
     deg   <- compute_degree(Omega)
+    if (is.null(names(deg)) || !all(genes %in% names(deg))) {
+      stop("geco_finalize_outputs(): precision_", nm, ".rds has no (or ",
+           "incomplete) gene row names; cannot assign degrees to genes.",
+           call. = FALSE)
+    }
     deg_df[[nm]] <- as.integer(deg[genes])
   }
 

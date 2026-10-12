@@ -26,18 +26,23 @@
 #'     [build_fixed_cov()] for the spec format).
 #'   - A precomputed matrix / `data.frame` with one row per individual,
 #'     used directly.
-#' @param Y_all Optional precomputed Y tensor `[n_ind, n_gene, n_ct]`
-#'   (from [compute_Y()]`$Y`). If `NULL`, the function computes it.
-#' @param VS_diag Optional precomputed diagonal-variance tensor
-#'   `[n_ind, n_ct, n_gene]` (from [compute_VS_diag()]). If `NULL`,
-#'   the function computes it. Supply both to skip the expensive
-#'   precompute step.
 #' @param output_dir Directory to save all results. If `NULL` nothing
 #'   is written and everything is returned.
 #' @param psd_thr Threshold for [transform_psd()]. Default 0.
 #' @param fit_precision_args Named list of extra arguments forwarded to
 #'   [fit_precision()].
+#' @param backend Which .h5ad reader to use; see [load_h5ad()].
 #' @param verbose Pair-level progress interval for [estimate_geco()].
+#'
+#' @section Errors instead of NA:
+#' Every stage validates its inputs and stops with a message naming
+#' the cause (individuals, cell types, genes, or gene pairs) rather
+#' than letting NA propagate. In particular the data must contain
+#' every individual in every cell type with at least 2 cells, no gene
+#' may be constant across individuals, and covariates must be
+#' complete. See the "Errors instead of NA" sections of
+#' [compute_Y()], [compute_VS_diag()], [compute_OPms()],
+#' [build_fixed_cov()] and [GeCo()].
 #'
 #' @return A list with elements `cov`, `se`, `p`, `cov_psd`, `precision`
 #'   (each a named list keyed by cell type, including `shared`),
@@ -50,8 +55,6 @@ run_geco <- function(h5ad_file,
                      ct_col  = "cg_cov",
                      subset_col = NULL, subset_value = NULL,
                      fixed_covariates = NULL,
-                     Y_all = NULL,
-                     VS_diag = NULL,
                      output_dir = NULL,
                      psd_thr = 0,
                      fit_precision_args = list(),
@@ -89,7 +92,6 @@ run_geco <- function(h5ad_file,
   est <- estimate_geco(data, genes, opms = opms,
                        fixed_cov = fixed_cov,
                        ind_col = ind_col, ct_col = ct_col,
-                       Y_all = Y_all, VS_diag = VS_diag,
                        verbose = verbose)
 
   cell_type_names <- est$cell_types   # taken straight from the h5ad

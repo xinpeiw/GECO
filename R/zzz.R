@@ -15,4 +15,5 @@
 
 ## Silence R CMD check "no visible binding for global variable" for
 ## the special data.table symbols we reference inside [.data.table.
-utils::globalVariables(c(".SD", ".N", ".I", ".GRP", ".SDcols"))
+utils::globalVariables(c(".SD", ".N", ".I", ".GRP", ".SDcols",
+                         "g", "i", "x", "y"))
