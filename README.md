@@ -14,7 +14,6 @@ degrees.
   - [What ends up where on disk](#what-ends-up-where-on-disk)
   - [Wall-time breakdown](#wall-time-breakdown)
   - [Common pitfalls](#common-pitfalls)
-- [Notes and caveats](#notes-and-caveats)
 
 ## Inputs and outputs
 
@@ -212,14 +211,3 @@ scale linearly with total cell count.
   `Sys.setenv(RETICULATE_PYTHON = "/path/to/python")` or
   `reticulate::use_python("/path/to/python", required = TRUE)` if it
   picks the wrong one.
-
-## Notes and caveats
-
-- Covariate effects are modelled per gene and shared across cell
-  types (one coefficient per covariate per gene), with a separate
-  intercept per gene and cell type. `fixed_covariates = NULL` skips
-  the regression entirely.
-- Cell-type names in the output are taken directly from
-  `unique(data[[ct_col]])` in the h5ad file — they are not provided
-  by the user. The first matrix in every output list is always named
-  `shared` (the across-individual component).
