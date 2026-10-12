@@ -20,8 +20,6 @@ export(fit_precision)
 export(compute_degree)
 export(bh_q_matrix)
 export(edge_count)
-export(run_geco)
-export(save_results)
 # Cluster mode
 export(geco_prepare)
 export(geco_chunk)

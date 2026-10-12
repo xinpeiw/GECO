@@ -1,14 +1,13 @@
 #' Resolve a `fixed_covariates` argument into a numeric matrix (or NA)
 #'
-#' Shared helper used by both [run_geco()] and [geco_prepare()]. Accepts
-#' any of the forms documented under `run_geco(fixed_covariates = ...)`
-#' and returns either:
+#' Helper used by [geco_prepare()]. Accepts any of the forms documented
+#' under `geco_prepare(fixed_covariates = ...)` and returns either:
 #'   - the resolved per-individual `fixed_cov` matrix, or
 #'   - `NA` if `fixed_covariates` is `NULL`/`NA`/`character(0)`, which
 #'     tells [GeCo()] to skip the covariate-regression step.
 #'
 #' @param data,genes,ind_col Passed through from the caller.
-#' @param fixed_covariates See [run_geco()].
+#' @param fixed_covariates See [geco_prepare()].
 #'
 #' @section Errors instead of NA:
 #' A precomputed matrix / `data.frame` is validated before use: it
@@ -94,7 +93,7 @@ resolve_fixed_covariates <- function(data, genes,
 #' Each entry in the catalog tells [build_fixed_cov()] how to turn a
 #' raw metadata column into a numeric covariate column. Pass any
 #' subset of these names to `build_fixed_cov(covariates = ...)`,
-#' [run_geco()] or [geco_prepare()] via `fixed_covariates`. Use
+#' [geco_prepare()] via `fixed_covariates`. Use
 #' [available_covariates()] to list what's available.
 #'
 #' @format A named `list`. Each element is a spec list with at least

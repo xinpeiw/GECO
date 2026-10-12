@@ -4,27 +4,22 @@
 interindividual gene-by-gene coexpression into cell-type-shared and cell-type-specific components, and turns the result into cell-type-shared and per-cell-type-specific sparse precision matrices and node
 degrees.
 
-The entire legacy SLURM pipeline (data process → Y/VS generation →
-covariance/se estimation → p-values → glasso → degree) is exposed in two ways:
-
-- **In-memory mode** — one call to `run_geco()` runs everything on a
-  single machine. Good for up to a few hundred genes.
-- **Cluster mode** — a set of `geco_prepare()` / `geco_chunk()` /
-  `geco_finalize_estimates()` / `geco_precision_chunk()` /
-  `geco_finalize_outputs()` functions, plus a
-  `generate_slurm_pipeline()` helper that emits ready-to-`sbatch`
-  scripts. Use this for ~10k-gene runs that don't fit on one node.
+The pipeline (data process → Y/VS generation → covariance/se
+estimation → p-values → glasso → degree) runs as a SLURM job chain:
+`geco_prepare()` / `geco_chunk()` / `geco_finalize_estimates()` /
+`geco_precision_chunk()` / `geco_finalize_outputs()`, plus a
+`generate_slurm_pipeline()` helper that emits ready-to-`sbatch`
+scripts. A genome-wide run (~10k genes, ~50M gene pairs) does not fit
+on a single node, so this is the only supported way to run it.
 
 ## Contents
 
 - [Inputs and outputs](#inputs-and-outputs)
 - [Installation](#installation)
-- [Quick start (in-memory mode)](#quick-start-in-memory-mode)
-  - [Choosing which fixed covariates to regress out](#choosing-which-fixed-covariates-to-regress-out)
-- [Step-by-step usage](#step-by-step-usage)
-- [Cluster (HPC) mode](#cluster-hpc-mode)
-  - [How cluster mode differs from in-memory mode](#how-cluster-mode-differs-from-in-memory-mode)
+- [Running on a cluster](#running-on-a-cluster)
+  - [The five stages](#the-five-stages)
   - [Running it](#running-it)
+  - [Choosing which fixed covariates to regress out](#choosing-which-fixed-covariates-to-regress-out)
   - [What ends up where on disk](#what-ends-up-where-on-disk)
   - [Wall-time breakdown](#wall-time-breakdown)
     - [Total time, all-in-one view](#total-time-all-in-one-view)
@@ -33,7 +28,6 @@ covariance/se estimation → p-values → glasso → degree) is exposed in two w
   - [The Y and VS_diag tensors](#the-y-and-vs_diag-tensors)
   - [Memory & disk budget](#memory--disk-budget)
   - [Resuming after a partial failure](#resuming-after-a-partial-failure)
-  - [Smoke-testing on your laptop first](#smoke-testing-on-your-laptop-first)
   - [Running a single SLURM chunk manually](#running-a-single-slurm-chunk-manually)
   - [Common pitfalls](#common-pitfalls)
 - [Input requirements and the "error instead of NA" policy](#input-requirements-and-the-error-instead-of-na-policy)
@@ -93,120 +87,16 @@ Repository: <https://github.com/xinpeiw/GECO> (private — collaborators
 will need a GitHub PAT with `repo` scope to `remotes::install_github()`,
 e.g. via `Sys.setenv(GITHUB_PAT = "...")`).
 
-## Quick start (in-memory mode)
+## Running on a cluster
 
-```r
-library(GECO)
+The pipeline requires `fst` (`install.packages("fst")`) for
+column-selectable on-disk cell data.
 
-# Required: a vector of gene IDs to analyse. They must exist in the
-# h5ad's expression matrix; any other columns in the .h5ad are ignored.
-genes <- read_gene_list("genelist.txt")   # or just: c("ENSG...", "ENSG...", ...)
+### The five stages
 
-result <- run_geco(
-  h5ad_file        = "data_post_qc.h5ad",
-  genes            = genes,
-  ind_col          = "ind_cov",
-  ct_col           = "cg_cov",
-  # optional: restrict to a subset of cells
-  # subset_col     = "SLE_status", subset_value = "Healthy",
-  # pick which covariates to regress out (see available_covariates()):
-  fixed_covariates = c("age_group", "sex", "PC1"),
-  output_dir       = "./results"
-)
-# Cell-type names in the output are taken directly from
-# unique(data[[ct_col]]) in the h5ad file.
-
-# Everything also returned in-memory:
-str(result$cov)        # named list of covariance matrices
-str(result$precision)  # named list of sparse precision matrices
-head(result$degree)    # gene x cell_type degree table
-```
-
-After `run_geco()` finishes, the `output_dir` will contain all the
-`.rds` matrices and `degree.xlsx`.
-
-### Choosing which fixed covariates to regress out
-
-`run_geco()` and `geco_prepare()` both take a `fixed_covariates`
-argument that decides which per-individual covariates are regressed
-out before the GECO decomposition runs.
-
-The built-in catalog (see `GECO_COVARIATE_CATALOG` or call
-`available_covariates()`) provides these names:
-
-| Name | Source column | What it becomes |
-|------|---------------|-----------------|
-| `age_group` | `Age`        | binned to 1..15 |
-| `sex`       | `Sex`        | 1 if Male, else 0 |
-| `PC1`       | (derived)    | PC1 of per-individual mean expression |
-
-Pick whichever subset you want — the most common cases:
-
-```r
-# No regression at all (default):
-run_geco(..., fixed_covariates = NULL)
-
-# Just age and sex:
-run_geco(..., fixed_covariates = c("age_group", "sex"))
-
-# All catalog covariates:
-run_geco(..., fixed_covariates = c("age_group", "sex", "PC1"))
-
-# Catalog covariates + a study-specific binary one ("Smoker"):
-run_geco(..., fixed_covariates = list(
-  age_group = GECO_COVARIATE_CATALOG$age_group,
-  sex       = GECO_COVARIATE_CATALOG$sex,
-  smoker    = list(col = "Smoker",     type = "binary", positive = "Yes"),
-  cases     = list(col = "SLE_status", type = "binary", positive_not = "Healthy")
-))
-
-# Or compute your own per-individual matrix and pass it directly:
-my_mat <- ...  # n_ind x p matrix, rownames = individual IDs
-run_geco(..., fixed_covariates = my_mat)
-```
-
-## Step-by-step usage
-
-Every step of the pipeline is also exposed in case you want to run only
-part of it or inject custom logic:
-
-```r
-genes <- read_gene_list("genelist.txt")
-data  <- load_h5ad("data_post_qc.h5ad", genes = genes)
-
-opms  <- compute_OPms(data, genes)
-pc1   <- compute_PC1 (data, genes)
-fcov  <- build_fixed_cov(data,
-                         covariates = c("age_group", "sex", "PC1"),
-                         pc1 = pc1)
-
-est   <- estimate_geco(data, genes, opms, fixed_cov = fcov)
-mats  <- reformat_to_matrices(est, genes)
-
-p_mat   <- compute_p_matrix(mats$cov$CD4NC, mats$se$CD4NC)
-cov_psd <- transform_psd   (mats$cov$CD4NC)
-
-n_ind <- length(unique(data$ind_cov))         # taken from the h5ad
-fit   <- fit_precision(cov_psd, p_mat, n_ind = n_ind)
-deg   <- compute_degree(fit$precision)
-```
-
-## Cluster (HPC) mode
-
-For ~10k-gene runs that don't fit on a single node, use the chunked
-pipeline. The cluster mode requires `fst`
-(`install.packages("fst")`) for column-selectable on-disk cell data.
-
-### How cluster mode differs from in-memory mode
-
-In-memory mode (`run_geco()`) does everything in one R process: load,
-estimate every gene pair, reformat, fit precision matrices, write
-outputs. The full cell-level matrix and all per-pair tensors live in
-RAM.
-
-Cluster mode breaks the same pipeline into five disk-backed stages
-because each SLURM job is a separate R process that doesn't share
-memory with the others:
+Each SLURM job is a separate R process that doesn't share memory with
+the others, so the pipeline is split into five disk-backed stages
+that communicate through `work_dir/`:
 
 1. **Prepare** — one process loads the .h5ad, writes a compressed
    `cell_data.fst` (column-selectable), computes per-gene OPmean/OPsd,
@@ -231,10 +121,8 @@ memory with the others:
    computes degrees, and writes `degree.xlsx` to `output_dir`. All
    other deliverables are already in place from steps 3 and 4.
 
-The extra disk hops (especially the chunk-merging step) are why
-cluster mode has more files and more invocations than in-memory mode.
-In exchange, no single worker ever has to hold the full expression
-matrix or all gene-pair tensors at once.
+No single worker ever has to hold the full expression matrix or all
+gene-pair tensors at once.
 
 ### Running it
 
@@ -303,6 +191,47 @@ geco_precision_chunk(work_dir = "work/", output_dir = "results/", ct_idx = i)
 
 # Finally — builds degree.xlsx in output_dir
 geco_finalize_outputs(work_dir = "work/", output_dir = "results/")
+```
+
+### Choosing which fixed covariates to regress out
+
+`geco_prepare()` takes a `fixed_covariates` argument that decides
+which per-individual covariates are regressed out before the GECO
+decomposition runs. With `generate_slurm_pipeline()`, pass it through
+`prepare_args = list(fixed_covariates = ...)`.
+
+The built-in catalog (see `GECO_COVARIATE_CATALOG` or call
+`available_covariates()`) provides these names:
+
+| Name | Source column | What it becomes |
+|------|---------------|-----------------|
+| `age_group` | `Age`        | binned to 1..15 |
+| `sex`       | `Sex`        | 1 if Male, else 0 |
+| `PC1`       | (derived)    | PC1 of per-individual mean expression |
+
+Pick whichever subset you want — the most common cases:
+
+```r
+# No regression at all (default):
+geco_prepare(..., fixed_covariates = NULL)
+
+# Just age and sex:
+geco_prepare(..., fixed_covariates = c("age_group", "sex"))
+
+# All catalog covariates (the recommended default):
+geco_prepare(..., fixed_covariates = c("age_group", "sex", "PC1"))
+
+# Catalog covariates + a study-specific binary one ("Smoker"):
+geco_prepare(..., fixed_covariates = list(
+  age_group = GECO_COVARIATE_CATALOG$age_group,
+  sex       = GECO_COVARIATE_CATALOG$sex,
+  smoker    = list(col = "Smoker",     type = "binary", positive = "Yes"),
+  cases     = list(col = "SLE_status", type = "binary", positive_not = "Healthy")
+))
+
+# Or compute your own per-individual matrix and pass it directly:
+my_mat <- ...  # n_ind x p numeric matrix, rownames = individual IDs
+geco_prepare(..., fixed_covariates = my_mat)
 ```
 
 ### What ends up where on disk
@@ -549,46 +478,6 @@ Each stage is idempotent and reads everything it needs from
 If you want to start over, `rm -rf work_dir/` and rerun
 `bash pipeline.sh`.
 
-### Smoke-testing on your laptop first
-
-Before submitting to SLURM, run the whole thing locally on a tiny
-gene list (say 50 genes) to verify your inputs are wired correctly.
-This takes a few minutes and shakes out the common configuration
-issues (wrong column names, missing covariate metadata, etc.):
-
-```r
-library(GECO)
-genes <- read_gene_list("genelist.txt")[1:50]
-
-work_dir   <- tempfile("geco_test_")
-output_dir <- tempfile("geco_test_out_")
-
-# 1. Prepare
-geco_prepare(h5ad_file        = "data_post_qc.h5ad",
-             work_dir         = work_dir,
-             genes            = genes,
-             fixed_covariates = c("age_group", "sex", "PC1"))
-
-# 2. Run all chunks serially (no SLURM)
-n_jobs <- 4
-for (tid in seq_len(n_jobs)) {
-  geco_chunk(work_dir, task_id = tid, n_jobs = n_jobs)
-}
-
-# 3-5. Finalize
-geco_finalize_estimates(work_dir, output_dir)
-order <- readRDS(file.path(work_dir, "cell_type_order.rds"))
-for (i in seq_along(order)) {
-  geco_precision_chunk(work_dir, output_dir, ct_idx = i)
-}
-geco_finalize_outputs(work_dir, output_dir)
-
-list.files(output_dir)
-```
-
-If that works, swap `data_post_qc.h5ad` and the full gene list into
-`generate_slurm_pipeline()` and submit.
-
 ### Running a single SLURM chunk manually
 
 Useful when you want to time-profile one chunk before submitting the
@@ -645,7 +534,7 @@ override it for any task ID you want.
   # Then in R, force the backend:
   geco_prepare(h5ad_file, work_dir, genes,
                backend = "anndata", ...)
-  # or run_geco(..., backend = "anndata")
+  # (with generate_slurm_pipeline(): prepare_args = list(backend = "anndata"))
   ```
 
   `backend = "auto"` (the default) already prefers `anndata` when both
@@ -679,7 +568,7 @@ Concretely, before running GECO your data must satisfy:
 | A user-supplied covariate matrix has one row per individual (row names are matched to individual IDs and reordered) | `resolve_fixed_covariates()` | the individuals without a row |
 | `Y.rds` / `VS_diag.rds` in `work_dir` match `prep.rds` and contain no NA | `geco_chunk()` | the dims / the NA positions |
 
-And in cluster mode:
+And at the merge / finalize steps:
 
 - `geco_finalize_estimates()` verifies that the `chunk_*.rds` files
   cover every gene pair exactly once and stops listing the uncovered
@@ -704,12 +593,6 @@ data   <- data[data$ind_cov %in% keep, ]
 
 ## Notes and caveats
 
-- In-memory mode keeps the cell-level expression matrix and all
-  per-pair tensors in RAM. For ~10k genes this is too large; switch
-  to cluster mode.
-- Cluster mode stores the cell-level data once as `cell_data.fst`
-  and each chunk only reads the two gene columns it needs, so each
-  worker's memory footprint stays small.
 - `fixed_covariates = c("age_group", "sex", "PC1")` is the
   default-recommended set. See **Choosing which fixed covariates to
   regress out** above for the full menu (and how to add study-specific

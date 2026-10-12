@@ -1,13 +1,9 @@
 ## ---------------------------------------------------------------------
-##  Cluster / HPC mode
+##  The GECO pipeline: five SLURM-chained stages
 ##
-##  The in-memory pipeline (run_geco()) keeps the full cell-level
-##  expression matrix in RAM, which only works for at most a few
-##  thousand genes. For ~10k genes a node typically cannot hold the
-##  full matrix, so the original SLURM-based workflow precomputes
-##  per-gene-pair statistics in HDF5 chunks and runs them as a SLURM
-##  array. This file ports that style into a small set of functions
-##  that read/write to a single `work_dir`:
+##  A genome-wide run (~10k genes, ~50M gene pairs) cannot be held in
+##  one R process, so the pipeline is split into stages that read and
+##  write a single `work_dir`:
 ##
 ##    geco_prepare()             # one-time setup
 ##    geco_chunk()               # SLURM array (1..n_jobs), gene-pair estimation
@@ -15,9 +11,9 @@
 ##    geco_precision_chunk()     # SLURM array (1..n_ct+1), glasso+eBIC
 ##    geco_finalize_outputs()    # degrees + final outputs (incl. degree.xlsx)
 ##
-##  The cluster mode uses the {fst} package for column-selectable
-##  on-disk cell data. {fst} is in Suggests; install it before
-##  running cluster mode.
+##  Cell-level data are stored with the {fst} package for
+##  column-selectable on-disk access. {fst} is in Suggests; install it
+##  before running the pipeline.
 ## ---------------------------------------------------------------------
 
 
@@ -31,16 +27,25 @@
 #'
 #' @param h5ad_file Path to the .h5ad file.
 #' @param work_dir  Directory to use. Created if missing.
-#' @param genes Character vector of gene IDs to extract from the
-#'   .h5ad (required). See [run_geco()]/[load_h5ad()] for details and
-#'   [read_gene_list()] for loading from a file.
-#' @param ind_col,ct_col See [run_geco()].
+#' @param genes Character vector of gene IDs (required). Exactly these
+#'   columns are selected from the .h5ad's expression matrix and every
+#'   other gene is ignored; any requested gene that is not in the
+#'   matrix is an error. Load from a text file with [read_gene_list()]
+#'   if needed.
+#' @param ind_col,ct_col Names of the individual-ID and cell-type
+#'   columns in the .h5ad `obs` metadata.
 #' @param subset_col,subset_value Optional metadata filter (see
 #'   [load_h5ad()]).
 #' @param fixed_covariates Which covariates to regress out before
-#'   GeCo estimation. See [run_geco()] for accepted forms (a character
-#'   vector of catalog names is the common case, e.g.
-#'   `c("age_group", "sex", "PC1")`).
+#'   GeCo estimation. Accepts:
+#'   - `NULL` (default): no regression.
+#'   - A character vector of names from [GECO_COVARIATE_CATALOG],
+#'     e.g. `c("age_group", "sex", "PC1")` (the common case). Call
+#'     [available_covariates()] to see all options.
+#'   - A named list of fully-specified covariate recipes (see
+#'     [build_fixed_cov()] for the spec format).
+#'   - A precomputed numeric matrix / `data.frame` with one row per
+#'     individual (row names = individual IDs), used directly.
 #' @param backend Which .h5ad reader to use; see [load_h5ad()].
 #'
 #' @details The `Y.rds` and `VS_diag.rds` tensors are always computed
