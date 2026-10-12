@@ -62,7 +62,7 @@ generate_slurm_pipeline(
   h5ad_file      = "/path/to/data_post_qc.h5ad",
   gene_list_file = "/path/to/genelist.txt",  # one gene ID per line
   n_jobs         = 300,   # number of SLURM array chunks (chunk step)
-  fixed_covariates_file = "/path/to/covariates.rds",  # optional, see below
+  fixed_covariates_file = "/path/to/covariates.txt",  # optional, see below
   slurm = list(partition = "general", time = "24:00:00",
                mem = "32G", cpus = 1)
 )
@@ -83,7 +83,7 @@ You can also call the functions directly without the script generator:
 genes <- read_gene_list("genelist.txt")
 geco_prepare(h5ad_file = "...", work_dir = "work/",
              genes = genes,
-             fixed_covariates = read_covariates("covariates.rds"))  # or NULL
+             fixed_covariates = read_covariates("covariates.txt"))  # or NULL
 
 # Per chunk (SLURM array, 1..n_jobs)
 geco_chunk(work_dir = "work/", task_id = task_id, n_jobs = 300)
@@ -120,9 +120,10 @@ regression entirely.
 With `generate_slurm_pipeline()`, save the matrix to a file and
 point to it with `fixed_covariates_file`; the generated
 `00_prepare.R` reads it with `read_covariates()` and hands it to
-`geco_prepare()`. Accepted formats: `.rds` (a matrix or `data.frame`
-with row names) or `.csv` / `.tsv` (first column = individual ID,
-header row = covariate names).
+`geco_prepare()`. The file is a tab-separated `.txt` table: a header
+row with the covariate names, then one row per individual with the
+individual ID in the first column (`.tsv`, `.csv` and `.rds` are also
+accepted).
 
 ```r
 # e.g. build it from the h5ad obs table once, in R:
@@ -131,9 +132,9 @@ obs  <- obs[!duplicated(obs$ind_cov), ]
 fcov <- data.frame(row.names = obs$ind_cov,
                    age  = as.numeric(obs$Age),
                    male = as.numeric(obs$Sex == "Male"))
-saveRDS(fcov, "covariates.rds")
+write.table(fcov, "covariates.txt", sep = "\t", quote = FALSE, col.names = NA)
 
-generate_slurm_pipeline(..., fixed_covariates_file = "covariates.rds")
+generate_slurm_pipeline(..., fixed_covariates_file = "covariates.txt")
 
 # or, calling geco_prepare() directly:
 geco_prepare(..., fixed_covariates = fcov)

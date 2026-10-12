@@ -227,13 +227,14 @@ read_gene_list <- function(path, comment.char = "#") {
 #' Used by the `00_prepare.R` script that [generate_slurm_pipeline()]
 #' writes, and handy interactively.
 #'
-#' @param path Path to one of:
-#'   - an `.rds` file holding a numeric matrix or `data.frame` whose
-#'     row names are individual IDs;
-#'   - a `.csv` / `.tsv` / `.txt` file whose first column is the
-#'     individual ID and whose header row gives the covariate names
-#'     (tab- or comma-separated, detected from the extension; `.txt`
-#'     is read as whitespace-separated).
+#' @param path Path to the covariate table. The default format is a
+#'   plain-text `.txt` file: tab- or whitespace-separated, a header row
+#'   with the covariate names, and the individual ID in the first
+#'   column (one row per individual), e.g. as written by
+#'   `write.table(m, "covariates.txt", sep = "\t", quote = FALSE,
+#'   col.names = NA)`. Also accepted, detected from the extension:
+#'   `.tsv` (tab), `.csv` (comma), and `.rds` (a saved numeric matrix
+#'   or `data.frame` with row names).
 #'
 #' @return A numeric matrix with row names = individual IDs. The
 #'   content is validated later by [geco_prepare()] (numeric, no NA,
@@ -246,7 +247,7 @@ read_covariates <- function(path) {
   if (ext == "rds") {
     m <- readRDS(path)
   } else {
-    sep <- switch(ext, csv = ",", tsv = "\t", txt = "", "")
+    sep <- switch(ext, csv = ",", tsv = "\t", "")   # txt / anything else: whitespace
     m <- utils::read.table(path, header = TRUE, sep = sep, row.names = 1,
                            check.names = FALSE, stringsAsFactors = FALSE,
                            quote = "\"", comment.char = "")
@@ -258,8 +259,8 @@ read_covariates <- function(path) {
   }
   if (is.null(rownames(m)) ||
       identical(rownames(m), as.character(seq_len(nrow(m))))) {
-    stop("read_covariates(): ", path, " has no row names. Row names must be ",
-         "the individual IDs (for .csv/.tsv, the first column).",
+    stop("read_covariates(): ", path, " has no row names. The first column ",
+         "must be the individual IDs (for .rds: the matrix row names).",
          call. = FALSE)
   }
   m <- as.matrix(m)

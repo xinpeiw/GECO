@@ -42,7 +42,8 @@
 #'   Choose this so each chunk runs in a reasonable wall time (e.g.
 #'   300 is a reasonable default for ~10k genes / ~50M pairs).
 #' @param fixed_covariates_file Optional path to the per-individual
-#'   covariate matrix (`.rds`, `.csv` or `.tsv`; see
+#'   covariate table (a tab-separated `.txt` with the individual ID in
+#'   the first column; `.tsv`, `.csv` and `.rds` also accepted, see
 #'   [read_covariates()]). The generated `00_prepare.R` reads it and
 #'   passes the matrix to `geco_prepare(fixed_covariates = )`. `NULL`
 #'   (default) means no covariate regression. Must exist if given.
@@ -73,7 +74,7 @@ generate_slurm_pipeline <- function(scripts_dir,
 
   if ("fixed_covariates" %in% names(prepare_args)) {
     stop("Pass the covariate matrix via `fixed_covariates_file` (a path to ",
-         "an .rds/.csv/.tsv file), not inside `prepare_args`: the matrix ",
+         "a .txt/.tsv/.csv/.rds file), not inside `prepare_args`: the matrix ",
          "would otherwise be pasted into the generated R script.",
          call. = FALSE)
   }
