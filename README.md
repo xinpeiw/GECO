@@ -21,11 +21,8 @@ on a single node, so this is the only supported way to run it.
   - [Choosing which covariates to adjust](#choosing-which-covariates-to-adjust)
   - [What ends up where on disk](#what-ends-up-where-on-disk)
   - [Wall-time breakdown](#wall-time-breakdown)
-  - [Memory & disk budget](#memory--disk-budget)
   - [Resuming after a partial failure](#resuming-after-a-partial-failure)
-  - [Running a single SLURM chunk manually](#running-a-single-slurm-chunk-manually)
   - [Common pitfalls](#common-pitfalls)
-- [Input requirements and the "error instead of NA" policy](#input-requirements-and-the-error-instead-of-na-policy)
 - [Notes and caveats](#notes-and-caveats)
 
 ## Inputs and outputs
@@ -250,28 +247,6 @@ scale linearly with total cell count.
 | 10,000  | ~10 m    | 49,995,000 |   ~3 h / task  |  ~1 h   | ~35 m  | ~20 m  |
 | 20,000  | ~20 m    |     ~200M  |  ~11 h / task  |  ~4 h   | ~2.5 h |  ~1 h  |
 
-### Memory & disk budget
-
-| Item | Size | Where |
-|------|------|------|
-| `cell_data.fst` | ~ `n_cells × n_genes × 8` bytes, compressed ~3-4× | disk (one-time) |
-| `Y.rds` | `n_ind × n_gene × n_ct × 8` bytes | disk + memory in each chunk |
-| `VS_diag.rds` | same as Y | disk + memory in each chunk |
-| Per-pair working memory | `O(n_ind × n_ct)` | per chunk worker |
-| `chunk_*.rds` per task | `n_pairs_in_chunk × (3 + 3·n_ct) × 8` bytes ×2 (cov+se) | disk — auto-deleted by step 02 unless `cleanup_chunks = FALSE` |
-| `cov_*.rds` / `se_*.rds` / `p_*.rds` | `n_gene² × 8` per cell type | disk (output_dir) |
-| `precision_*.rds` | `n_gene² × 8` per cell type | disk (output_dir) |
-
-For `n_ind = 1000, n_gene = 10000, n_ct = 7`:
-
-- `cell_data.fst`: depends on `n_cells`, e.g. 1M cells × 11k genes × 4 (compression) ≈ 22 GB
-- `Y.rds` and `VS_diag.rds`: each ~620 MB (loaded once per chunk worker)
-- `cov_*` / `se_*` / `p_*` / `precision_*` per cell type: ~1 GB each
-  (`n_gene² × 8 bytes`, e.g. 11k² × 8 ≈ 970 MB), so ~30 GB total
-  across 8 cell types × 4 matrix kinds
-
-Per-chunk worker memory is therefore dominated by `Y.rds + VS_diag.rds + meta` ≈ **2 GB**. Set `#SBATCH --mem=4G` or higher to be safe.
-
 ### Resuming after a partial failure
 
 Each stage is idempotent and reads everything it needs from
@@ -302,22 +277,6 @@ Each stage is idempotent and reads everything it needs from
 
 If you want to start over, `rm -rf work_dir/` and rerun
 `bash pipeline.sh`.
-
-### Running a single SLURM chunk manually
-
-Useful when you want to time-profile one chunk before submitting the
-full array, or to reproduce a failure interactively:
-
-```bash
-# Allocate an interactive node
-salloc --time=2:00:00 --mem=8G --cpus-per-task=1
-
-# Then run task_id = 1 of an n_jobs = 300 split:
-SLURM_ARRAY_TASK_ID=1 Rscript 01_chunk.R /path/to/work_dir 300
-```
-
-The `SLURM_ARRAY_TASK_ID` env var is what `01_chunk.R` reads; you can
-override it for any task ID you want.
 
 ### Common pitfalls
 
@@ -368,52 +327,6 @@ override it for any task ID you want.
   `Sys.setenv(RETICULATE_PYTHON = "/path/to/python")` or
   `reticulate::use_python("/path/to/python", required = TRUE)` if it
   picks the wrong one.
-
-## Input requirements and the "error instead of NA" policy
-
-GECO's model needs a complete individual x cell-type grid, and
-several downstream steps (the covariate regression in `GeCo()`, the
-`glassoFast` C code) cannot consume NA at all. Rather than letting a
-single NA propagate into an all-NA output or a crash deep inside
-glasso, **every step stops as soon as it would produce an NA and
-tells you why** (which individuals, cell types, genes or gene pairs
-are affected, and what to do). There is no "skip and continue"
-default anywhere in the pipeline.
-
-Concretely, before running GECO your data must satisfy:
-
-| Requirement | Checked by | What the error names |
-|---|---|---|
-| Every individual has **>= 2 cells in every cell type** | `compute_Y()`, `compute_VS_diag()`, `geco_prepare()` | the (individual, cell type) groups with 0 or 1 cells, and the individuals to drop |
-| At least 2 cell types | `estimate_geco()`, `geco_prepare()`, `GeCo()` | - |
-| `ind_col` / `ct_col` have no NA | all steps that group by them | number of cells with a missing label |
-| No NA expression values | `compute_OPms()`, `compute_Y()`, `compute_VS_diag()` | the gene(s) |
-| No gene is constant across individuals (`OPsd > 0`) | `compute_OPms()`, `compute_PC1()` | the gene(s) |
-| `fixed_covariates` is numeric, complete (no NA), has a row for every individual (row names matched to individual IDs and reordered) and no constant column | `geco_prepare()` | the individuals / columns at fault |
-| `Y.rds` / `VS_diag.rds` in `work_dir` match `prep.rds` and contain no NA | `geco_chunk()` | the dims / the NA positions |
-
-And at the merge / finalize steps:
-
-- `geco_finalize_estimates()` verifies that the `chunk_*.rds` files
-  cover every gene pair exactly once and stops listing the uncovered
-  pair ranges and the task_ids it found, so a SLURM task killed by OOM
-  or a time limit cannot silently drop its pairs.
-- `geco_finalize_outputs()` stops if any `precision_<ct>.rds` is
-  missing, naming the cell type and the step-03 `ct_idx` to resubmit.
-- `reformat_to_matrices()`, `compute_p_matrix()`, `transform_psd()`
-  and `fit_precision()` all refuse NA input. `transform_psd()` keeps an
-  explicit opt-in `na_action = "zero"` if you know why entries are
-  missing.
-
-The usual fix for the most common error (incomplete grid) is to
-filter individuals before loading, e.g.
-
-```r
-data <- load_h5ad("data_post_qc.h5ad", genes = genes)
-counts <- table(data$ind_cov, data$cg_cov)
-keep   <- rownames(counts)[apply(counts >= 2, 1, all)]
-data   <- data[data$ind_cov %in% keep, ]
-```
 
 ## Notes and caveats
 
