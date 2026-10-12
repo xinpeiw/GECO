@@ -22,7 +22,6 @@ on a single node, so this is the only supported way to run it.
   - [Choosing which fixed covariates to regress out](#choosing-which-fixed-covariates-to-regress-out)
   - [What ends up where on disk](#what-ends-up-where-on-disk)
   - [Wall-time breakdown](#wall-time-breakdown)
-  - [The Y and VS_diag tensors](#the-y-and-vs_diag-tensors)
   - [Memory & disk budget](#memory--disk-budget)
   - [Resuming after a partial failure](#resuming-after-a-partial-failure)
   - [Running a single SLURM chunk manually](#running-a-single-slurm-chunk-manually)
@@ -283,22 +282,6 @@ scale linearly with total cell count.
 | 5,000   |  ~5 m    | 12,500,000 |  ~45 m / task  | ~15 m   | ~10 m  |  ~5 m  |
 | 10,000  | ~10 m    | 49,995,000 |   ~3 h / task  |  ~1 h   | ~35 m  | ~20 m  |
 | 20,000  | ~20 m    |     ~200M  |  ~11 h / task  |  ~4 h   | ~2.5 h |  ~1 h  |
-
-### The Y and VS_diag tensors
-
-`geco_prepare()` precomputes two large tensors once before the chunk
-step and reuses them for every gene pair:
-
-- `Y.rds` — `[n_ind, n_gene, n_ct]` per-(individual, gene, cell-type) means
-- `VS_diag.rds` — `[n_ind, n_ct, n_gene]` per-(individual, cell-type) variances
-
-They are always computed from the cells that were just written to
-`cell_data.fst`, and there is deliberately no way to supply them from
-outside: the estimator (and the per-pair covariance, which uses the
-`Y` means for its centering) requires that the means, the variances
-and the cell-level data all describe exactly the same cells. The
-precompute is cheap relative to the chunk step (see the wall-time
-table above).
 
 ### Memory & disk budget
 
