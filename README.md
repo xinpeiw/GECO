@@ -18,7 +18,7 @@ on a single node, so this is the only supported way to run it.
 - [Installation](#installation)
 - [Running on a cluster](#running-on-a-cluster)
   - [Running it](#running-it)
-  - [Choosing which fixed covariates to regress out](#choosing-which-fixed-covariates-to-regress-out)
+  - [Choosing which covariates to adjust](#choosing-which-covariates-to-adjust)
   - [What ends up where on disk](#what-ends-up-where-on-disk)
   - [Wall-time breakdown](#wall-time-breakdown)
   - [Memory & disk budget](#memory--disk-budget)
@@ -154,7 +154,7 @@ geco_precision_chunk(work_dir = "work/", output_dir = "results/", ct_idx = i)
 geco_finalize_outputs(work_dir = "work/", output_dir = "results/")
 ```
 
-### Choosing which fixed covariates to regress out
+### Choosing which covariates to adjust
 
 You supply the per-individual covariates yourself, as a numeric
 matrix (or `data.frame`) with one row per individual and one column
