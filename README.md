@@ -107,42 +107,9 @@ per covariate:
 - row names = individual IDs exactly as they appear in `ind_col`;
   every individual in the data must have a row (extra rows are
   ignored, and rows are reordered to the data's individual order);
-- all columns numeric: encode sex, batch, case/control etc. as 0/1
-  (or dummy) columns yourself; bin or scale age however you prefer;
-- no intercept column (one is fitted per gene and cell type) and no
-  constant column;
+- all columns numeric;
+- no intercept column;
 - no NA.
-
-Anything else is an error that names the offending individuals or
-columns. `fixed_covariates = NULL` (the default) skips the
-regression entirely.
-
-With `generate_slurm_pipeline()`, save the matrix to a file and
-point to it with `fixed_covariates_file`; the generated
-`00_prepare.R` reads it with `read_covariates()` and hands it to
-`geco_prepare()`. The file is a tab-separated `.txt` table: a header
-row with the covariate names, then one row per individual with the
-individual ID in the first column (`.tsv`, `.csv` and `.rds` are also
-accepted).
-
-```r
-# e.g. build it from the h5ad obs table once, in R:
-obs  <- as.data.frame(anndata::read_h5ad("data_post_qc.h5ad")$obs)
-obs  <- obs[!duplicated(obs$ind_cov), ]
-fcov <- data.frame(row.names = obs$ind_cov,
-                   age  = as.numeric(obs$Age),
-                   male = as.numeric(obs$Sex == "Male"))
-write.table(fcov, "covariates.txt", sep = "\t", quote = FALSE, col.names = NA)
-
-generate_slurm_pipeline(..., fixed_covariates_file = "covariates.txt")
-
-# or, calling geco_prepare() directly:
-geco_prepare(..., fixed_covariates = fcov)
-```
-
-If you want an expression principal component as a covariate, load
-the data with `load_h5ad()`, call `compute_PC1(data, genes)` and
-`cbind()` its `PC1` column (rows named by individual) to the matrix.
 
 ### What ends up where on disk
 
