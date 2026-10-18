@@ -1,0 +1,118 @@
+Phenotype,FinnGen ID,EFO/MONDO ID,Category,h2_z,primary_h2z_gt4,TA_immune_system,TA_infectious,TA_hematologic,manual_relabel,Immune_subcategory
+Pulmonary tuberculosis,FINNGEN_R12_AB1_TUBERCULOSIS,MONDO_0018076,Immune,1.7116883116883117,False,False,True,False,False,infectious_disease
+Allergic rhinitis,FINNGEN_R12_ALLERG_RHINITIS,EFO_0005854,Immune,10.11023622047244,True,True,False,False,False,immune_system_disease
+Pediatric asthma,FINNGEN_R12_ASTHMA_CHILD_EXMORE,MONDO_0005405,Immune,9.04074074074074,True,True,False,False,True,immune_system_disease
+Malignant lymphoma,FINNGEN_R12_CD2_NONFOLLICULAR_LYMPHOMA_EXALLC,EFO_0000574,Immune,2.839572192513369,False,False,False,True,False,hematologic_disease
+Iron deficiency anemia,FINNGEN_R12_D3_ANAEMIA_IRONDEF,HP_0001891,Immune,4.504347826086956,True,False,False,True,False,hematologic_disease
+Idiopathic thrombocytopenic purpura,FINNGEN_R12_D3_ITP,MONDO_0043768,Immune,-0.5183443085606774,False,True,False,True,False,immune_system_disease
+Hypothyroidism,FINNGEN_R12_E4_HYTHY_AI_STRICT,EFO_0003779,Immune,17.70408163265306,True,True,False,False,False,immune_system_disease
+Hashimoto's disease,FINNGEN_R12_E4_THYROIDITAUTOIM,EFO_0006812,Immune,1.9941270688734651,False,True,False,False,False,immune_system_disease
+Graves' disease,FINNGEN_R12_E4_THYTOXGOITDIF,EFO_0009190,Immune,9.63803680981595,True,True,False,False,False,immune_system_disease
+Multiple sclerosis,FINNGEN_R12_G6_MS,MONDO_0005301,Immune,7.47329650092081,True,True,False,False,False,immune_system_disease
+Allergic conjunctivitis,FINNGEN_R12_H7_ALLERGICCONJUNCTIVITIS,EFO_0007141,Immune,12.604938271604938,True,True,False,False,False,immune_system_disease
+Asthma,FINNGEN_R12_J10_ASTHMA_EXMORE,MONDO_0004979,Immune,18.35526315789474,True,True,False,False,True,immune_system_disease
+Pneumonia,FINNGEN_R12_J10_PNEUMOBACT,EFO_1001272,Immune,5.846153846153847,True,False,True,False,False,infectious_disease
+Tonsillitis,FINNGEN_R12_J10_TONSILLITIS,MONDO_0001039,Immune,7.799999999999999,True,True,False,False,False,immune_system_disease
+Crohn's disease,FINNGEN_R12_K11_CD_STRICT2,EFO_0000384,Immune,6.2109181141439205,True,True,False,False,False,immune_system_disease
+Coeliac disease,FINNGEN_R12_K11_COELIAC,EFO_0001060,Immune,4.387096774193549,True,True,False,False,False,immune_system_disease
+Ulcerative colitis,FINNGEN_R12_K11_UC_STRICT2,EFO_0000729,Immune,12.584795321637426,True,True,False,False,False,immune_system_disease
+Contact dermatitis,FINNGEN_R12_L12_ALLERGICCONTACT,EFO_1000668,Immune,5.92608695652174,True,True,False,False,False,immune_system_disease
+Atopic dermatitis,FINNGEN_R12_L12_ATOPIC,EFO_0000274,Immune,9.420289855072465,True,True,False,False,False,immune_system_disease
+Psoriasis vulgaris,FINNGEN_R12_L12_PSORIASIS,EFO_0000676,Immune,12.116666666666667,True,True,False,False,False,immune_system_disease
+Urticaria,FINNGEN_R12_L12_URTICA_ALLERG,EFO_1000669,Immune,2.5308310991957104,False,True,False,False,False,immune_system_disease
+Ankylosing spondylitis,FINNGEN_R12_M13_ANKYLOSPON,EFO_0003898,Immune,5.056027164685909,True,True,False,False,False,immune_system_disease
+Juvenile rheumatoid arthritis,FINNGEN_R12_M13_JUVERHEU,EFO_0005755,Immune,3.7487615003538566,False,True,False,False,True,immune_system_disease
+Rheumatoid arthritis,FINNGEN_R12_M13_RHEUMA,EFO_0000685,Immune,12.404580152671755,True,True,False,False,False,immune_system_disease
+Sjogren's syndrome,FINNGEN_R12_M13_SJOGREN,EFO_0000699,Immune,4.914847161572053,True,True,False,False,False,immune_system_disease
+Pollinosis,FINNGEN_R12_POLLENALLERG,EFO_0003956,Immune,9.016129032258064,True,True,False,False,False,immune_system_disease
+Systemic lupus erythematosus,FINNGEN_R12_SLE_FG,MONDO_0004670,Immune,2.923734853884533,False,True,False,False,False,immune_system_disease
+Type 1 diabetes,FINNGEN_R12_T1D,MONDO_0005147,Immune,6.0,True,True,False,False,False,immune_system_disease
+Hyperthyroidism,FINNGEN_R12_THYROTOXICOSIS,EFO_0009190,Immune,10.376344086021506,True,True,False,False,False,immune_system_disease
+Cancer of hepatic bile ducts,FINNGEN_R12_C3_BILIARY_GALLBLADDER_EXALLC,EFO_0008550,Non-Immune,2.25626204238921,False,False,False,False,False,
+Brain tumor,FINNGEN_R12_C3_BRAIN_EXALLC,MONDO_0001657,Non-Immune,1.933649289099526,False,False,False,False,False,
+Breast cancer,FINNGEN_R12_C3_BREAST_EXALLC,MONDO_0007254,Non-Immune,10.933333333333334,True,False,False,False,False,
+Lung cancer,FINNGEN_R12_C3_BRONCHUS_LUNG_EXALLC,MONDO_0008903,Non-Immune,7.0162162162162165,True,False,False,False,False,
+Cervical cancer,FINNGEN_R12_C3_CERVIX_UTERI_EXALLC,MONDO_0002974,Non-Immune,0.1928934010152284,False,False,False,False,False,
+Colorectal cancer,FINNGEN_R12_C3_COLON_EXALLC,MONDO_0021063,Non-Immune,6.772727272727272,True,False,False,False,False,
+Endometrial cancer,FINNGEN_R12_C3_CORPUS_UTERI_EXALLC,EFO_0007532,Non-Immune,4.31638418079096,True,False,False,False,False,
+Hepatic cancer,FINNGEN_R12_C3_HEPATOCELLU_CARC_EXALLC,EFO_0000182,Non-Immune,0.8395522388059701,False,False,False,False,False,
+Esophageal cancer,FINNGEN_R12_C3_OESOPHAGUS_EXALLC,MONDO_0007576,Non-Immune,1.366150442477876,False,False,False,False,False,
+Skin cancer,FINNGEN_R12_C3_OTHER_SKIN_EXALLC,EFO_0009260,Non-Immune,11.991803278688526,True,False,False,False,False,
+Ovarian cancer,FINNGEN_R12_C3_OVARY_EXALLC,MONDO_0008170,Non-Immune,2.9111498257839723,False,False,False,False,False,
+Pancreatic cancer,FINNGEN_R12_C3_PANCREAS_EXALLC,EFO_1000359,Non-Immune,3.245862884160757,False,False,False,False,False,
+Prostate cancer,FINNGEN_R12_C3_PROSTATE_EXALLC,MONDO_0008315,Non-Immune,10.93975903614458,True,False,False,False,False,
+Gastric cancer,FINNGEN_R12_C3_STOMACH_EXALLC,EFO_0003897,Non-Immune,1.6017094017094018,False,False,False,False,False,
+Thyroid cancer,FINNGEN_R12_C3_THYROID_GLAND_EXALLC,EFO_0003841,Non-Immune,4.294243070362474,True,False,False,False,False,
+Uterine fibroid,FINNGEN_R12_CD2_BENIGN_LEIOMYOMA_UTERI,EFO_0000731,Non-Immune,10.181818181818182,True,False,False,False,False,
+Diabetic nephropathy,FINNGEN_R12_DM_NEPHROPATHY,EFO_0000401,Non-Immune,1.7058823529411762,False,False,False,False,False,
+Goiter,FINNGEN_R12_E4_GOITREMULTINOD,MONDO_0000334,Non-Immune,4.4511970534069984,True,False,False,False,False,
+Depression,FINNGEN_R12_F5_DEPRESSIO,MONDO_0002050,Non-Immune,16.857142857142858,True,False,False,False,False,
+Insomnia,FINNGEN_R12_F5_INSOMNIA,EFO_0004698,Non-Immune,4.8674033149171265,True,False,False,False,False,
+Substance dependence,FINNGEN_R12_F5_OTHERSUB,MONDO_0001423,Non-Immune,6.0819327731092425,True,False,False,False,False,
+Schizophrenia,FINNGEN_R12_F5_SCHZPHR,MONDO_0005090,Non-Immune,7.575581395348837,True,False,False,False,False,
+Facial nerve palsy (Bell's palsy),FINNGEN_R12_G6_BELLPA,EFO_0007167,Non-Immune,5.1,True,False,False,False,False,
+Carpal tunnel syndrome,FINNGEN_R12_G6_CARPTU,EFO_0004143,Non-Immune,22.022222222222226,True,False,False,False,False,
+Epilepsy,FINNGEN_R12_G6_EPLEPSY,EFO_0000474,Non-Immune,5.928571428571429,True,False,False,False,False,
+Parkinson's disease,FINNGEN_R12_G6_PARKINSON,MONDO_0005180,Non-Immune,5.463414634146341,True,False,False,False,False,
+Sleep apnea syndrome,FINNGEN_R12_G6_SLEEPAPNO,EFO_0003877,Non-Immune,20.245283018867926,True,False,False,False,False,
+Cataract,FINNGEN_R12_H7_CATARACTSENILE,HP_0011141,Non-Immune,14.272727272727272,True,False,False,False,False,
+Retinal detachment,FINNGEN_R12_H7_RETINALDETACH,MONDO_0001539,Non-Immune,7.058823529411764,True,False,False,False,False,
+Chronic suppurative otitis media,FINNGEN_R12_H8_CHRON_SUPOTITIS,EFO_0007503,Non-Immune,2.5427251732101617,False,False,False,False,False,
+"Hearing loss, difficulty in hearing",FINNGEN_R12_H8_HL_SEN_NAS,EFO_1001176,Non-Immune,13.673469387755103,True,False,False,False,False,
+Meniere's disease,FINNGEN_R12_H8_MENIERE,EFO_0006862,Non-Immune,4.2204724409448815,True,False,False,False,False,
+Inguinal hernia,FINNGEN_R12_HERING_BILATERAL,HP_0000023,Non-Immune,7.057377049180327,True,False,False,False,False,
+Atrial flutter/fibrillation,FINNGEN_R12_I9_AF,EFO_0003911,Non-Immune,18.445945945945947,True,False,False,False,False,
+Cerebral aneurysm / Unruptured cerebral aneurysm,FINNGEN_R12_I9_ANEURYSM,EFO_0003870,Non-Immune,8.061032863849766,True,False,False,False,False,
+Angina pectoris,FINNGEN_R12_I9_ANGINA,EFO_0003913,Non-Immune,18.095890410958905,True,False,False,False,False,
+Aortic aneurysm,FINNGEN_R12_I9_AORTANEUR,EFO_0001666,Non-Immune,9.61,True,False,False,False,False,
+Chronic heart failure,FINNGEN_R12_I9_HEARTFAIL,EFO_0003144,Non-Immune,13.702127659574469,True,False,False,False,False,
+Hypertrophic cardiomyopathy,FINNGEN_R12_I9_HYPERTROCARDMYOP,EFO_0000538,Non-Immune,0.7946210268948656,False,False,False,False,False,
+Intracerebral hemorrhage,FINNGEN_R12_I9_ICH,EFO_0005669,Non-Immune,3.6184738955823295,False,False,False,False,False,
+Myocardial infarction,FINNGEN_R12_I9_MI_STRICT,EFO_0000612,Non-Immune,15.144329896907216,True,False,False,False,False,
+Myocarditis,FINNGEN_R12_I9_MYOCARD,EFO_0009609,Non-Immune,3.321243523316062,False,False,False,False,False,
+Peripheral arterial disease,FINNGEN_R12_I9_OTHPER,EFO_0003875,Non-Immune,1.935933147632312,False,False,False,False,False,
+Pericarditis,FINNGEN_R12_I9_PERICARD,EFO_0007427,Non-Immune,2.3216630196936543,False,False,False,False,False,
+Rheumatic fever,FINNGEN_R12_I9_RHEUFEV,EFO_1001161,Non-Immune,-0.124859392575928,False,False,False,False,False,
+Subarachnoid hemorrhage,FINNGEN_R12_I9_SAH,EFO_0000713,Non-Immune,6.5342019543973935,True,False,False,False,False,
+Ischemic stroke,FINNGEN_R12_I9_STR,EFO_0000712,Non-Immune,9.24,True,False,False,False,False,
+Unstable angina pectoris,FINNGEN_R12_I9_UAP,EFO_1000985,Non-Immune,12.114754098360654,True,False,False,False,False,
+Varicose,FINNGEN_R12_I9_VARICVE,HP_0002619,Non-Immune,19.97345132743363,True,False,False,False,False,
+Esophageal varix,FINNGEN_R12_I9_VARICVEOES,EFO_0009545,Non-Immune,1.7578125,False,False,False,False,False,
+Cardiac valvular disease,FINNGEN_R12_I9_VHD,EFO_1001161,Non-Immune,13.215384615384616,True,False,False,False,False,
+Interstitial lung disease,FINNGEN_R12_ILD_ENDPOINTS,EFO_0004244,Non-Immune,3.800623052959502,False,False,False,False,False,
+Pulmonary Fibrosis,FINNGEN_R12_IPF,EFO_0009448,Non-Immune,3.906382978723404,False,False,False,False,False,
+Pneumoconiosis,FINNGEN_R12_J10_ASBESTPNEUMOC,EFO_0007153,Non-Immune,1.6530460624071324,False,False,False,False,False,
+Bronchitis,FINNGEN_R12_J10_BRONCHITIS,HP_0012388,Non-Immune,4.742424242424243,True,False,False,False,False,
+Chronic sinusitis,FINNGEN_R12_J10_CHRONSINUSITIS,EFO_0007486,Non-Immune,12.792079207920793,True,False,False,False,False,
+Chronic obstructive pulmonary disease,FINNGEN_R12_J10_COPD,EFO_0000341,Non-Immune,16.563106796116504,True,False,False,False,False,
+Nasal polyp,FINNGEN_R12_J10_NASALPOLYP,EFO_1000391,Non-Immune,11.648026315789474,True,False,False,False,False,
+Chronic bronchitis,FINNGEN_R12_J10_SIMPLBRONCH,EFO_0006505,Non-Immune,1.8874269005847952,False,False,False,False,False,
+Acute pancreatitis,FINNGEN_R12_K11_ACUTPANC,EFO_1000652,Non-Immune,4.735632183908046,True,False,False,False,False,
+Cholecystitis,FINNGEN_R12_K11_CHOLECYST,HP_0001082,Non-Immune,3.8604651162790704,False,False,False,False,False,
+Cholelithiasis,FINNGEN_R12_K11_CHOLELITH,EFO_0004799,Non-Immune,9.114864864864863,True,False,False,False,False,
+Chronic gastritis,FINNGEN_R12_K11_CHRONGASTR,EFO_0000337,Non-Immune,4.153153153153153,True,False,False,False,False,
+Chronic pancreatitis,FINNGEN_R12_K11_CHRONPANC,EFO_0000342,Non-Immune,3.653543307086614,False,False,False,False,False,
+Gastric ulcer,FINNGEN_R12_K11_GULC,EFO_0009454,Non-Immune,3.5189873417721516,False,False,False,False,False,
+Ileus,FINNGEN_R12_K11_ILEUS,MONDO_0004565,Non-Immune,3.4956521739130437,False,False,False,False,False,
+Constipation,FINNGEN_R12_K11_OTHFUNC,EFO_0009431,Non-Immune,7.6875,True,False,False,False,False,
+Gastroesophageal reflux disease,FINNGEN_R12_K11_REFLUX,EFO_0003948,Non-Immune,14.673469387755103,True,False,False,False,False,
+Toxic epidermal necrolysis/Stevens-Johnson syndrome,FINNGEN_R12_L12_ERYTHEMAMULTIF,EFO_1000694,Non-Immune,0.3418803418803419,False,False,False,False,False,
+Keloid,FINNGEN_R12_L12_HYPETROPHICSCAR,EFO_1000759,Non-Immune,2.928954423592493,False,False,False,False,False,
+Back pain,FINNGEN_R12_M13_LOWBACKPAIN,HP_0003419,Non-Immune,17.862745098039216,True,False,False,False,False,
+Osteoporosis,FINNGEN_R12_M13_OSTEOPOROSIS,EFO_0003882,Non-Immune,9.901162790697676,True,False,False,False,False,
+Spinal canal stenosis,FINNGEN_R12_M13_SPINSTENOSIS,EFO_0007490,Non-Immune,17.258928571428573,True,False,False,False,False,
+Acute glomerulonephritis,FINNGEN_R12_N14_ACUTENEPHRITIC,EFO_1002050,Non-Immune,0.2946001367053998,False,False,False,False,False,
+Mastopathy,FINNGEN_R12_N14_BENIGNMAMDYSP,EFO_0003014,Non-Immune,3.4609374999999996,False,False,False,False,False,
+Urolithiasis,FINNGEN_R12_N14_CALCUKIDUR,EFO_1001228,Non-Immune,11.705202312138727,True,False,False,False,False,
+Chronic renal failure,FINNGEN_R12_N14_CHRONKIDNEYDIS,EFO_0003884,Non-Immune,5.545454545454546,True,False,False,False,False,
+Cystitis,FINNGEN_R12_N14_CYSTITIS,EFO_1000025,Non-Immune,11.689655172413794,True,False,False,False,False,
+Endometriosis,FINNGEN_R12_N14_ENDOMETRIOSIS_NOS,EFO_0001065,Non-Immune,7.405405405405406,True,False,False,False,False,
+Uterine prolapse,FINNGEN_R12_N14_FEMGENPROL,MONDO_0001592,Non-Immune,17.43243243243243,True,False,False,False,False,
+Nephrotic syndrome,FINNGEN_R12_N14_NEPHROTICSYND,EFO_0004255,Non-Immune,0.9861554845580404,False,False,False,False,False,
+Neuropathic bladder,FINNGEN_R12_N14_NEUROMUSCDYSBLADD,EFO_1001902,Non-Immune,2.7522658610271904,False,False,False,False,False,
+Ovarian cyst,FINNGEN_R12_N14_OVARYCYST,HP_0000138,Non-Immune,11.771084337349397,True,False,False,False,False,
+Pyelonephritis,FINNGEN_R12_N14_PYELONEPHR,EFO_1002050,Non-Immune,7.155555555555556,True,False,False,False,False,
+IgA nephritis,FINNGEN_R12_N14_RECURANDPERHEAMATUR,HP_0000790,Non-Immune,2.7449682933553903,False,False,False,False,False,
+Abortion,FINNGEN_R12_O15_ABORT_SPONTAN,EFO_1001255,Non-Immune,4.0508474576271185,True,False,False,False,False,
+Pre-eclampsia,FINNGEN_R12_O15_PREECLAMPS,EFO_0000668,Non-Immune,10.702380952380953,True,False,False,False,False,
+Type 2 diabetes,FINNGEN_R12_T2D,MONDO_0005148,Non-Immune,22.10666666666667,True,False,False,False,False,
