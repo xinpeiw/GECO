@@ -1,0 +1,7 @@
+type=Annotation
+software_used.software.name=trace
+status=released
+assembly=GRCh38
+biosample_ontology.classification=primary cell
+organism.scientific_name=Homo sapiens
+biosample_ontology.term_name=memory B cell

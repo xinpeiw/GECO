@@ -1,0 +1,43 @@
+assay,unit,group,mode,beta
+Enhancer,CD4NC,Focal specific,Baseline,1.3434931072665
+Enhancer,CD4NC,Non-focal specific,Baseline,1.04478940037621
+Enhancer,CD4NC,Shared,Baseline,0.320687745211077
+Enhancer,CD4NC,Focal specific,Adjusted,0.86764387772546
+Enhancer,CD4NC,Non-focal specific,Adjusted,0.46943875258874
+Enhancer,CD4NC,Shared,Adjusted,0.542649048452029
+Enhancer,CD4ET,Focal specific,Baseline,0.908813850676509
+Enhancer,CD4ET,Non-focal specific,Baseline,0.803729656073347
+Enhancer,CD4ET,Shared,Baseline,0.0611933060402815
+Enhancer,CD4ET,Focal specific,Adjusted,0.632953286528247
+Enhancer,CD4ET,Non-focal specific,Adjusted,0.456631813302724
+Enhancer,CD4ET,Shared,Adjusted,0.296702569608701
+Enhancer,CD8NC,Focal specific,Baseline,1.14747074495798
+Enhancer,CD8NC,Non-focal specific,Baseline,1.16415106491552
+Enhancer,CD8NC,Shared,Baseline,0.206515930602856
+Enhancer,CD8NC,Focal specific,Adjusted,0.758457983352116
+Enhancer,CD8NC,Non-focal specific,Adjusted,0.552653736035468
+Enhancer,CD8NC,Shared,Adjusted,0.470771687675494
+Enhancer,CD8ET,Focal specific,Baseline,1.19494175320346
+Enhancer,CD8ET,Non-focal specific,Baseline,0.781991901599234
+Enhancer,CD8ET,Shared,Baseline,0.0820305657875898
+Enhancer,CD8ET,Focal specific,Adjusted,0.748109100098615
+Enhancer,CD8ET,Non-focal specific,Adjusted,0.388218259932406
+Enhancer,CD8ET,Shared,Adjusted,0.310962087374799
+Enhancer,NK,Focal specific,Baseline,1.10764231893921
+Enhancer,NK,Non-focal specific,Baseline,1.04719824497965
+Enhancer,NK,Shared,Baseline,0.195320292504986
+Enhancer,NK,Focal specific,Adjusted,0.492898035059059
+Enhancer,NK,Non-focal specific,Adjusted,0.624509824737718
+Enhancer,NK,Shared,Adjusted,0.426541105785139
+Enhancer,BIN,Focal specific,Baseline,1.58574526631126
+Enhancer,BIN,Non-focal specific,Baseline,0.87304195854553
+Enhancer,BIN,Shared,Baseline,0.149997462656594
+Enhancer,BIN,Focal specific,Adjusted,0.714221804951583
+Enhancer,BIN,Non-focal specific,Adjusted,0.429388678290428
+Enhancer,BIN,Shared,Adjusted,0.415086529915375
+Enhancer,BMem,Focal specific,Baseline,1.0881574138253
+Enhancer,BMem,Non-focal specific,Baseline,0.615345845306061
+Enhancer,BMem,Shared,Baseline,0.035302033856339
+Enhancer,BMem,Focal specific,Adjusted,0.481115449298282
+Enhancer,BMem,Non-focal specific,Adjusted,0.288185003802488
+Enhancer,BMem,Shared,Adjusted,0.255268674851393
