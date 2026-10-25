@@ -1,3 +1,7 @@
+# Input not included in this repository: ENCODE TRACE footprint BED files listed in raw/TFBS/trace_metadata/.
+#   Download them first with: Rscript raw/TFBS/00_download_trace.R  (writes raw/TFBS/trace_footprints/<cell type>/)
+#   Run once per cell type: Rscript raw/TFBS/01_count_tf_per_gene.R <CD4NC|CD4ET|CD8NC|CD8ET|NK|BIN|BMem>
+
 rm(list=ls())
 library(data.table)
 library(GenomicRanges)

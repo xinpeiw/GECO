@@ -1,3 +1,9 @@
+# Inputs not included in this repository; download into raw/background_selection/:
+#   bkgd/chr*.bkgd  B-value map, McVicker et al. 2009 (NCBI36/hg18)
+#     http://www.phrap.org/software_dir/mcvicker_dir/bkgd.tar.gz  (13,756,836 bytes; extract the chr*.bkgd files into raw/background_selection/bkgd/)
+#   hg38ToHg18.over.chain  UCSC liftOver chain
+#     https://hgdownload.soe.ucsc.edu/goldenPath/hg38/liftOver/hg38ToHg18.over.chain.gz  (507,477 bytes; gunzip)
+
 rm(list = ls())
 
 library(data.table)

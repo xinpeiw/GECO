@@ -1,3 +1,7 @@
+# Input not included in this repository; download into raw/housekeeping/:
+#   Housekeeping_GenesHuman.csv  HRT Atlas v1.0 (Hounkpe et al. 2021, Nucleic Acids Res)
+#     https://housekeeping.unicamp.br/Housekeeping_GenesHuman.csv  (126,600 bytes)
+
 rm(list=ls())
 
 library(data.table)

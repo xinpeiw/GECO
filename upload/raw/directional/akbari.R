@@ -1,3 +1,7 @@
+# Input not included in this repository; download into raw/directional/:
+#   hg19ToHg38.over.chain  UCSC liftOver chain
+#     https://hgdownload.soe.ucsc.edu/goldenPath/hg19/liftOver/hg19ToHg38.over.chain.gz  (227,698 bytes; gunzip)
+
 rm(list=ls())
 
 library(data.table)

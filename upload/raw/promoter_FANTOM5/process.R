@@ -1,3 +1,9 @@
+# Inputs not included in this repository; download into raw/promoter_FANTOM5/ (FANTOM5 reprocessed hg38, v9):
+#   hg38_fair+new_CAGE_peaks_phase1and2_ann.txt.gz  (6,033,029 bytes)
+#     https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_v9/extra/CAGE_peaks_expression/hg38_fair%2Bnew_CAGE_peaks_phase1and2_ann.txt.gz
+#   hg38_fair+new_CAGE_peaks_phase1and2_tpm.osc.txt.gz  (837,601,892 bytes)
+#     https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_v9/extra/CAGE_peaks_expression/hg38_fair%2Bnew_CAGE_peaks_phase1and2_tpm.osc.txt.gz
+
 rm(list=ls())
 
 library(data.table)

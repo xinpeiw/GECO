@@ -1,3 +1,8 @@
+# Input not included in this repository; download into raw/stabilizing_selection/:
+#   gnomad_v41_constraint.tsv  gnomAD v4.1 gene constraint metrics
+#     https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/constraint/gnomad.v4.1.constraint_metrics.tsv
+#     (95,546,041 bytes; save as gnomad_v41_constraint.tsv)
+
 rm(list = ls())
 
 suppressMessages({ library(data.table); library(readxl) })
