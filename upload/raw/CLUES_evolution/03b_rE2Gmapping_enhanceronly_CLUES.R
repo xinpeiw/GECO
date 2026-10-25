@@ -1,3 +1,6 @@
+# Input not included in this repository: ENCODE-rE2G BED files listed in raw/CLUES_evolution/re2g_files_manifest.tsv.
+#   Download them first with: bash raw/CLUES_evolution/download_re2g.sh  (writes raw/CLUES_evolution/encode_re2g_multi/)
+
 rm(list=ls())
 
 library(GenomicRanges)

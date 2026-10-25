@@ -1,3 +1,6 @@
+# Input not included in this repository: ENCODE-rE2G BED files listed in raw/directional/re2g_files_manifest.tsv.
+#   Download them first with: bash raw/directional/02_download_re2g.sh  (writes raw/directional/encode_re2g_multi/)
+
 rm(list=ls())
 
 library(GenomicRanges)
