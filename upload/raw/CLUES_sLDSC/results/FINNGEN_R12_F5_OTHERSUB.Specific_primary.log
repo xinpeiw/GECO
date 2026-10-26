@@ -1,0 +1,38 @@
+*********************************************************************
+* LD Score Regression (LDSC)
+* Version 3.0.1
+* (C) 2014-2019 Brendan Bulik-Sullivan and Hilary Finucane
+* Broad Institute of MIT and Harvard / MIT Department of Mathematics
+* GNU General Public License v3
+*********************************************************************
+Call: 
+./ldsc.py \
+--out other_data/gwas_enrichment/clues_mega_results/FINNGEN_R12_F5_OTHERSUB.Specific_primary \
+--h2 raw/sLDSC/sumstats/FINNGEN_R12_F5_OTHERSUB.sumstats.gz \
+--ref-ld-chr other_data/gwas_enrichment/ldsc_reference/baseline_v1.2/baseline_v1.2/baseline.,other_data/gwas_enrichment/ldsc_reference/CLUES_annot/CLUES_Specific.,other_data/gwas_enrichment/ldsc_reference/CLUES_annot/CLUES_Universe. \
+--w-ld-chr other_data/gwas_enrichment/ldsc_reference/1000G_Phase3_weights_hm3_no_MHC/weights.hm3_noMHC. \
+--overlap-annot  \
+--print-coefficients  \
+--frqfile-chr other_data/gwas_enrichment/ldsc_reference/1000G_Phase3_frq/1000G.EUR.QC. 
+
+Beginning analysis at Sun Sep  6 22:02:27 2026
+Reading summary statistics from raw/sLDSC/sumstats/FINNGEN_R12_F5_OTHERSUB.sumstats.gz ...
+Read summary statistics for 1198672 SNPs.
+Reading reference panel LD Score from other_data/gwas_enrichment/ldsc_reference/baseline_v1.2/baseline_v1.2/baseline.,other_data/gwas_enrichment/ldsc_reference/CLUES_annot/CLUES_Specific.,other_data/gwas_enrichment/ldsc_reference/CLUES_annot/CLUES_Universe.[1-22] ... (ldscore_fromlist)
+Read reference panel LD Scores for 1190321 SNPs.
+Removing partitioned LD Scores with zero variance.
+Reading regression weight LD Score from other_data/gwas_enrichment/ldsc_reference/1000G_Phase3_weights_hm3_no_MHC/weights.hm3_noMHC.[1-22] ... (ldscore_fromlist)
+Read regression weight LD Scores for 1187349 SNPs.
+After merging with reference panel LD, 1181290 SNPs remain.
+After merging with regression SNP LD, 1178366 SNPs remain.
+Removed 0 SNPs with chi^2 > 80 (1178366 SNPs remain)
+Total Observed scale h2: 0.2885 (0.0477)
+Categories: baseL2_0 Coding_UCSCL2_0 Coding_UCSC.extend.500L2_0 Conserved_LindbladTohL2_0 Conserved_LindbladToh.extend.500L2_0 CTCF_HoffmanL2_0 CTCF_Hoffman.extend.500L2_0 DGF_ENCODEL2_0 DGF_ENCODE.extend.500L2_0 DHS_peaks_TrynkaL2_0 DHS_TrynkaL2_0 DHS_Trynka.extend.500L2_0 Enhancer_AnderssonL2_0 Enhancer_Andersson.extend.500L2_0 Enhancer_HoffmanL2_0 Enhancer_Hoffman.extend.500L2_0 FetalDHS_TrynkaL2_0 FetalDHS_Trynka.extend.500L2_0 H3K27ac_HniszL2_0 H3K27ac_Hnisz.extend.500L2_0 H3K27ac_PGC2L2_0 H3K27ac_PGC2.extend.500L2_0 H3K4me1_peaks_TrynkaL2_0 H3K4me1_TrynkaL2_0 H3K4me1_Trynka.extend.500L2_0 H3K4me3_peaks_TrynkaL2_0 H3K4me3_TrynkaL2_0 H3K4me3_Trynka.extend.500L2_0 H3K9ac_peaks_TrynkaL2_0 H3K9ac_TrynkaL2_0 H3K9ac_Trynka.extend.500L2_0 Intron_UCSCL2_0 Intron_UCSC.extend.500L2_0 PromoterFlanking_HoffmanL2_0 PromoterFlanking_Hoffman.extend.500L2_0 Promoter_UCSCL2_0 Promoter_UCSC.extend.500L2_0 Repressed_HoffmanL2_0 Repressed_Hoffman.extend.500L2_0 SuperEnhancer_HniszL2_0 SuperEnhancer_Hnisz.extend.500L2_0 TFBS_ENCODEL2_0 TFBS_ENCODE.extend.500L2_0 Transcr_HoffmanL2_0 Transcr_Hoffman.extend.500L2_0 TSS_HoffmanL2_0 TSS_Hoffman.extend.500L2_0 UTR_3_UCSCL2_0 UTR_3_UCSC.extend.500L2_0 UTR_5_UCSCL2_0 UTR_5_UCSC.extend.500L2_0 WeakEnhancer_HoffmanL2_0 WeakEnhancer_Hoffman.extend.500L2_0 L2_1 L2_2
+Lambda GC: 1.0864
+Mean Chi^2: 1.094
+Intercept: 1.0229 (0.0073)
+Ratio: 0.2439 (0.0778)
+Reading annot matrix from other_data/gwas_enrichment/ldsc_reference/baseline_v1.2/baseline_v1.2/baseline.,other_data/gwas_enrichment/ldsc_reference/CLUES_annot/CLUES_Specific.,other_data/gwas_enrichment/ldsc_reference/CLUES_annot/CLUES_Universe.[1-22] ... (annot)
+Results printed to other_data/gwas_enrichment/clues_mega_results/FINNGEN_R12_F5_OTHERSUB.Specific_primary.results
+Analysis finished at Sun Sep  6 22:03:25 2026
+Total time elapsed: 57.91s
