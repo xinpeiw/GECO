@@ -4,6 +4,8 @@
 #   2018-09-04-trans-eQTLsFDR0.05-CohortInfoRemoved-BonferroniAdded.txt.gz  (1,839,918 bytes)
 #     https://molgenis26.gcc.rug.nl/downloads/eqtlgen/trans-eqtl/2018-09-04-trans-eQTLsFDR0.05-CohortInfoRemoved-BonferroniAdded.txt.gz
 #   cis_tested_genes.txt and trans_tested_genes.txt are included; they are regenerated from the full result files if deleted.
+# media-2.xlsx is the supplementary table file of eQTLGen Phase 2 (Warmerdam et al. 2026, medRxiv 2026.02.04.26343575);
+#   Table S6 = all colocalizing cis-eQTL/trans-eQTL credible-set pairs (PP4 >= 0.8, lead-variant LD R2 >= 0.8), Table S3 = per-gene summary.
 
 rm(list=ls())
 
