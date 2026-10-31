@@ -1,0 +1,1172 @@
+ti_uid	gene	ensg	indication_mesh_id	indication_mesh_term	areas	genetic_support	similarity	assoc_source	ccat	succ_p_1	succ_1_2	succ_2_3	succ_3_a
+ABAT-D009103	ABAT	ENSG00000183044	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.222	OMIM	Preclinical	FALSE			
+ABCB1-D006086	ABCB1	ENSG00000085563	D006086	Graft vs Host Disease	immune	FALSE	0.033	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+ACLY-D007154	ACLY	ENSG00000131473	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+ADA-D007154	ADA	ENSG00000196839	D007154	Immune System Diseases	immune	FALSE	0.449	OMIM	Preclinical	FALSE			
+ADA-D016511	ADA	ENSG00000196839	D016511	Severe Combined Immunodeficiency	congenital, metabolic, immune	TRUE	1	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+ADAM17-D001172	ADAM17	ENSG00000151694	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.214	OTG	Phase I	TRUE	FALSE		
+ADGRE5-D001172	ADGRE5	ENSG00000123146	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	Genebass	Preclinical	FALSE			
+ADH5-D001172	ADH5	ENSG00000197894	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.248	OTG	Preclinical	FALSE			
+ADH5-D001249	ADH5	ENSG00000197894	D001249	Asthma	respiratory, immune	FALSE	0.246	OTG	Preclinical	FALSE			
+ADRB2-D001249	ADRB2	ENSG00000169252	D001249	Asthma	respiratory, immune	TRUE	1	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+ADRB2-D003922	ADRB2	ENSG00000169252	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.483	OTG	Phase II	TRUE	TRUE	FALSE	
+AHR-D003876	AHR	ENSG00000106546	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.762	OTG	Phase III	TRUE	TRUE	TRUE	
+AHR-D007154	AHR	ENSG00000106546	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Preclinical	FALSE			
+AKR1B1-D001249	AKR1B1	ENSG00000085662	D001249	Asthma	respiratory, immune	FALSE	0		Preclinical	FALSE			
+ALOX5-D001249	ALOX5	ENSG00000012779	D001249	Asthma	respiratory, immune	FALSE	0.227	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+ALOX5-D003876	ALOX5	ENSG00000012779	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.207	OTG	Preclinical	FALSE			
+ALOX5-D006967	ALOX5	ENSG00000012779	D006967	Hypersensitivity	immune	FALSE	0.241	OTG	Preclinical	FALSE			
+ALOX5-D065631	ALOX5	ENSG00000012779	D065631	Rhinitis, Allergic	respiratory, immune	FALSE	0.211	OTG	Phase II	TRUE	TRUE	FALSE	
+ALOX5AP-D001249	ALOX5AP	ENSG00000132965	D001249	Asthma	respiratory, immune	FALSE	0.032	OTG	Phase II	TRUE	TRUE	FALSE	
+ANGPT2-D001172	ANGPT2	ENSG00000091879	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.228	OTG	Phase I	TRUE	FALSE		
+ANGPT2-D001249	ANGPT2	ENSG00000091879	D001249	Asthma	respiratory, immune	FALSE	0.227	OTG	Preclinical	FALSE			
+ANXA1-D001327	ANXA1	ENSG00000135046	D001327	Autoimmune Diseases	immune	FALSE	0.218	OTG	Preclinical				
+APOA1-D001172	APOA1	ENSG00000118137	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.219	OTG	Phase I	TRUE	FALSE		
+APOA1-D001249	APOA1	ENSG00000118137	D001249	Asthma	respiratory, immune	FALSE	0.217	OTG	Preclinical	FALSE			
+APOA1-D001327	APOA1	ENSG00000118137	D001327	Autoimmune Diseases	immune	FALSE	0.239	OTG	Preclinical	FALSE			
+APOBEC3G-D006255	APOBEC3G	ENSG00000239713	D006255	Rhinitis, Allergic, Seasonal	respiratory, immune	FALSE	0.182	OTG	Phase II	TRUE	TRUE	FALSE	
+ARF6-D001172	ARF6	ENSG00000165527	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.197	OTG	Preclinical	FALSE			
+ARHGAP45-D006086	ARHGAP45	ENSG00000180448	D006086	Graft vs Host Disease	immune	FALSE	0.192	PICCOLO	Preclinical				
+B2M-D007154	B2M	ENSG00000166710	D007154	Immune System Diseases	immune	FALSE	0.639	OMIM	Preclinical	FALSE			
+BACH1-D009103	BACH1	ENSG00000156273	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.415	OTG	Phase I	TRUE	FALSE		
+BCL2-D008180	BCL2	ENSG00000171791	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.431	OTG	Phase I	TRUE	FALSE		
+BCL6-D001327	BCL6	ENSG00000113916	D001327	Autoimmune Diseases	immune	FALSE	0.686	OTG	Preclinical	FALSE			
+BIRC2-D007154	BIRC2	ENSG00000110330	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+BIRC3-D007154	BIRC3	ENSG00000023445	D007154	Immune System Diseases	immune	FALSE	0.318	OTG	Preclinical	FALSE			
+BIRC5-D001327	BIRC5	ENSG00000089685	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical	FALSE			
+BRD1-D003876	BRD1	ENSG00000100425	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.229	OTG	Preclinical	FALSE			
+BRD1-D008180	BRD1	ENSG00000100425	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.253	OTG	Preclinical	FALSE			
+BRD4-D001327	BRD4	ENSG00000141867	D001327	Autoimmune Diseases	immune	FALSE	0.452	OTG	Preclinical	FALSE			
+BRD4-D007154	BRD4	ENSG00000141867	D007154	Immune System Diseases	immune	FALSE	0.496	OTG	Preclinical	FALSE			
+BST2-D007154	BST2	ENSG00000130303	D007154	Immune System Diseases	immune	FALSE	0.036	OTG	Preclinical	FALSE			
+BTK-D000361	BTK	ENSG00000010671	D000361	Agammaglobulinemia	hematology, immune	FALSE	0.221	OMIM	Preclinical	FALSE			
+BTK-D000744	BTK	ENSG00000010671	D000744	Anemia, Hemolytic, Autoimmune	hematology, immune	FALSE	0.217	OMIM	Phase II	TRUE	TRUE		
+BTK-D001172	BTK	ENSG00000010671	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.34	OMIM	Phase II	TRUE	TRUE		
+BTK-D001249	BTK	ENSG00000010671	D001249	Asthma	respiratory, immune	FALSE	0.256	OMIM	Phase II	TRUE	TRUE		
+BTK-D001327	BTK	ENSG00000010671	D001327	Autoimmune Diseases	immune	FALSE	0.296	OMIM	Preclinical				
+BTK-D003876	BTK	ENSG00000010671	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.382	OMIM	Phase II	TRUE	TRUE		
+BTK-D006086	BTK	ENSG00000010671	D006086	Graft vs Host Disease	immune	FALSE	0.232	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+BTK-D006255	BTK	ENSG00000010671	D006255	Rhinitis, Allergic, Seasonal	respiratory, immune	FALSE	0.223	OMIM	Preclinical	FALSE			
+BTK-D006967	BTK	ENSG00000010671	D006967	Hypersensitivity	immune	FALSE	0.277	OMIM	Phase I	TRUE			
+BTK-D007154	BTK	ENSG00000010671	D007154	Immune System Diseases	immune	FALSE	0.342	OMIM	Phase II	TRUE	TRUE		
+BTK-D008180	BTK	ENSG00000010671	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.252	OMIM	Phase II	TRUE	TRUE		
+BTK-D008181	BTK	ENSG00000010671	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.223	OMIM	Phase II	TRUE	TRUE		
+BTK-D009103	BTK	ENSG00000010671	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.437	OMIM	Phase I	TRUE			
+BTK-D009471	BTK	ENSG00000010671	D009471	Neuromyelitis Optica	neurology, ophthalmology, immune	FALSE	0.39	OMIM	Phase II	TRUE	TRUE		
+BTK-D010392	BTK	ENSG00000010671	D010392	Pemphigus	dermatology, immune	FALSE	0.228	OMIM	Phase III	TRUE	TRUE	TRUE	
+BTK-D012859	BTK	ENSG00000010671	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.321	OMIM	Phase II	TRUE	TRUE		
+BTK-D014581	BTK	ENSG00000010671	D014581	Urticaria	dermatology, immune	FALSE	0.234	OMIM	Phase III	TRUE	TRUE	TRUE	
+BTK-D015433	BTK	ENSG00000010671	D015433	Glomerulonephritis, Membranous	immune	FALSE	0.214	OMIM	Phase II	TRUE	TRUE		
+BTK-D016553	BTK	ENSG00000010671	D016553	Purpura, Thrombocytopenic, Idiopathic	hematology, immune, signs/symptoms	FALSE	0.415	Genebass	Phase III	TRUE	TRUE	TRUE	
+BTLA-D008180	BTLA	ENSG00000186265	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.21	OTG	Phase II	TRUE	TRUE		
+BTN2A2-D001327	BTN2A2	ENSG00000124508	D001327	Autoimmune Diseases	immune	FALSE	0.24	PICCOLO	Preclinical				
+BTN3A1-D001327	BTN3A1	ENSG00000026950	D001327	Autoimmune Diseases	immune	FALSE	0.716	OTG	Preclinical				
+C5AR1-D001172	C5AR1	ENSG00000197405	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+C5AR1-D001249	C5AR1	ENSG00000197405	D001249	Asthma	respiratory, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+C5AR1-D001327	C5AR1	ENSG00000197405	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical				
+C5AR1-D005922	C5AR1	ENSG00000197405	D005922	Glomerulonephritis, IGA	immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+C5AR1-D007154	C5AR1	ENSG00000197405	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+C5AR1-D008180	C5AR1	ENSG00000197405	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Phase I	TRUE	FALSE		
+C5AR1-D008181	C5AR1	ENSG00000197405	D008181	Lupus Nephritis	dermatology, immune	FALSE	0		Preclinical				
+C5AR1-D010391	C5AR1	ENSG00000197405	D010391	Pemphigoid, Bullous	dermatology, immune	FALSE	0		Phase II	TRUE	TRUE		
+C5AR1-D014581	C5AR1	ENSG00000197405	D014581	Urticaria	dermatology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+C5AR1-D015267	C5AR1	ENSG00000197405	D015267	Churg-Strauss Syndrome	cardiovascular, hematology, immune	FALSE	0		Preclinical	FALSE			
+C5AR1-D055953	C5AR1	ENSG00000197405	D055953	Microscopic Polyangiitis	neurology, cardiovascular, immune	FALSE	0		Launched	TRUE	TRUE	TRUE	TRUE
+CASP1-D001172	CASP1	ENSG00000137752	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Preclinical	FALSE			
+CASP1-D003876	CASP1	ENSG00000137752	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0		Phase I	TRUE	FALSE		
+CASP1-D008181	CASP1	ENSG00000137752	D008181	Lupus Nephritis	dermatology, immune	FALSE	0		Preclinical	FALSE			
+CASP1-D009103	CASP1	ENSG00000137752	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Preclinical				
+CASP3-D009103	CASP3	ENSG00000164305	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.385	PICCOLO	Preclinical	FALSE			
+CASP4-D009103	CASP4	ENSG00000196954	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Preclinical	FALSE			
+CBL-D001327	CBL	ENSG00000110395	D001327	Autoimmune Diseases	immune	FALSE	0.239	OTG	Preclinical				
+CCR10-D001249	CCR10	ENSG00000184451	D001249	Asthma	respiratory, immune	FALSE	0		Preclinical	FALSE			
+CCR10-D006967	CCR10	ENSG00000184451	D006967	Hypersensitivity	immune	FALSE	0		Preclinical	FALSE			
+CCR6-D001172	CCR6	ENSG00000112486	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Preclinical	FALSE			
+CCR6-D001249	CCR6	ENSG00000112486	D001249	Asthma	respiratory, immune	FALSE	0.413	OTG	Preclinical	FALSE			
+CCR6-D001327	CCR6	ENSG00000112486	D001327	Autoimmune Diseases	immune	FALSE	0.682	OTG	Preclinical				
+CD160-D001172	CD160	ENSG00000117281	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Preclinical	FALSE			
+CD160-D006086	CD160	ENSG00000117281	D006086	Graft vs Host Disease	immune	FALSE	0		Preclinical	FALSE			
+CD160-D008180	CD160	ENSG00000117281	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Preclinical	FALSE			
+CD19-D001172	CD19	ENSG00000177455	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.363	OMIM	Phase II	TRUE	TRUE	FALSE	
+CD19-D001327	CD19	ENSG00000177455	D001327	Autoimmune Diseases	immune	FALSE	0.386	OMIM	Phase I	TRUE			
+CD19-D006086	CD19	ENSG00000177455	D006086	Graft vs Host Disease	immune	FALSE	0.343	OMIM	Phase II	TRUE	TRUE		
+CD19-D008180	CD19	ENSG00000177455	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.358	OMIM	Phase II	TRUE	TRUE	FALSE	
+CD19-D009471	CD19	ENSG00000177455	D009471	Neuromyelitis Optica	neurology, ophthalmology, immune	FALSE	0.325	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+CD19-D016878	CD19	ENSG00000177455	D016878	POEMS Syndrome	neurology, hematology, congenital, immune	FALSE	0.328	OMIM	Phase I	TRUE			
+CD2-D001327	CD2	ENSG00000116824	D001327	Autoimmune Diseases	immune	FALSE	0.298	OTG	Preclinical	FALSE			
+CD200-D001172	CD200	ENSG00000091972	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.26	OTG	Preclinical	FALSE			
+CD200-D001327	CD200	ENSG00000091972	D001327	Autoimmune Diseases	immune	FALSE	0.298	OTG	Preclinical				
+CD200-D009103	CD200	ENSG00000091972	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	OTG	Preclinical	FALSE			
+CD200R1-D001172	CD200R1	ENSG00000163606	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.413	OTG	Preclinical	FALSE			
+CD200R1-D001327	CD200R1	ENSG00000163606	D001327	Autoimmune Diseases	immune	FALSE	0.452	OTG	Preclinical				
+CD200R1-D003876	CD200R1	ENSG00000163606	D003876	Dermatitis, Atopic	congenital, dermatology, immune	TRUE	0.844	OTG	Phase I	TRUE			
+CD200R1-D006086	CD200R1	ENSG00000163606	D006086	Graft vs Host Disease	immune	FALSE	0.382	OTG	Preclinical	FALSE			
+CD200R1-D014581	CD200R1	ENSG00000163606	D014581	Urticaria	dermatology, immune	FALSE	0.777	OTG	Phase II	TRUE	TRUE	FALSE	
+CD22-D001172	CD22	ENSG00000012124	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.229	PICCOLO	Phase III	TRUE	TRUE	TRUE	
+CD22-D001327	CD22	ENSG00000012124	D001327	Autoimmune Diseases	immune	FALSE	0.253	PICCOLO	Preclinical	FALSE			
+CD22-D008180	CD22	ENSG00000012124	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.224	PICCOLO	Phase I	TRUE			
+CD22-D012859	CD22	ENSG00000012124	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.21	PICCOLO	Preclinical				
+CD247-D006086	CD247	ENSG00000198821	D006086	Graft vs Host Disease	immune	FALSE	0.445	OTG	Preclinical	FALSE			
+CD27-D001327	CD27	ENSG00000139193	D001327	Autoimmune Diseases	immune	FALSE	0.489	OMIM	Preclinical				
+CD28-D001172	CD28	ENSG00000178562	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Phase II	TRUE	TRUE		
+CD28-D001327	CD28	ENSG00000178562	D001327	Autoimmune Diseases	immune	TRUE	1	OTG	Phase I	TRUE			
+CD28-D003922	CD28	ENSG00000178562	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.716	OTG	Preclinical	FALSE			
+CD28-D006086	CD28	ENSG00000178562	D006086	Graft vs Host Disease	immune	FALSE	0.414	OTG	Phase II	TRUE	TRUE		
+CD28-D007154	CD28	ENSG00000178562	D007154	Immune System Diseases	immune	FALSE	0.578	OTG	Phase I	TRUE	FALSE		
+CD28-D008180	CD28	ENSG00000178562	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.667	OTG	Phase II	TRUE	TRUE		
+CD28-D012859	CD28	ENSG00000178562	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	TRUE	0.803	OTG	Phase I	TRUE	FALSE		
+CD36-D006086	CD36	ENSG00000135218	D006086	Graft vs Host Disease	immune	FALSE	0.233	Genebass	Preclinical	FALSE			
+CD38-D000744	CD38	ENSG00000004468	D000744	Anemia, Hemolytic, Autoimmune	hematology, immune	FALSE	0.193	PICCOLO	Phase II	TRUE	TRUE		
+CD38-D001172	CD38	ENSG00000004468	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.218	PICCOLO	Phase I	TRUE	FALSE		
+CD38-D001249	CD38	ENSG00000004468	D001249	Asthma	respiratory, immune	FALSE	0.216	PICCOLO	Preclinical	FALSE			
+CD38-D001327	CD38	ENSG00000004468	D001327	Autoimmune Diseases	immune	FALSE	0.238	PICCOLO	Phase I	TRUE			
+CD38-D005922	CD38	ENSG00000004468	D005922	Glomerulonephritis, IGA	immune	FALSE	0.196	PICCOLO	Phase II	TRUE	TRUE		
+CD38-D008180	CD38	ENSG00000004468	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.214	PICCOLO	Phase II	TRUE	TRUE		
+CD38-D016553	CD38	ENSG00000004468	D016553	Purpura, Thrombocytopenic, Idiopathic	hematology, immune, signs/symptoms	FALSE	0.189	PICCOLO	Phase II	TRUE	TRUE		
+CD3E-D001172	CD3E	ENSG00000198851	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.484	OMIM	Phase II	TRUE	TRUE	FALSE	
+CD3E-D001249	CD3E	ENSG00000198851	D001249	Asthma	respiratory, immune	FALSE	0.48	OMIM	Preclinical	FALSE			
+CD3E-D001327	CD3E	ENSG00000198851	D001327	Autoimmune Diseases	immune	FALSE	0.553	OMIM	Phase I	TRUE			
+CD3E-D003876	CD3E	ENSG00000198851	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.382	OMIM	Preclinical	FALSE			
+CD3E-D003922	CD3E	ENSG00000198851	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.512	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+CD3E-D006086	CD3E	ENSG00000198851	D006086	Graft vs Host Disease	immune	FALSE	0.434	OMIM	Phase II	TRUE	TRUE	FALSE	
+CD3E-D007154	CD3E	ENSG00000198851	D007154	Immune System Diseases	immune	FALSE	0.639	OMIM	Preclinical	FALSE			
+CD3E-D008180	CD3E	ENSG00000198851	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.472	OMIM	Phase I	TRUE			
+CD3E-D009103	CD3E	ENSG00000198851	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.488	OMIM	Phase II	TRUE	TRUE	FALSE	
+CD4-D001172	CD4	ENSG00000010610	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0	OMIM	Phase II	TRUE	TRUE	FALSE	
+CD4-D001249	CD4	ENSG00000010610	D001249	Asthma	respiratory, immune	FALSE	0	OMIM	Phase II	TRUE	TRUE		
+CD4-D006086	CD4	ENSG00000010610	D006086	Graft vs Host Disease	immune	FALSE	0	OMIM	Phase II	TRUE	TRUE	FALSE	
+CD4-D008180	CD4	ENSG00000010610	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0	OMIM	Phase I	TRUE	FALSE		
+CD4-D009103	CD4	ENSG00000010610	D009103	Multiple Sclerosis	neurology, immune	FALSE	0	OMIM	Phase II	TRUE	TRUE	FALSE	
+CD40-D001172	CD40	ENSG00000101017	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Phase II	TRUE	TRUE		
+CD40-D001327	CD40	ENSG00000101017	D001327	Autoimmune Diseases	immune	FALSE	0.686	OTG	Phase I	TRUE			
+CD40-D003922	CD40	ENSG00000101017	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.651	OTG	Phase II	TRUE	TRUE		
+CD40-D006086	CD40	ENSG00000101017	D006086	Graft vs Host Disease	immune	FALSE	0.386	OTG	Phase II	TRUE	TRUE		
+CD40-D007154	CD40	ENSG00000101017	D007154	Immune System Diseases	immune	FALSE	0.505	OTG	Phase I	TRUE	FALSE		
+CD40-D007589	CD40	ENSG00000101017	D007589	Job Syndrome	hematology, congenital, immune	FALSE	0.192	OMIM	Preclinical				
+CD40-D008180	CD40	ENSG00000101017	D008180	Lupus Erythematosus, Systemic	dermatology, immune	TRUE	1	OTG	Phase II	TRUE	TRUE		
+CD40-D008181	CD40	ENSG00000101017	D008181	Lupus Nephritis	dermatology, immune	TRUE	0.824	OTG	Phase II	TRUE	TRUE		
+CD40-D009103	CD40	ENSG00000101017	D009103	Multiple Sclerosis	neurology, immune	TRUE	1	OTG	Preclinical	FALSE			
+CD40-D012859	CD40	ENSG00000101017	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	TRUE	0.803	OTG	Phase II	TRUE	TRUE		
+CD40-D016553	CD40	ENSG00000101017	D016553	Purpura, Thrombocytopenic, Idiopathic	hematology, immune, signs/symptoms	FALSE	0.539	OTG	Phase II	TRUE	TRUE	FALSE	
+CD40LG-D001172	CD40LG	ENSG00000102245	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.362	OMIM	Phase III	TRUE	TRUE	TRUE	
+CD40LG-D001327	CD40LG	ENSG00000102245	D001327	Autoimmune Diseases	immune	FALSE	0.385	OMIM	Preclinical				
+CD40LG-D003922	CD40LG	ENSG00000102245	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.372	OMIM	Phase II	TRUE	TRUE		
+CD40LG-D005922	CD40LG	ENSG00000102245	D005922	Glomerulonephritis, IGA	immune	FALSE	0.334	OMIM	Phase II	TRUE	TRUE		
+CD40LG-D006086	CD40LG	ENSG00000102245	D006086	Graft vs Host Disease	immune	FALSE	0.342	OMIM	Phase II	TRUE	TRUE		
+CD40LG-D007154	CD40LG	ENSG00000102245	D007154	Immune System Diseases	immune	FALSE	0.409	OMIM	Preclinical	FALSE			
+CD40LG-D008180	CD40LG	ENSG00000102245	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.357	OMIM	Phase III	TRUE	TRUE	TRUE	
+CD40LG-D009103	CD40LG	ENSG00000102245	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.363	OMIM	Preclinical				
+CD40LG-D009471	CD40LG	ENSG00000102245	D009471	Neuromyelitis Optica	neurology, ophthalmology, immune	FALSE	0.325	OMIM	Phase I	TRUE			
+CD40LG-D012859	CD40LG	ENSG00000102245	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.342	OMIM	Phase II	TRUE	TRUE		
+CD40LG-D053306	CD40LG	ENSG00000102245	D053306	Hyper-IgM Immunodeficiency Syndrome	hematology, congenital, immune	TRUE	1	OMIM	Preclinical	FALSE			
+CD44-D001172	CD44	ENSG00000026508	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.682	OTG	Preclinical	FALSE			
+CD47-D001172	CD47	ENSG00000196776	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.354	OTG	Preclinical	FALSE			
+CD47-D006086	CD47	ENSG00000196776	D006086	Graft vs Host Disease	immune	FALSE	0.203	OTG	Preclinical	FALSE			
+CD47-D008181	CD47	ENSG00000196776	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.321	OTG	Preclinical	FALSE			
+CD5-D001327	CD5	ENSG00000110448	D001327	Autoimmune Diseases	immune	FALSE	0.298	OTG	Preclinical	FALSE			
+CD52-D009103	CD52	ENSG00000169442	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	PICCOLO	Preclinical	FALSE			
+CD59-D001327	CD59	ENSG00000085063	D001327	Autoimmune Diseases	immune	FALSE	0.234	OMIM	Preclinical				
+CD6-D001172	CD6	ENSG00000013725	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.626	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+CD6-D001249	CD6	ENSG00000013725	D001249	Asthma	respiratory, immune	FALSE	0.222	OTG	Phase I	TRUE			
+CD6-D003922	CD6	ENSG00000013725	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.651	OTG	Preclinical	FALSE			
+CD6-D006086	CD6	ENSG00000013725	D006086	Graft vs Host Disease	immune	FALSE	0.386	OTG	Phase III	TRUE	TRUE	TRUE	
+CD6-D008180	CD6	ENSG00000013725	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.614	OTG	Phase I	TRUE			
+CD6-D008181	CD6	ENSG00000013725	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.562	OTG	Phase I	TRUE			
+CD6-D009103	CD6	ENSG00000013725	D009103	Multiple Sclerosis	neurology, immune	TRUE	1	OTG	Phase I	TRUE	FALSE		
+CD74-D001327	CD74	ENSG00000019582	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical	FALSE			
+CD74-D006086	CD74	ENSG00000019582	D006086	Graft vs Host Disease	immune	FALSE	0		Phase I	TRUE	FALSE		
+CD74-D008180	CD74	ENSG00000019582	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+CD79B-D001172	CD79B	ENSG00000007312	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.371	OMIM	Phase I	TRUE	FALSE		
+CD79B-D001327	CD79B	ENSG00000007312	D001327	Autoimmune Diseases	immune	FALSE	0.397	OMIM	Preclinical	FALSE			
+CD79B-D007154	CD79B	ENSG00000007312	D007154	Immune System Diseases	immune	FALSE	0.423	OMIM	Preclinical				
+CD79B-D008180	CD79B	ENSG00000007312	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.366	OMIM	Phase II	TRUE	TRUE		
+CD79B-D009103	CD79B	ENSG00000007312	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.373	OMIM	Preclinical	FALSE			
+CD83-D006086	CD83	ENSG00000112149	D006086	Graft vs Host Disease	immune	FALSE	0.385	OTG	Preclinical	FALSE			
+CD8A-D006086	CD8A	ENSG00000153563	D006086	Graft vs Host Disease	immune	FALSE	0.441	OMIM	Preclinical	FALSE			
+CDK19-D007154	CDK19	ENSG00000155111	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Preclinical	FALSE			
+CDK4-D001172	CDK4	ENSG00000135446	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.033	Genebass	Preclinical	FALSE			
+CDK5-D001327	CDK5	ENSG00000164885	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical	FALSE			
+CDK6-D001172	CDK6	ENSG00000105810	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Preclinical	FALSE			
+CDK8-D006086	CDK8	ENSG00000132964	D006086	Graft vs Host Disease	immune	FALSE	0.208	OMIM	Preclinical	FALSE			
+CDK8-D007154	CDK8	ENSG00000132964	D007154	Immune System Diseases	immune	FALSE	0.273	OMIM	Preclinical	FALSE			
+CDK9-D007154	CDK9	ENSG00000136807	D007154	Immune System Diseases	immune	FALSE	0.345	PICCOLO	Preclinical	FALSE			
+CDK9-D009103	CDK9	ENSG00000136807	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	PICCOLO	Preclinical	FALSE			
+CFD-D000744	CFD	ENSG00000197766	D000744	Anemia, Hemolytic, Autoimmune	hematology, immune	FALSE	0.332	OMIM	Preclinical	FALSE			
+CFD-D005922	CFD	ENSG00000197766	D005922	Glomerulonephritis, IGA	immune	FALSE	0.336	OMIM	Phase II	TRUE	TRUE		
+CFD-D008181	CFD	ENSG00000197766	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.337	OMIM	Phase II	TRUE	TRUE		
+CFD-D015433	CFD	ENSG00000197766	D015433	Glomerulonephritis, Membranous	immune	FALSE	0.329	OMIM	Phase II	TRUE	TRUE		
+CGAS-D001327	CGAS	ENSG00000164430	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical				
+CGAS-D007154	CGAS	ENSG00000164430	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+CGAS-D008180	CGAS	ENSG00000164430	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Preclinical	FALSE			
+CHEK2-D009103	CHEK2	ENSG00000183765	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.443	Genebass	Preclinical	FALSE			
+CLEC7A-D001249	CLEC7A	ENSG00000172243	D001249	Asthma	respiratory, immune	FALSE	0.186	OMIM	Preclinical	FALSE			
+CLEC7A-D001327	CLEC7A	ENSG00000172243	D001327	Autoimmune Diseases	immune	FALSE	0.197	OMIM	Preclinical	FALSE			
+CLEC7A-D006086	CLEC7A	ENSG00000172243	D006086	Graft vs Host Disease	immune	FALSE	0.178	OMIM	Phase I	TRUE	FALSE		
+CLK2-D001327	CLK2	ENSG00000176444	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical				
+CNR2-D001172	CNR2	ENSG00000188822	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.26	PICCOLO	Preclinical	FALSE			
+CNR2-D001249	CNR2	ENSG00000188822	D001249	Asthma	respiratory, immune	FALSE	0.258	PICCOLO	Preclinical	FALSE			
+CNR2-D003876	CNR2	ENSG00000188822	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.229	PICCOLO	Phase II	TRUE	TRUE	FALSE	
+CNR2-D008180	CNR2	ENSG00000188822	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.253	PICCOLO	Phase II	TRUE	TRUE		
+CNR2-D009103	CNR2	ENSG00000188822	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	PICCOLO	Preclinical	FALSE			
+CRBN-D001327	CRBN	ENSG00000113851	D001327	Autoimmune Diseases	immune	FALSE	0.298	OTG	Preclinical	FALSE			
+CRBN-D006086	CRBN	ENSG00000113851	D006086	Graft vs Host Disease	immune	FALSE	0.233	OTG	Phase II	TRUE	TRUE	FALSE	
+CRBN-D008180	CRBN	ENSG00000113851	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.253	OTG	Phase II	TRUE	TRUE		
+CSF1R-D001172	CSF1R	ENSG00000182578	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+CSF1R-D001249	CSF1R	ENSG00000182578	D001249	Asthma	respiratory, immune	FALSE	0.437	OTG	Phase III	TRUE	TRUE	TRUE	
+CSF1R-D001327	CSF1R	ENSG00000182578	D001327	Autoimmune Diseases	immune	FALSE	0.489	OTG	Preclinical	FALSE			
+CSF1R-D006086	CSF1R	ENSG00000182578	D006086	Graft vs Host Disease	immune	FALSE	0.402	OTG	Phase II	TRUE	TRUE		
+CSF1R-D007154	CSF1R	ENSG00000182578	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Preclinical				
+CSF1R-D008180	CSF1R	ENSG00000182578	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.431	OTG	Preclinical	FALSE			
+CSF1R-D009103	CSF1R	ENSG00000182578	D009103	Multiple Sclerosis	neurology, immune	TRUE	0.853	OMIM	Preclinical	FALSE			
+CSF3R-D006086	CSF3R	ENSG00000119535	D006086	Graft vs Host Disease	immune	FALSE	0.402	Genebass	Launched	TRUE	TRUE	TRUE	TRUE
+CSNK1E-D009103	CSNK1E	ENSG00000213923	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.032	Genebass	Preclinical	FALSE			
+CSNK2A1-D003922	CSNK2A1	ENSG00000101266	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0		Preclinical	FALSE			
+CTLA4-D001172	CTLA4	ENSG00000163599	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Phase I	TRUE			
+CTLA4-D001327	CTLA4	ENSG00000163599	D001327	Autoimmune Diseases	immune	TRUE	1	OTG	Preclinical				
+CTLA4-D006086	CTLA4	ENSG00000163599	D006086	Graft vs Host Disease	immune	FALSE	0.414	OTG	Phase I	TRUE	FALSE		
+CTLA4-D007154	CTLA4	ENSG00000163599	D007154	Immune System Diseases	immune	FALSE	0.578	OTG	Preclinical	FALSE			
+CTLA4-D008180	CTLA4	ENSG00000163599	D008180	Lupus Erythematosus, Systemic	dermatology, immune	TRUE	1	OTG	Phase I	TRUE	FALSE		
+CTPS1-D001327	CTPS1	ENSG00000171793	D001327	Autoimmune Diseases	immune	FALSE	0.417	OMIM	Preclinical				
+CTSB-D001327	CTSB	ENSG00000164733	D001327	Autoimmune Diseases	immune	FALSE	0.489	OTG	Preclinical	FALSE			
+CTSB-D003876	CTSB	ENSG00000164733	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.473	OMIM	Phase I	TRUE	FALSE		
+CTSF-D001249	CTSF	ENSG00000174080	D001249	Asthma	respiratory, immune	FALSE	0.194	OMIM	Preclinical	FALSE			
+CTSF-D001327	CTSF	ENSG00000174080	D001327	Autoimmune Diseases	immune	FALSE	0.207	OMIM	Preclinical	FALSE			
+CTSF-D003876	CTSF	ENSG00000174080	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.306	OMIM	Phase I	TRUE	FALSE		
+CTSF-D009103	CTSF	ENSG00000174080	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.367	OMIM	Preclinical	FALSE			
+CTSK-D001172	CTSK	ENSG00000143387	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.323	OMIM	Phase I	TRUE	FALSE		
+CTSK-D001327	CTSK	ENSG00000143387	D001327	Autoimmune Diseases	immune	FALSE	0.298	PICCOLO	Preclinical	FALSE			
+CTSK-D003876	CTSK	ENSG00000143387	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.293	OMIM	Phase I	TRUE	FALSE		
+CTSS-D001172	CTSS	ENSG00000163131	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.24	PICCOLO	Preclinical	FALSE			
+CTSS-D001249	CTSS	ENSG00000163131	D001249	Asthma	respiratory, immune	FALSE	0.238	PICCOLO	Preclinical	FALSE			
+CTSS-D001327	CTSS	ENSG00000163131	D001327	Autoimmune Diseases	immune	FALSE	0.268	PICCOLO	Phase I	TRUE	FALSE		
+CTSS-D003876	CTSS	ENSG00000163131	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.215	PICCOLO	Phase I	TRUE	FALSE		
+CTSS-D007154	CTSS	ENSG00000163131	D007154	Immune System Diseases	immune	FALSE	0.301	PICCOLO	Preclinical	FALSE			
+CTSS-D009103	CTSS	ENSG00000163131	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.241	PICCOLO	Preclinical	FALSE			
+CTSS-D012859	CTSS	ENSG00000163131	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.217	PICCOLO	Phase II	TRUE	TRUE	FALSE	
+CTSS-D065631	CTSS	ENSG00000163131	D065631	Rhinitis, Allergic	respiratory, immune	FALSE	0.219	PICCOLO	Preclinical	FALSE			
+CUBN-D001327	CUBN	ENSG00000107611	D001327	Autoimmune Diseases	immune	FALSE	0.269	OTG	Preclinical	FALSE			
+CXCL8-D001172	CXCL8	ENSG00000169429	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.228	OTG	Phase I	TRUE	FALSE		
+CXCL8-D006086	CXCL8	ENSG00000169429	D006086	Graft vs Host Disease	immune	FALSE	0.209	OTG	Phase I	TRUE	FALSE		
+CXCR3-D006086	CXCR3	ENSG00000186810	D006086	Graft vs Host Disease	immune	FALSE	0		Preclinical	FALSE			
+CXCR3-D007154	CXCR3	ENSG00000186810	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+CXCR3-D009103	CXCR3	ENSG00000186810	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Preclinical	FALSE			
+CXCR4-D000081207	CXCR4	ENSG00000121966	D000081207	Primary Immunodeficiency Diseases	congenital, immune	FALSE	0	OTG	Phase III	TRUE	TRUE	TRUE	
+CXCR4-D001172	CXCR4	ENSG00000121966	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.626	OTG	Phase II	TRUE	TRUE	FALSE	
+CXCR4-D001327	CXCR4	ENSG00000121966	D001327	Autoimmune Diseases	immune	FALSE	0.686	OTG	Phase I	TRUE			
+CXCR4-D007153	CXCR4	ENSG00000121966	D007153	Immunologic Deficiency Syndromes	immune	TRUE	1	OMIM	Preclinical	FALSE			
+CXCR4-D007154	CXCR4	ENSG00000121966	D007154	Immune System Diseases	immune	FALSE	0.662	OMIM	Preclinical	FALSE			
+CXCR4-D009103	CXCR4	ENSG00000121966	D009103	Multiple Sclerosis	neurology, immune	TRUE	1	OTG	Phase II	TRUE	TRUE	FALSE	
+CXCR5-D001172	CXCR5	ENSG00000160683	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.626	OTG	Preclinical				
+CXCR5-D001249	CXCR5	ENSG00000160683	D001249	Asthma	respiratory, immune	TRUE	1	OTG	Preclinical	FALSE			
+CXCR5-D001327	CXCR5	ENSG00000160683	D001327	Autoimmune Diseases	immune	FALSE	0.686	OTG	Preclinical	FALSE			
+CXCR5-D008180	CXCR5	ENSG00000160683	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.614	OTG	Preclinical				
+CYBB-D001172	CYBB	ENSG00000165168	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.364	OMIM	Preclinical	FALSE			
+CYBB-D006105	CYBB	ENSG00000165168	D006105	Granulomatous Disease, Chronic	hematology, congenital, immune	TRUE	1	OMIM	Preclinical	FALSE			
+CYBB-D009103	CYBB	ENSG00000165168	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.366	OMIM	Preclinical	FALSE			
+CYSLTR1-D001249	CYSLTR1	ENSG00000173198	D001249	Asthma	respiratory, immune	FALSE	0		Launched	TRUE	TRUE	TRUE	TRUE
+CYSLTR1-D006255	CYSLTR1	ENSG00000173198	D006255	Rhinitis, Allergic, Seasonal	respiratory, immune	FALSE	0		Launched	TRUE	TRUE	TRUE	TRUE
+CYSLTR1-D006967	CYSLTR1	ENSG00000173198	D006967	Hypersensitivity	immune	FALSE	0		Phase III	TRUE	TRUE	TRUE	FALSE
+CYSLTR1-D012221	CYSLTR1	ENSG00000173198	D012221	Rhinitis, Allergic, Perennial	respiratory, immune	FALSE	0		Launched	TRUE	TRUE	TRUE	TRUE
+CYSLTR1-D065631	CYSLTR1	ENSG00000173198	D065631	Rhinitis, Allergic	respiratory, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+DCK-D007154	DCK	ENSG00000156136	D007154	Immune System Diseases	immune	FALSE	0.28	OTG	Preclinical	FALSE			
+DCLRE1C-D016511	DCLRE1C	ENSG00000152457	D016511	Severe Combined Immunodeficiency	congenital, metabolic, immune	TRUE	1	OMIM	Preclinical	FALSE			
+DHFR-D001171	DHFR	ENSG00000228716	D001171	Arthritis, Juvenile	musculoskeletal, dermatology, immune	FALSE	0.095	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+DHFR-D001172	DHFR	ENSG00000228716	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.199	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+DHODH-D001172	DHODH	ENSG00000102967	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.259	OMIM	Phase I	TRUE	FALSE		
+DHODH-D001327	DHODH	ENSG00000102967	D001327	Autoimmune Diseases	immune	FALSE	0.296	OMIM	Phase I	TRUE			
+DHODH-D003233	DHODH	ENSG00000102967	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.212	OMIM	Phase I	TRUE			
+DHODH-D003876	DHODH	ENSG00000102967	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.378	OMIM	Phase III	TRUE	TRUE	TRUE	FALSE
+DHODH-D006086	DHODH	ENSG00000102967	D006086	Graft vs Host Disease	immune	FALSE	0.232	OMIM	Phase I	TRUE	FALSE		
+DHODH-D008180	DHODH	ENSG00000102967	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.252	OMIM	Preclinical	FALSE			
+DHODH-D009103	DHODH	ENSG00000102967	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.261	OMIM	Phase I	TRUE	FALSE		
+DHODH-D020275	DHODH	ENSG00000102967	D020275	Guillain-Barre Syndrome	neurology, immune	FALSE	0.228	OMIM	Preclinical				
+DNASE1-D006086	DNASE1	ENSG00000213918	D006086	Graft vs Host Disease	immune	FALSE	0.232	OTG	Preclinical	FALSE			
+DPP4-D001172	DPP4	ENSG00000197635	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Phase II	TRUE	TRUE	FALSE	
+DPP4-D006086	DPP4	ENSG00000197635	D006086	Graft vs Host Disease	immune	FALSE	0.402	OTG	Phase II	TRUE	TRUE		
+DPP4-D007154	DPP4	ENSG00000197635	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Preclinical	FALSE			
+DPYD-D003876	DPYD	ENSG00000188641	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.313	OTG	Phase I	TRUE	FALSE		
+DYRK1A-D001172	DYRK1A	ENSG00000157540	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.36	OTG	Preclinical				
+DYRK1A-D003876	DYRK1A	ENSG00000157540	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.229	OTG	Phase I	TRUE			
+DYRK1A-D003922	DYRK1A	ENSG00000157540	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.485	OTG	Preclinical				
+DYRK1A-D008180	DYRK1A	ENSG00000157540	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.253	OTG	Preclinical	FALSE			
+EEF2-D001327	EEF2	ENSG00000167658	D001327	Autoimmune Diseases	immune	FALSE	0.253	Genebass	Preclinical	FALSE			
+EGLN2-D009103	EGLN2	ENSG00000269858	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	OTG	Preclinical	FALSE			
+EGR1-D003876	EGR1	ENSG00000120738	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.221	OTG	Preclinical	FALSE			
+EIF5A-D007154	EIF5A	ENSG00000132507	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+ENO1-D001172	ENO1	ENSG00000074800	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.26	OTG	Preclinical	FALSE			
+ENO1-D009103	ENO1	ENSG00000074800	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	OTG	Phase I	TRUE			
+EPHX2-D065631	EPHX2	ENSG00000120915	D065631	Rhinitis, Allergic	respiratory, immune	FALSE	0.554	OTG	Preclinical	FALSE			
+EPOR-D001172	EPOR	ENSG00000187266	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.229	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+EPOR-D009103	EPOR	ENSG00000187266	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.23	OTG	Phase II	TRUE	TRUE	FALSE	
+ERN1-D001327	ERN1	ENSG00000178607	D001327	Autoimmune Diseases	immune	FALSE	0.28	OTG	Preclinical	FALSE			
+ESR2-D001172	ESR2	ENSG00000140009	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.26	OTG	Phase II	TRUE	TRUE	FALSE	
+ESR2-D009103	ESR2	ENSG00000140009	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.375	OTG	Preclinical	FALSE			
+ESR2-D009471	ESR2	ENSG00000140009	D009471	Neuromyelitis Optica	neurology, ophthalmology, immune	FALSE	0.508	OTG	Preclinical	FALSE			
+F12-D000799	F12	ENSG00000131187	D000799	Angioedema	cardiovascular, dermatology, immune	TRUE	0.942	OMIM	Preclinical	FALSE			
+F12-D054179	F12	ENSG00000131187	D054179	Angioedemas, Hereditary	cardiovascular, congenital, dermatology, immune	TRUE	0.969	OMIM	Phase III	TRUE	TRUE	TRUE	
+F2R-D003922	F2R	ENSG00000181104	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.424	OTG	Preclinical				
+FAAH-D009103	FAAH	ENSG00000117480	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Preclinical	FALSE			
+FAS-D001172	FAS	ENSG00000026103	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.57	OMIM	Phase II	TRUE	TRUE	FALSE	
+FAS-D001327	FAS	ENSG00000026103	D001327	Autoimmune Diseases	immune	FALSE	0.612	OMIM	Preclinical	FALSE			
+FAS-D006086	FAS	ENSG00000026103	D006086	Graft vs Host Disease	immune	FALSE	0.359	OTG	Preclinical	FALSE			
+FAS-D007154	FAS	ENSG00000026103	D007154	Immune System Diseases	immune	FALSE	0.443	OTG	Preclinical	FALSE			
+FBXO3-D001172	FBXO3	ENSG00000110429	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.199	OTG	Preclinical				
+FCER2-D001249	FCER2	ENSG00000104921	D001249	Asthma	respiratory, immune	FALSE	0.207	OTG	Preclinical	FALSE			
+FCER2-D006967	FCER2	ENSG00000104921	D006967	Hypersensitivity	immune	FALSE	0.216	OTG	Preclinical	FALSE			
+FCGR2A-D007154	FCGR2A	ENSG00000143226	D007154	Immune System Diseases	immune	FALSE	0.487	OTG	Preclinical	FALSE			
+FCGR2B-D001172	FCGR2B	ENSG00000072694	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.26	OTG	Phase II	TRUE	TRUE	FALSE	
+FCGR2B-D001249	FCGR2B	ENSG00000072694	D001249	Asthma	respiratory, immune	FALSE	0.258	OTG	Phase I	TRUE			
+FCGR2B-D001327	FCGR2B	ENSG00000072694	D001327	Autoimmune Diseases	immune	FALSE	0.298	OTG	Preclinical	FALSE			
+FCGR2B-D003876	FCGR2B	ENSG00000072694	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.229	OTG	Phase I	TRUE	FALSE		
+FCGR2B-D005922	FCGR2B	ENSG00000072694	D005922	Glomerulonephritis, IGA	immune	FALSE	0.222	OTG	Phase II	TRUE	TRUE	FALSE	
+FCGR2B-D006967	FCGR2B	ENSG00000072694	D006967	Hypersensitivity	immune	FALSE	0.279	OTG	Phase I	TRUE			
+FCGR2B-D007154	FCGR2B	ENSG00000072694	D007154	Immune System Diseases	immune	FALSE	0.345	OTG	Preclinical				
+FCGR2B-D008180	FCGR2B	ENSG00000072694	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.253	OTG	Phase II	TRUE	TRUE		
+FCGR2B-D009103	FCGR2B	ENSG00000072694	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	OTG	Phase II	TRUE	TRUE	FALSE	
+FCGR2B-D016553	FCGR2B	ENSG00000072694	D016553	Purpura, Thrombocytopenic, Idiopathic	hematology, immune, signs/symptoms	FALSE	0.45	OTG	Phase II	TRUE	TRUE	FALSE	
+FCGR2B-D065631	FCGR2B	ENSG00000072694	D065631	Rhinitis, Allergic	respiratory, immune	FALSE	0.234	OTG	Phase I	TRUE	FALSE		
+FCGR3A-D001172	FCGR3A	ENSG00000203747	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.484	OMIM	Preclinical	FALSE			
+FCGR3A-D007154	FCGR3A	ENSG00000203747	D007154	Immune System Diseases	immune	FALSE	0.639	OMIM	Preclinical	FALSE			
+FCGR3A-D008180	FCGR3A	ENSG00000203747	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.472	OMIM	Preclinical	FALSE			
+FCGR3A-D016553	FCGR3A	ENSG00000203747	D016553	Purpura, Thrombocytopenic, Idiopathic	hematology, immune, signs/symptoms	FALSE	0.459	OTG	Phase I	TRUE	FALSE		
+FCGRT-D000744	FCGRT	ENSG00000104870	D000744	Anemia, Hemolytic, Autoimmune	hematology, immune	FALSE	0.704	OTG	Preclinical				
+FCGRT-D001172	FCGRT	ENSG00000104870	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.332	PICCOLO	Phase II	TRUE	TRUE	FALSE	
+FCGRT-D001327	FCGRT	ENSG00000104870	D001327	Autoimmune Diseases	immune	FALSE	0.298	OTG	Phase II	TRUE	TRUE		
+FCGRT-D007154	FCGRT	ENSG00000104870	D007154	Immune System Diseases	immune	FALSE	0.345	OTG	Phase I	TRUE	FALSE		
+FCGRT-D008180	FCGRT	ENSG00000104870	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.327	PICCOLO	Phase I	TRUE	FALSE		
+FCGRT-D009103	FCGRT	ENSG00000104870	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	OTG	Phase I	TRUE			
+FCGRT-D009471	FCGRT	ENSG00000104870	D009471	Neuromyelitis Optica	neurology, ophthalmology, immune	FALSE	0.334	PICCOLO	Phase II	TRUE	TRUE		
+FCGRT-D010391	FCGRT	ENSG00000104870	D010391	Pemphigoid, Bullous	dermatology, immune	FALSE	0.438	PICCOLO	Phase III	TRUE	TRUE	TRUE	
+FCGRT-D010392	FCGRT	ENSG00000104870	D010392	Pemphigus	dermatology, immune	FALSE	0.442	PICCOLO	Phase III	TRUE	TRUE	TRUE	
+FCGRT-D016553	FCGRT	ENSG00000104870	D016553	Purpura, Thrombocytopenic, Idiopathic	hematology, immune, signs/symptoms	TRUE	0.847	OTG	Phase III	TRUE	TRUE	TRUE	
+FCGRT-D020277	FCGRT	ENSG00000104870	D020277	Polyradiculoneuropathy, Chronic Inflammatory Demyelinating	neurology, immune	FALSE	0.337	PICCOLO	Phase III	TRUE	TRUE	TRUE	
+FCGRT-D020278	FCGRT	ENSG00000104870	D020278	Demyelinating Autoimmune Diseases, CNS	neurology, immune	FALSE	0.263	OTG	Phase III	TRUE	TRUE	TRUE	
+FCGRT-D049970	FCGRT	ENSG00000104870	D049970	Graves Ophthalmopathy	ophthalmology, congenital, endocrine, immune	FALSE	0.541	OTG	Phase III	TRUE	TRUE	TRUE	
+FGFR1-D001249	FGFR1	ENSG00000077782	D001249	Asthma	respiratory, immune	TRUE	1	OTG	Preclinical	FALSE			
+FGFRL1-D008180	FGFRL1	ENSG00000127418	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.414	OTG	Preclinical	FALSE			
+FKBP1A-D001249	FKBP1A	ENSG00000088832	D001249	Asthma	respiratory, immune	FALSE	0.032	OTG	Preclinical	FALSE			
+FKBP1A-D001327	FKBP1A	ENSG00000088832	D001327	Autoimmune Diseases	immune	FALSE	0.034	OTG	Preclinical	FALSE			
+FKBP1A-D003233	FKBP1A	ENSG00000088832	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.028	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+FKBP1A-D003876	FKBP1A	ENSG00000088832	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.029	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+FKBP1A-D006086	FKBP1A	ENSG00000088832	D006086	Graft vs Host Disease	immune	FALSE	0.03	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+FKBP1A-D007154	FKBP1A	ENSG00000088832	D007154	Immune System Diseases	immune	FALSE	0.037	OTG	Preclinical	FALSE			
+FLT3LG-D001327	FLT3LG	ENSG00000090554	D001327	Autoimmune Diseases	immune	FALSE	0.489	OTG	Phase I	TRUE			
+FOXO1-D003922	FOXO1	ENSG00000150907	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.541	OTG	Preclinical				
+FYN-D001172	FYN	ENSG00000010810	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.615	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+FYN-D001249	FYN	ENSG00000010810	D001249	Asthma	respiratory, immune	FALSE	0.409	OTG	Phase III	TRUE	TRUE	TRUE	
+GABBR1-D009103	GABBR1	ENSG00000204681	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.614	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+GATA3-D001249	GATA3	ENSG00000107485	D001249	Asthma	respiratory, immune	TRUE	1	OTG	Phase II	TRUE	TRUE		
+GATA3-D003876	GATA3	ENSG00000107485	D003876	Dermatitis, Atopic	congenital, dermatology, immune	TRUE	1	OTG	Phase II	TRUE	TRUE		
+GLS-D009103	GLS	ENSG00000115419	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.482	OMIM	Preclinical	FALSE			
+GPR183-D007154	GPR183	ENSG00000169508	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+GPR65-D001327	GPR65	ENSG00000140030	D001327	Autoimmune Diseases	immune	FALSE	0.686	OTG	Preclinical				
+GSDMD-D007154	GSDMD	ENSG00000104518	D007154	Immune System Diseases	immune	FALSE	0.278	OTG	Preclinical				
+GSK3B-D001172	GSK3B	ENSG00000082701	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Phase II	TRUE	TRUE	FALSE	
+GSK3B-D003922	GSK3B	ENSG00000082701	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.678	OTG	Phase II	TRUE	TRUE	FALSE	
+GSN-D009103	GSN	ENSG00000148180	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	OTG	Preclinical				
+GZMB-D001172	GZMB	ENSG00000100453	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.332	OTG	Preclinical	FALSE			
+GZMB-D001249	GZMB	ENSG00000100453	D001249	Asthma	respiratory, immune	FALSE	0.199	OTG	Preclinical	FALSE			
+GZMB-D010391	GZMB	ENSG00000100453	D010391	Pemphigoid, Bullous	dermatology, immune	FALSE	0.438	OTG	Preclinical	FALSE			
+HAVCR2-D001327	HAVCR2	ENSG00000135077	D001327	Autoimmune Diseases	immune	FALSE	0.438	OMIM	Preclinical	FALSE			
+HBB-D008232	HBB	ENSG00000244734	D008232	Lymphoproliferative Disorders	hematology, immune	FALSE	0.553	OTG	Phase II	TRUE	TRUE	FALSE	
+HDAC1-D001172	HDAC1	ENSG00000116478	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.036	Genebass	Preclinical	FALSE			
+HDAC1-D006086	HDAC1	ENSG00000116478	D006086	Graft vs Host Disease	immune	FALSE	0.033	Genebass	Preclinical	FALSE			
+HDAC1-D008180	HDAC1	ENSG00000116478	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.035	Genebass	Preclinical	FALSE			
+HDAC1-D008232	HDAC1	ENSG00000116478	D008232	Lymphoproliferative Disorders	hematology, immune	FALSE	0.039	Genebass	Phase II	TRUE	TRUE	FALSE	
+HDAC1-D009103	HDAC1	ENSG00000116478	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.036	Genebass	Preclinical	FALSE			
+HDAC2-D001172	HDAC2	ENSG00000196591	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Preclinical	FALSE			
+HDAC2-D006086	HDAC2	ENSG00000196591	D006086	Graft vs Host Disease	immune	FALSE	0		Preclinical	FALSE			
+HDAC2-D008180	HDAC2	ENSG00000196591	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Preclinical	FALSE			
+HDAC2-D009103	HDAC2	ENSG00000196591	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Preclinical	FALSE			
+HDAC6-D001172	HDAC6	ENSG00000094631	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.036	Genebass	Phase II	TRUE	TRUE		
+HDAC6-D001327	HDAC6	ENSG00000094631	D001327	Autoimmune Diseases	immune	FALSE	0.04	Genebass	Phase I	TRUE			
+HDAC6-D009103	HDAC6	ENSG00000094631	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.036	Genebass	Preclinical	FALSE			
+HDAC8-D001327	HDAC8	ENSG00000147099	D001327	Autoimmune Diseases	immune	FALSE	0.206	OMIM	Preclinical	FALSE			
+HIF1A-D003876	HIF1A	ENSG00000100644	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.195	OTG	Preclinical	FALSE			
+HLA-B-D001327	HLA-B	ENSG00000234745	D001327	Autoimmune Diseases	immune	FALSE	0.726	OTG	Preclinical				
+HLA-DQA1-D003922	HLA-DQA1	ENSG00000196735	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	TRUE	1	OTG	Preclinical	FALSE			
+HLA-DQA1-D012859	HLA-DQA1	ENSG00000196735	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	TRUE	1	OTG	Preclinical	FALSE			
+HLA-DRB1-D000224	HLA-DRB1	ENSG00000196126	D000224	Addison Disease	endocrine, immune	FALSE	0.565	OTG	Preclinical	FALSE			
+HLA-DRB1-D001172	HLA-DRB1	ENSG00000196126	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Phase I	TRUE			
+HLA-DRB1-D009103	HLA-DRB1	ENSG00000196126	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.626	OTG	Preclinical	FALSE			
+HLA-DRB1-D019867	HLA-DRB1	ENSG00000196126	D019867	Anti-Glomerular Basement Membrane Disease	respiratory, immune	FALSE	0.569	OTG	Preclinical	FALSE			
+HMGB1-D001172	HMGB1	ENSG00000189403	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Preclinical	FALSE			
+HMGB1-D001327	HMGB1	ENSG00000189403	D001327	Autoimmune Diseases	immune	FALSE	0.489	OTG	Preclinical	FALSE			
+HMGB1-D003876	HMGB1	ENSG00000189403	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.468	OTG	Phase II	TRUE	TRUE	FALSE	
+HMGB1-D006086	HMGB1	ENSG00000189403	D006086	Graft vs Host Disease	immune	FALSE	0.402	OTG	Preclinical	FALSE			
+HMGB1-D008180	HMGB1	ENSG00000189403	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.431	OTG	Preclinical	FALSE			
+HMOX1-D007647	HMOX1	ENSG00000100292	D007647	Kernicterus	neurology, hematology, congenital, metabolic, immune, signs/symptoms	FALSE	0.399	OMIM	Phase III	TRUE	TRUE	TRUE	FALSE
+HMOX1-D009103	HMOX1	ENSG00000100292	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.216	OMIM	Preclinical	FALSE			
+HSP90AA1-D001172	HSP90AA1	ENSG00000080824	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.219	OTG	Preclinical	FALSE			
+HSP90AA1-D001327	HSP90AA1	ENSG00000080824	D001327	Autoimmune Diseases	immune	FALSE	0.239	OTG	Preclinical	FALSE			
+HSP90AA1-D008180	HSP90AA1	ENSG00000080824	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.215	OTG	Preclinical	FALSE			
+HSP90AA1-D008232	HSP90AA1	ENSG00000080824	D008232	Lymphoproliferative Disorders	hematology, immune	FALSE	0.455	OTG	Phase I	TRUE	FALSE		
+HSP90AA1-D014923	HSP90AA1	ENSG00000080824	D014923	Wiskott-Aldrich Syndrome	hematology, congenital, immune	FALSE	0.536	OTG	Preclinical	FALSE			
+HSP90AA1-D056735	HSP90AA1	ENSG00000080824	D056735	Autoimmune Lymphoproliferative Syndrome	hematology, congenital, immune	FALSE	0.396	OTG	Phase I	TRUE	FALSE		
+HSP90B1-D003922	HSP90B1	ENSG00000166598	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.275	OTG	Preclinical	FALSE			
+HSP90B1-D009103	HSP90B1	ENSG00000166598	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	OTG	Preclinical	FALSE			
+HSPA1A-D001327	HSPA1A	ENSG00000204389	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical	FALSE			
+HSPA1A-D006086	HSPA1A	ENSG00000204389	D006086	Graft vs Host Disease	immune	FALSE	0		Preclinical	FALSE			
+HSPA5-D001172	HSPA5	ENSG00000044574	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Phase II	TRUE	TRUE		
+HSPD1-D001172	HSPD1	ENSG00000144381	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Preclinical	FALSE			
+HSPD1-D001327	HSPD1	ENSG00000144381	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical	FALSE			
+HSPD1-D003922	HSPD1	ENSG00000144381	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0		Phase III	TRUE	TRUE	TRUE	FALSE
+HSPE1-D001172	HSPE1	ENSG00000115541	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+HSPE1-D008180	HSPE1	ENSG00000115541	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+HSPE1-D009103	HSPE1	ENSG00000115541	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+ICAM1-D001172	ICAM1	ENSG00000090339	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.258	OTG	Preclinical	FALSE			
+ICAM1-D001327	ICAM1	ENSG00000090339	D001327	Autoimmune Diseases	immune	FALSE	0.295	OTG	Preclinical	FALSE			
+ICAM1-D003233	ICAM1	ENSG00000090339	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.212	OTG	Phase II	TRUE	TRUE	FALSE	
+ICAM1-D003922	ICAM1	ENSG00000090339	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.273	OTG	Preclinical	FALSE			
+ICAM1-D006086	ICAM1	ENSG00000090339	D006086	Graft vs Host Disease	immune	FALSE	0.232	OTG	Preclinical	FALSE			
+ICAM1-D009103	ICAM1	ENSG00000090339	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.26	OTG	Preclinical	FALSE			
+ICOS-D001172	ICOS	ENSG00000163600	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.363	OMIM	Phase I	TRUE	FALSE		
+ICOS-D008180	ICOS	ENSG00000163600	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.358	OMIM	Phase I	TRUE	FALSE		
+ICOS-D012859	ICOS	ENSG00000163600	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.342	OMIM	Phase I	TRUE	FALSE		
+ICOSLG-D001172	ICOSLG	ENSG00000160223	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Phase I	TRUE	FALSE		
+ICOSLG-D006086	ICOSLG	ENSG00000160223	D006086	Graft vs Host Disease	immune	FALSE	0.385	OTG	Phase II	TRUE	TRUE	FALSE	
+ICOSLG-D008180	ICOSLG	ENSG00000160223	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.611	OTG	Phase II	TRUE	TRUE		
+ICOSLG-D012859	ICOSLG	ENSG00000160223	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	TRUE	0.803	OTG	Phase II	TRUE	TRUE	FALSE	
+IDUA-D006105	IDUA	ENSG00000127415	D006105	Granulomatous Disease, Chronic	hematology, congenital, immune	FALSE	0.305	OMIM	Phase II	TRUE	TRUE	FALSE	
+IFNAR1-D001172	IFNAR1	ENSG00000142166	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.199	PICCOLO	Phase I	TRUE	FALSE		
+IFNAR1-D003876	IFNAR1	ENSG00000142166	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.186	PICCOLO	Preclinical				
+IFNAR1-D008180	IFNAR1	ENSG00000142166	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.197	PICCOLO	Launched	TRUE	TRUE	TRUE	TRUE
+IFNAR1-D008181	IFNAR1	ENSG00000142166	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.184	PICCOLO	Phase III	TRUE	TRUE	TRUE	
+IFNAR1-D009103	IFNAR1	ENSG00000142166	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.376	PICCOLO	Preclinical				
+IFNAR2-D001327	IFNAR2	ENSG00000159110	D001327	Autoimmune Diseases	immune	FALSE	0.553	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+IFNAR2-D008180	IFNAR2	ENSG00000159110	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.472	OMIM	Phase II	TRUE	TRUE	FALSE	
+IFNAR2-D009103	IFNAR2	ENSG00000159110	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.488	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+IFNG-D001172	IFNG	ENSG00000111537	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.349	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+IFNG-D001327	IFNG	ENSG00000111537	D001327	Autoimmune Diseases	immune	FALSE	0.295	OTG	Preclinical				
+IFNG-D003876	IFNG	ENSG00000111537	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.46	OTG	Phase II	TRUE	TRUE	FALSE	
+IFNG-D007154	IFNG	ENSG00000111537	D007154	Immune System Diseases	immune	FALSE	0.341	OTG	Preclinical	FALSE			
+IFNG-D008180	IFNG	ENSG00000111537	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.343	OTG	Phase II	TRUE	TRUE	FALSE	
+IFNG-D008181	IFNG	ENSG00000111537	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.318	OTG	Phase II	TRUE	TRUE	FALSE	
+IFNG-D009103	IFNG	ENSG00000111537	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.26	OTG	Preclinical	FALSE			
+IFNGR1-D003876	IFNGR1	ENSG00000027697	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.491	OTG	Preclinical	FALSE			
+IFNGR1-D007153	IFNGR1	ENSG00000027697	D007153	Immunologic Deficiency Syndromes	immune	FALSE	0.666	OMIM	Preclinical	FALSE			
+IGF1R-D001172	IGF1R	ENSG00000140443	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Phase II	TRUE	TRUE	FALSE	
+IGF1R-D001249	IGF1R	ENSG00000140443	D001249	Asthma	respiratory, immune	FALSE	0.437	OTG	Preclinical	FALSE			
+IGF1R-D003922	IGF1R	ENSG00000140443	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.742	OTG	Preclinical				
+IGF1R-D009103	IGF1R	ENSG00000140443	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.443	OTG	Phase I	TRUE			
+IGF1R-D049970	IGF1R	ENSG00000140443	D049970	Graves Ophthalmopathy	ophthalmology, congenital, endocrine, immune	FALSE	0.51	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+IKBKB-D001172	IKBKB	ENSG00000104365	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+IKBKB-D001249	IKBKB	ENSG00000104365	D001249	Asthma	respiratory, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+IKBKB-D003876	IKBKB	ENSG00000104365	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0		Phase I	TRUE	FALSE		
+IKBKB-D007154	IKBKB	ENSG00000104365	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+IKBKB-D009103	IKBKB	ENSG00000104365	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Phase I	TRUE	FALSE		
+IL10RA-D001172	IL10RA	ENSG00000110324	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.215	OMIM	Phase II	TRUE	TRUE		
+IL10RA-D001327	IL10RA	ENSG00000110324	D001327	Autoimmune Diseases	immune	FALSE	0.234	OMIM	Preclinical				
+IL10RA-D003922	IL10RA	ENSG00000110324	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.223	OMIM	Phase I	TRUE			
+IL10RA-D009103	IL10RA	ENSG00000110324	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.216	OMIM	Preclinical	FALSE			
+IL12RB1-D001172	IL12RB1	ENSG00000096996	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.484	OMIM	Phase I	TRUE	FALSE		
+IL12RB1-D007154	IL12RB1	ENSG00000096996	D007154	Immune System Diseases	immune	FALSE	0.639	OMIM	Preclinical	FALSE			
+IL12RB1-D009103	IL12RB1	ENSG00000096996	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.488	OMIM	Phase I	TRUE	FALSE		
+IL12RB1-D017099	IL12RB1	ENSG00000096996	D017099	IgG Deficiency	hematology, immune	FALSE	0.412	OMIM	Phase I	TRUE	FALSE		
+IL15-D001249	IL15	ENSG00000164136	D001249	Asthma	respiratory, immune	FALSE	0.256	OTG	Preclinical	FALSE			
+IL15-D001327	IL15	ENSG00000164136	D001327	Autoimmune Diseases	immune	FALSE	0.295	OTG	Preclinical				
+IL15-D008180	IL15	ENSG00000164136	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.252	OTG	Preclinical	FALSE			
+IL15-D012859	IL15	ENSG00000164136	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.231	OTG	Preclinical	FALSE			
+IL15-D057765	IL15	ENSG00000164136	D057765	Eosinophilic Esophagitis	digestive, hematology, immune	FALSE	0.519	OTG	Phase I	TRUE			
+IL15RA-D007154	IL15RA	ENSG00000134470	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Preclinical	FALSE			
+IL16-D001327	IL16	ENSG00000172349	D001327	Autoimmune Diseases	immune	FALSE	0.251	OTG	Preclinical	FALSE			
+IL17RA-D001172	IL17RA	ENSG00000177663	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	Genebass	Phase II	TRUE	TRUE	FALSE	
+IL17RA-D001249	IL17RA	ENSG00000177663	D001249	Asthma	respiratory, immune	FALSE	0.437	Genebass	Phase II	TRUE	TRUE	FALSE	
+IL17RA-D001327	IL17RA	ENSG00000177663	D001327	Autoimmune Diseases	immune	FALSE	0.489	Genebass	Phase I	TRUE	FALSE		
+IL17RA-D009103	IL17RA	ENSG00000177663	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.443	Genebass	Preclinical	FALSE			
+IL17RA-D012859	IL17RA	ENSG00000177663	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.401	Genebass	Phase I	TRUE	FALSE		
+IL17RC-D009103	IL17RC	ENSG00000163702	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.187	OMIM	Preclinical	FALSE			
+IL18RAP-D001249	IL18RAP	ENSG00000115607	D001249	Asthma	respiratory, immune	FALSE	0.762	OTG	Preclinical	FALSE			
+IL1RAP-D001327	IL1RAP	ENSG00000196083	D001327	Autoimmune Diseases	immune	FALSE	0.24	OTG	Preclinical				
+IL21R-D008180	IL21R	ENSG00000103522	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.472	OMIM	Phase I	TRUE	FALSE		
+IL23A-D001172	IL23A	ENSG00000110944	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+IL23A-D001249	IL23A	ENSG00000110944	D001249	Asthma	respiratory, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+IL23A-D001327	IL23A	ENSG00000110944	D001327	Autoimmune Diseases	immune	FALSE	0		Phase I	TRUE			
+IL23A-D003876	IL23A	ENSG00000110944	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+IL23A-D003922	IL23A	ENSG00000110944	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0		Phase I	TRUE	FALSE		
+IL23A-D006086	IL23A	ENSG00000110944	D006086	Graft vs Host Disease	immune	FALSE	0		Preclinical	FALSE			
+IL23A-D007154	IL23A	ENSG00000110944	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+IL23A-D008180	IL23A	ENSG00000110944	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Phase III	TRUE	TRUE	TRUE	FALSE
+IL23A-D008181	IL23A	ENSG00000110944	D008181	Lupus Nephritis	dermatology, immune	FALSE	0		Phase II	TRUE	TRUE		
+IL23A-D009103	IL23A	ENSG00000110944	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+IL23A-D017099	IL23A	ENSG00000110944	D017099	IgG Deficiency	hematology, immune	FALSE	0		Phase I	TRUE	FALSE		
+IL2RA-D001172	IL2RA	ENSG00000134460	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+IL2RA-D001327	IL2RA	ENSG00000134460	D001327	Autoimmune Diseases	immune	TRUE	1	OTG	Phase I	TRUE			
+IL2RA-D003876	IL2RA	ENSG00000134460	D003876	Dermatitis, Atopic	congenital, dermatology, immune	TRUE	1	OTG	Phase I	TRUE			
+IL2RA-D003922	IL2RA	ENSG00000134460	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	TRUE	1	OTG	Phase I	TRUE			
+IL2RA-D006086	IL2RA	ENSG00000134460	D006086	Graft vs Host Disease	immune	FALSE	0.434	OMIM	Phase II	TRUE	TRUE		
+IL2RA-D006967	IL2RA	ENSG00000134460	D006967	Hypersensitivity	immune	TRUE	1	OTG	Preclinical	FALSE			
+IL2RA-D008180	IL2RA	ENSG00000134460	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.667	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+IL2RA-D009103	IL2RA	ENSG00000134460	D009103	Multiple Sclerosis	neurology, immune	TRUE	1	OTG	Preclinical	FALSE			
+IL2RA-D012859	IL2RA	ENSG00000134460	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	TRUE	0.803	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+IL2RB-D001172	IL2RB	ENSG00000100385	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.648	OTG	Preclinical	FALSE			
+IL2RB-D001327	IL2RB	ENSG00000100385	D001327	Autoimmune Diseases	immune	FALSE	0.716	OTG	Preclinical				
+IL2RB-D003876	IL2RB	ENSG00000100385	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.762	OTG	Phase I	TRUE			
+IL2RB-D003922	IL2RB	ENSG00000100385	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	TRUE	1	OTG	Preclinical	FALSE			
+IL2RB-D006086	IL2RB	ENSG00000100385	D006086	Graft vs Host Disease	immune	FALSE	0.434	OMIM	Phase I	TRUE	FALSE		
+IL2RB-D006967	IL2RB	ENSG00000100385	D006967	Hypersensitivity	immune	FALSE	0.765	OTG	Preclinical	FALSE			
+IL2RB-D008180	IL2RB	ENSG00000100385	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.634	OTG	Phase II	TRUE	TRUE		
+IL2RB-D009103	IL2RB	ENSG00000100385	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.651	OTG	Preclinical	FALSE			
+IL2RG-D008180	IL2RG	ENSG00000147168	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.355	OMIM	Phase I	TRUE			
+IL2RG-D016511	IL2RG	ENSG00000147168	D016511	Severe Combined Immunodeficiency	congenital, metabolic, immune	TRUE	0.916	OMIM	Phase II	TRUE	TRUE		
+IL32-D001327	IL32	ENSG00000008517	D001327	Autoimmune Diseases	immune	FALSE	0.034	OTG	Preclinical	FALSE			
+IL4R-D001249	IL4R	ENSG00000077238	D001249	Asthma	respiratory, immune	TRUE	1	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+IL4R-D003876	IL4R	ENSG00000077238	D003876	Dermatitis, Atopic	congenital, dermatology, immune	TRUE	0.844	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+IL4R-D003922	IL4R	ENSG00000077238	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.456	OTG	Preclinical	FALSE			
+IL4R-D005512	IL4R	ENSG00000077238	D005512	Food Hypersensitivity	immune	FALSE	0.755	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+IL4R-D006255	IL4R	ENSG00000077238	D006255	Rhinitis, Allergic, Seasonal	respiratory, immune	FALSE	0.785	OTG	Preclinical	FALSE			
+IL4R-D006967	IL4R	ENSG00000077238	D006967	Hypersensitivity	immune	TRUE	1	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+IL4R-D009103	IL4R	ENSG00000077238	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.439	OTG	Phase I	TRUE	FALSE		
+IL4R-D010391	IL4R	ENSG00000077238	D010391	Pemphigoid, Bullous	dermatology, immune	FALSE	0.46	OTG	Phase III	TRUE	TRUE	TRUE	
+IL4R-D014581	IL4R	ENSG00000077238	D014581	Urticaria	dermatology, immune	FALSE	0.777	OTG	Phase III	TRUE	TRUE	TRUE	
+IL4R-D057765	IL4R	ENSG00000077238	D057765	Eosinophilic Esophagitis	digestive, hematology, immune	TRUE	0.904	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+IL4R-D065631	IL4R	ENSG00000077238	D065631	Rhinitis, Allergic	respiratory, immune	TRUE	0.81	OTG	Phase I	TRUE			
+IL6R-D001171	IL6R	ENSG00000160712	D001171	Arthritis, Juvenile	musculoskeletal, dermatology, immune	FALSE	0.265	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+IL6R-D001172	IL6R	ENSG00000160712	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+IL6R-D001249	IL6R	ENSG00000160712	D001249	Asthma	respiratory, immune	TRUE	1	OTG	Preclinical	FALSE			
+IL6R-D001327	IL6R	ENSG00000160712	D001327	Autoimmune Diseases	immune	FALSE	0.716	OTG	Preclinical	FALSE			
+IL6R-D006086	IL6R	ENSG00000160712	D006086	Graft vs Host Disease	immune	FALSE	0.402	OTG	Preclinical	FALSE			
+IL6R-D008180	IL6R	ENSG00000160712	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.634	OTG	Phase II	TRUE	TRUE	FALSE	
+IL6R-D009471	IL6R	ENSG00000160712	D009471	Neuromyelitis Optica	neurology, ophthalmology, immune	FALSE	0.548	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+IL6R-D016706	IL6R	ENSG00000160712	D016706	Still's Disease, Adult-Onset	musculoskeletal, dermatology, immune	FALSE	0.74	OTG	Phase III	TRUE	TRUE	TRUE	
+IL6R-D020278	IL6R	ENSG00000160712	D020278	Demyelinating Autoimmune Diseases, CNS	neurology, immune	FALSE	0.653	OTG	Phase III	TRUE	TRUE	TRUE	
+IL7-D009103	IL7	ENSG00000104432	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	PICCOLO	Phase I	TRUE			
+IL7R-D001327	IL7R	ENSG00000168685	D001327	Autoimmune Diseases	immune	TRUE	1	OTG	Phase I	TRUE			
+IL7R-D003922	IL7R	ENSG00000168685	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	TRUE	1	OTG	Phase I	TRUE	FALSE		
+IL7R-D006086	IL7R	ENSG00000168685	D006086	Graft vs Host Disease	immune	FALSE	0.414	OTG	Preclinical	FALSE			
+IL7R-D007153	IL7R	ENSG00000168685	D007153	Immunologic Deficiency Syndromes	immune	FALSE	0.568	OTG	Phase II	TRUE	TRUE		
+IL7R-D009103	IL7R	ENSG00000168685	D009103	Multiple Sclerosis	neurology, immune	TRUE	1	OTG	Phase I	TRUE	FALSE		
+IL7R-D012859	IL7R	ENSG00000168685	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.627	OTG	Phase II	TRUE	TRUE		
+ILK-D003876	ILK	ENSG00000166333	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.2	Genebass	Phase II	TRUE	TRUE	FALSE	
+IMPDH1-D006086	IMPDH1	ENSG00000106348	D006086	Graft vs Host Disease	immune	FALSE	0.205	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+IMPDH1-D007154	IMPDH1	ENSG00000106348	D007154	Immune System Diseases	immune	FALSE	0.267	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+IMPDH1-D008180	IMPDH1	ENSG00000106348	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.218	OMIM	Preclinical	FALSE			
+IMPDH1-D008181	IMPDH1	ENSG00000106348	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.2	OMIM	Phase II	TRUE	TRUE	FALSE	
+INPP5D-D001249	INPP5D	ENSG00000168918	D001249	Asthma	respiratory, immune	FALSE	0.785	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+INPP5D-D001327	INPP5D	ENSG00000168918	D001327	Autoimmune Diseases	immune	FALSE	0.489	OTG	Preclinical	FALSE			
+INPP5D-D003233	INPP5D	ENSG00000168918	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.681	OTG	Preclinical	FALSE			
+INPP5D-D003876	INPP5D	ENSG00000168918	D003876	Dermatitis, Atopic	congenital, dermatology, immune	TRUE	1	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+INPP5D-D006086	INPP5D	ENSG00000168918	D006086	Graft vs Host Disease	immune	FALSE	0.402	OTG	Preclinical	FALSE			
+INPP5D-D006967	INPP5D	ENSG00000168918	D006967	Hypersensitivity	immune	FALSE	0.696	OTG	Preclinical	FALSE			
+INPP5D-D007154	INPP5D	ENSG00000168918	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Preclinical	FALSE			
+INSR-D003922	INSR	ENSG00000171105	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.748	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+IRAK1-D001172	IRAK1	ENSG00000184216	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Phase I	TRUE	FALSE		
+IRAK1-D001327	IRAK1	ENSG00000184216	D001327	Autoimmune Diseases	immune	FALSE	0		Phase I	TRUE			
+IRAK1-D008180	IRAK1	ENSG00000184216	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Phase I	TRUE	FALSE		
+IRAK1-D009103	IRAK1	ENSG00000184216	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Phase I	TRUE	FALSE		
+IRAK4-D001172	IRAK4	ENSG00000198001	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.494	OMIM	Preclinical				
+IRAK4-D001249	IRAK4	ENSG00000198001	D001249	Asthma	respiratory, immune	FALSE	0.489	OMIM	Preclinical	FALSE			
+IRAK4-D001327	IRAK4	ENSG00000198001	D001327	Autoimmune Diseases	immune	FALSE	0.568	OMIM	Phase I	TRUE			
+IRAK4-D003876	IRAK4	ENSG00000198001	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.433	OMIM	Phase I	TRUE			
+IRAK4-D007154	IRAK4	ENSG00000198001	D007154	Immune System Diseases	immune	FALSE	0.662	OMIM	Phase I	TRUE	FALSE		
+IRAK4-D008180	IRAK4	ENSG00000198001	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.481	OMIM	Phase I	TRUE	FALSE		
+IRAK4-D009103	IRAK4	ENSG00000198001	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.498	OMIM	Phase I	TRUE	FALSE		
+ITGA1-D001172	ITGA1	ENSG00000213949	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.413	OTG	Phase II	TRUE	TRUE	FALSE	
+ITGA1-D001327	ITGA1	ENSG00000213949	D001327	Autoimmune Diseases	immune	FALSE	0.452	OTG	Phase II	TRUE	TRUE	FALSE	
+ITGA1-D006086	ITGA1	ENSG00000213949	D006086	Graft vs Host Disease	immune	FALSE	0.382	OTG	Preclinical	FALSE			
+ITGA4-D001172	ITGA4	ENSG00000115232	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Phase I	TRUE	FALSE		
+ITGA4-D001249	ITGA4	ENSG00000115232	D001249	Asthma	respiratory, immune	FALSE	0.437	OTG	Phase II	TRUE	TRUE	FALSE	
+ITGA4-D007154	ITGA4	ENSG00000115232	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Preclinical				
+ITGA4-D009103	ITGA4	ENSG00000115232	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.443	OTG	Phase I	TRUE			
+ITGA4-D057765	ITGA4	ENSG00000115232	D057765	Eosinophilic Esophagitis	digestive, hematology, immune	TRUE	0.904	OTG	Preclinical	FALSE			
+ITGA4-D065631	ITGA4	ENSG00000115232	D065631	Rhinitis, Allergic	respiratory, immune	FALSE	0.404	OTG	Phase II	TRUE	TRUE	FALSE	
+ITGAE-D001249	ITGAE	ENSG00000083457	D001249	Asthma	respiratory, immune	FALSE	0		Preclinical	FALSE			
+ITGAE-D007154	ITGAE	ENSG00000083457	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+ITGAL-D001172	ITGAL	ENSG00000005844	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Phase II	TRUE	TRUE	FALSE	
+ITGAL-D003233	ITGAL	ENSG00000005844	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.374	OTG	Phase II	TRUE	TRUE	FALSE	
+ITGAM-D001249	ITGAM	ENSG00000169896	D001249	Asthma	respiratory, immune	FALSE	0.406	OTG	Preclinical	FALSE			
+ITGB1-D001172	ITGB1	ENSG00000150093	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.26	OTG	Preclinical	FALSE			
+ITGB1-D001249	ITGB1	ENSG00000150093	D001249	Asthma	respiratory, immune	FALSE	0.258	OTG	Phase II	TRUE	TRUE	FALSE	
+ITGB1-D007154	ITGB1	ENSG00000150093	D007154	Immune System Diseases	immune	FALSE	0.345	OTG	Preclinical	FALSE			
+ITGB1-D009103	ITGB1	ENSG00000150093	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	OTG	Phase I	TRUE	FALSE		
+ITGB2-D001249	ITGB2	ENSG00000160255	D001249	Asthma	respiratory, immune	FALSE	0.345	OMIM	Preclinical	FALSE			
+ITGB2-D007154	ITGB2	ENSG00000160255	D007154	Immune System Diseases	immune	FALSE	0.384	OMIM	Preclinical	FALSE			
+ITGB7-D001249	ITGB7	ENSG00000139626	D001249	Asthma	respiratory, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+ITGB7-D007154	ITGB7	ENSG00000139626	D007154	Immune System Diseases	immune	FALSE	0		Preclinical				
+ITGB7-D057765	ITGB7	ENSG00000139626	D057765	Eosinophilic Esophagitis	digestive, hematology, immune	FALSE	0		Preclinical	FALSE			
+ITK-D001172	ITK	ENSG00000113263	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OMIM	Phase I	TRUE			
+ITK-D001249	ITK	ENSG00000113263	D001249	Asthma	respiratory, immune	FALSE	0.665	OTG	Preclinical	FALSE			
+ITK-D001327	ITK	ENSG00000113263	D001327	Autoimmune Diseases	immune	FALSE	0.489	OMIM	Phase II	TRUE	TRUE		
+ITK-D006086	ITK	ENSG00000113263	D006086	Graft vs Host Disease	immune	FALSE	0.402	OMIM	Preclinical	FALSE			
+ITK-D006967	ITK	ENSG00000113263	D006967	Hypersensitivity	immune	FALSE	0.465	OMIM	Phase II	TRUE	TRUE		
+ITK-D007154	ITK	ENSG00000113263	D007154	Immune System Diseases	immune	FALSE	0.546	OMIM	Preclinical	FALSE			
+ITK-D008180	ITK	ENSG00000113263	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.431	OMIM	Preclinical	FALSE			
+ITK-D056735	ITK	ENSG00000113263	D056735	Autoimmune Lymphoproliferative Syndrome	hematology, congenital, immune	FALSE	0.682	OMIM	Preclinical				
+ITPKB-D001327	ITPKB	ENSG00000143772	D001327	Autoimmune Diseases	immune	FALSE	0.484	OTG	Preclinical	FALSE			
+JAK1-D001171	JAK1	ENSG00000162434	D001171	Arthritis, Juvenile	musculoskeletal, dermatology, immune	FALSE	0.265	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+JAK1-D001172	JAK1	ENSG00000162434	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.626	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+JAK1-D001249	JAK1	ENSG00000162434	D001249	Asthma	respiratory, immune	FALSE	0.409	OTG	Phase I	TRUE			
+JAK1-D001327	JAK1	ENSG00000162434	D001327	Autoimmune Diseases	immune	FALSE	0.686	OTG	Phase I	TRUE			
+JAK1-D003876	JAK1	ENSG00000162434	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.492	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+JAK1-D006086	JAK1	ENSG00000162434	D006086	Graft vs Host Disease	immune	FALSE	0.386	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+JAK1-D006967	JAK1	ENSG00000162434	D006967	Hypersensitivity	immune	FALSE	0.439	OTG	Phase I	TRUE			
+JAK1-D007154	JAK1	ENSG00000162434	D007154	Immune System Diseases	immune	FALSE	0.505	OTG	Phase I	TRUE			
+JAK1-D008180	JAK1	ENSG00000162434	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.614	OTG	Phase II	TRUE	TRUE		
+JAK1-D008181	JAK1	ENSG00000162434	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.562	OTG	Phase II	TRUE	TRUE	FALSE	
+JAK1-D009103	JAK1	ENSG00000162434	D009103	Multiple Sclerosis	neurology, immune	TRUE	1	OTG	Preclinical				
+JAK1-D012859	JAK1	ENSG00000162434	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.576	OTG	Phase II	TRUE	TRUE		
+JAK2-D001171	JAK2	ENSG00000096968	D001171	Arthritis, Juvenile	musculoskeletal, dermatology, immune	FALSE	0.265	OTG	Phase III	TRUE	TRUE	TRUE	
+JAK2-D001172	JAK2	ENSG00000096968	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.611	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+JAK2-D001249	JAK2	ENSG00000096968	D001249	Asthma	respiratory, immune	FALSE	0.406	OTG	Phase I	TRUE			
+JAK2-D001327	JAK2	ENSG00000096968	D001327	Autoimmune Diseases	immune	FALSE	0.667	OTG	Phase I	TRUE			
+JAK2-D003876	JAK2	ENSG00000096968	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.46	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+JAK2-D006086	JAK2	ENSG00000096968	D006086	Graft vs Host Disease	immune	FALSE	0.379	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+JAK2-D006967	JAK2	ENSG00000096968	D006967	Hypersensitivity	immune	FALSE	0.427	OTG	Phase I	TRUE			
+JAK2-D007154	JAK2	ENSG00000096968	D007154	Immune System Diseases	immune	FALSE	0.487	OTG	Preclinical	FALSE			
+JAK2-D008180	JAK2	ENSG00000096968	D008180	Lupus Erythematosus, Systemic	dermatology, immune	TRUE	1	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+JAK2-D012859	JAK2	ENSG00000096968	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.565	OTG	Phase II	TRUE	TRUE		
+JAK3-D001171	JAK3	ENSG00000105639	D001171	Arthritis, Juvenile	musculoskeletal, dermatology, immune	FALSE	0.177	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+JAK3-D001172	JAK3	ENSG00000105639	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.36	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+JAK3-D001249	JAK3	ENSG00000105639	D001249	Asthma	respiratory, immune	FALSE	0.191	OMIM	Phase I	TRUE			
+JAK3-D001327	JAK3	ENSG00000105639	D001327	Autoimmune Diseases	immune	FALSE	0.382	OMIM	Phase I	TRUE			
+JAK3-D003233	JAK3	ENSG00000105639	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.325	OMIM	Preclinical	FALSE			
+JAK3-D003876	JAK3	ENSG00000105639	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.302	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+JAK3-D006086	JAK3	ENSG00000105639	D006086	Graft vs Host Disease	immune	FALSE	0.341	OMIM	Preclinical				
+JAK3-D006967	JAK3	ENSG00000105639	D006967	Hypersensitivity	immune	FALSE	0.371	OMIM	Phase I	TRUE			
+JAK3-D007154	JAK3	ENSG00000105639	D007154	Immune System Diseases	immune	FALSE	0.405	OMIM	Preclinical	FALSE			
+JAK3-D008180	JAK3	ENSG00000105639	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.355	OMIM	Preclinical				
+JAK3-D009103	JAK3	ENSG00000105639	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.361	OMIM	Phase I	TRUE	FALSE		
+JAK3-D010392	JAK3	ENSG00000105639	D010392	Pemphigus	dermatology, immune	FALSE	0.337	OMIM	Preclinical				
+JAK3-D012859	JAK3	ENSG00000105639	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.34	OMIM	Phase II	TRUE	TRUE		
+JUN-D001172	JUN	ENSG00000177606	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.385	OTG	Phase I	TRUE	FALSE		
+JUN-D003876	JUN	ENSG00000177606	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.356	OTG	Phase I	TRUE	FALSE		
+KCNA3-D001172	KCNA3	ENSG00000177272	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Phase I	TRUE	FALSE		
+KCNA3-D001249	KCNA3	ENSG00000177272	D001249	Asthma	respiratory, immune	FALSE	0		Phase I	TRUE	FALSE		
+KCNA3-D001327	KCNA3	ENSG00000177272	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical	FALSE			
+KCNA3-D003876	KCNA3	ENSG00000177272	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0		Phase I	TRUE			
+KCNA3-D003922	KCNA3	ENSG00000177272	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0		Phase I	TRUE	FALSE		
+KCNA3-D006086	KCNA3	ENSG00000177272	D006086	Graft vs Host Disease	immune	FALSE	0		Preclinical	FALSE			
+KCNA3-D007154	KCNA3	ENSG00000177272	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+KCNA3-D008180	KCNA3	ENSG00000177272	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Phase I	TRUE	FALSE		
+KCNA3-D008181	KCNA3	ENSG00000177272	D008181	Lupus Nephritis	dermatology, immune	FALSE	0		Phase I	TRUE	FALSE		
+KCNA3-D009103	KCNA3	ENSG00000177272	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Phase I	TRUE	FALSE		
+KCNN4-D000744	KCNN4	ENSG00000104783	D000744	Anemia, Hemolytic, Autoimmune	hematology, immune	TRUE	0.833	OMIM	Preclinical	FALSE			
+KCNN4-D001327	KCNN4	ENSG00000104783	D001327	Autoimmune Diseases	immune	FALSE	0.489	OTG	Preclinical	FALSE			
+KCNQ1-D007154	KCNQ1	ENSG00000053918	D007154	Immune System Diseases	immune	FALSE	0.303	OTG	Preclinical	FALSE			
+KCNQ5-D001249	KCNQ5	ENSG00000185760	D001249	Asthma	respiratory, immune	TRUE	1	OTG	Preclinical	FALSE			
+KLRC1-D001172	KLRC1	ENSG00000134545	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	PICCOLO	Phase I	TRUE	FALSE		
+KLRD1-D001172	KLRD1	ENSG00000134539	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.36	OTG	Preclinical	FALSE			
+KLRG1-D001327	KLRG1	ENSG00000139187	D001327	Autoimmune Diseases	immune	FALSE	0.716	OTG	Preclinical				
+LAG3-D001172	LAG3	ENSG00000089692	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Preclinical				
+LAG3-D001327	LAG3	ENSG00000089692	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical	FALSE			
+LAG3-D009103	LAG3	ENSG00000089692	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Preclinical				
+LANCL2-D001172	LANCL2	ENSG00000132434	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Phase I	TRUE			
+LANCL2-D003876	LANCL2	ENSG00000132434	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0		Preclinical				
+LANCL2-D008180	LANCL2	ENSG00000132434	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Phase I	TRUE			
+LANCL2-D057765	LANCL2	ENSG00000132434	D057765	Eosinophilic Esophagitis	digestive, hematology, immune	FALSE	0		Preclinical				
+LCK-D003876	LCK	ENSG00000182866	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.381	OTG	Preclinical	FALSE			
+LCK-D007154	LCK	ENSG00000182866	D007154	Immune System Diseases	immune	FALSE	0.505	OTG	Preclinical	FALSE			
+LGALS1-D003876	LGALS1	ENSG00000100097	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0		Phase I	TRUE			
+LGALS1-D008180	LGALS1	ENSG00000100097	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Preclinical				
+LGALS3-D003876	LGALS3	ENSG00000131981	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.2	OTG	Phase I	TRUE			
+LGALS3-D008180	LGALS3	ENSG00000131981	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.215	OTG	Preclinical				
+LGALS9-D001249	LGALS9	ENSG00000168961	D001249	Asthma	respiratory, immune	FALSE	0.595	OTG	Preclinical	FALSE			
+LRP1-D001327	LRP1	ENSG00000123384	D001327	Autoimmune Diseases	immune	FALSE	0.268	PICCOLO	Preclinical	FALSE			
+LRP1-D003922	LRP1	ENSG00000123384	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.251	PICCOLO	Preclinical	FALSE			
+LRP1-D009103	LRP1	ENSG00000123384	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.499	PICCOLO	Phase I	TRUE			
+LRRK2-D001327	LRRK2	ENSG00000188906	D001327	Autoimmune Diseases	immune	FALSE	0.269	OTG	Preclinical				
+LTA-D001172	LTA	ENSG00000226979	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.228	OTG	Phase II	TRUE	TRUE	FALSE	
+LTA-D001327	LTA	ENSG00000226979	D001327	Autoimmune Diseases	immune	FALSE	0.251	OTG	Preclinical	FALSE			
+LTA4H-D001249	LTA4H	ENSG00000111144	D001249	Asthma	respiratory, immune	TRUE	1	OTG	Preclinical	FALSE			
+LTA4H-D003876	LTA4H	ENSG00000111144	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.762	OTG	Preclinical	FALSE			
+LTA4H-D009103	LTA4H	ENSG00000111144	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.443	OTG	Preclinical	FALSE			
+LTB4R-D001171	LTB4R	ENSG00000213903	D001171	Arthritis, Juvenile	musculoskeletal, dermatology, immune	FALSE	0.095	PICCOLO	Phase I	TRUE	FALSE		
+LTB4R-D001172	LTB4R	ENSG00000213903	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.212	PICCOLO	Phase II	TRUE	TRUE	FALSE	
+LTB4R-D001249	LTB4R	ENSG00000213903	D001249	Asthma	respiratory, immune	FALSE	0.21	PICCOLO	Preclinical				
+LTB4R-D003233	LTB4R	ENSG00000213903	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.186	PICCOLO	Phase II	TRUE	TRUE	FALSE	
+LTB4R-D007154	LTB4R	ENSG00000213903	D007154	Immune System Diseases	immune	FALSE	0.248	PICCOLO	Preclinical	FALSE			
+LTB4R-D010391	LTB4R	ENSG00000213903	D010391	Pemphigoid, Bullous	dermatology, immune	FALSE	0.193	PICCOLO	Phase III	TRUE	TRUE	TRUE	
+LTB4R-D012859	LTB4R	ENSG00000213903	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.197	PICCOLO	Phase I	TRUE	FALSE		
+LTB4R-D020275	LTB4R	ENSG00000213903	D020275	Guillain-Barre Syndrome	neurology, immune	FALSE	0.367	PICCOLO	Preclinical	FALSE			
+LTBR-D001172	LTBR	ENSG00000111321	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.26	PICCOLO	Phase II	TRUE	TRUE	FALSE	
+LTBR-D009103	LTBR	ENSG00000111321	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	PICCOLO	Phase II	TRUE	TRUE	FALSE	
+LYN-D001172	LYN	ENSG00000254087	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+LYN-D001249	LYN	ENSG00000254087	D001249	Asthma	respiratory, immune	FALSE	0.437	OTG	Phase III	TRUE	TRUE	TRUE	
+LYN-D003922	LYN	ENSG00000254087	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.46	OTG	Preclinical				
+LYN-D007154	LYN	ENSG00000254087	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Preclinical	FALSE			
+MALT1-D006086	MALT1	ENSG00000172175	D006086	Graft vs Host Disease	immune	FALSE	0.434	OMIM	Preclinical				
+MALT1-D008180	MALT1	ENSG00000172175	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.614	OTG	Preclinical				
+MALT1-D008181	MALT1	ENSG00000172175	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.562	OTG	Preclinical				
+MANF-D003922	MANF	ENSG00000145050	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0		Preclinical	FALSE			
+MAP2K1-D001172	MAP2K1	ENSG00000169032	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.412	OMIM	Phase II	TRUE	TRUE	FALSE	
+MAP2K2-D001172	MAP2K2	ENSG00000126934	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.412	OMIM	Phase II	TRUE	TRUE	FALSE	
+MAP2K3-D003876	MAP2K3	ENSG00000034152	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.229	OTG	Phase II	TRUE	TRUE	FALSE	
+MAP3K11-D001327	MAP3K11	ENSG00000173327	D001327	Autoimmune Diseases	immune	FALSE	0.239	PICCOLO	Preclinical	FALSE			
+MAP3K11-D009103	MAP3K11	ENSG00000173327	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.22	PICCOLO	Phase II	TRUE	TRUE	FALSE	
+MAP3K8-D001172	MAP3K8	ENSG00000107968	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.413	OTG	Preclinical	FALSE			
+MAP4K4-D001249	MAP4K4	ENSG00000071054	D001249	Asthma	respiratory, immune	TRUE	1	OTG	Preclinical	FALSE			
+MAPK1-D001172	MAPK1	ENSG00000100030	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.626	OTG	Phase II	TRUE	TRUE	FALSE	
+MAPK1-D001249	MAPK1	ENSG00000100030	D001249	Asthma	respiratory, immune	FALSE	0.227	OTG	Preclinical	FALSE			
+MAPK14-D001172	MAPK14	ENSG00000112062	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.348	OTG	Phase II	TRUE	TRUE		
+MAPK14-D001249	MAPK14	ENSG00000112062	D001249	Asthma	respiratory, immune	FALSE	0.198	OTG	Phase II	TRUE	TRUE	FALSE	
+MAPK14-D003876	MAPK14	ENSG00000112062	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.44	OTG	Preclinical				
+MAPK14-D003922	MAPK14	ENSG00000112062	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.611	OTG	Preclinical	FALSE			
+MAPK14-D007154	MAPK14	ENSG00000112062	D007154	Immune System Diseases	immune	FALSE	0.227	OTG	Phase I	TRUE			
+MAPK14-D009103	MAPK14	ENSG00000112062	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.376	OTG	Phase I	TRUE	FALSE		
+MAPK3-D001172	MAPK3	ENSG00000102882	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.26	PICCOLO	Phase II	TRUE	TRUE	FALSE	
+MAPK8-D001249	MAPK8	ENSG00000107643	D001249	Asthma	respiratory, immune	FALSE	0		Preclinical	FALSE			
+MAPK8-D009103	MAPK8	ENSG00000107643	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Preclinical	FALSE			
+MAPK8IP1-D006086	MAPK8IP1	ENSG00000121653	D006086	Graft vs Host Disease	immune	FALSE	0.182	OTG	Phase I	TRUE	FALSE		
+MAPK8IP1-D007154	MAPK8IP1	ENSG00000121653	D007154	Immune System Diseases	immune	FALSE	0.217	OTG	Preclinical	FALSE			
+MAPK9-D001249	MAPK9	ENSG00000050748	D001249	Asthma	respiratory, immune	FALSE	0.033	Genebass	Preclinical	FALSE			
+MAPK9-D009103	MAPK9	ENSG00000050748	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.033	Genebass	Preclinical	FALSE			
+MAPKAPK2-D001172	MAPKAPK2	ENSG00000162889	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.229	OTG	Preclinical	FALSE			
+MAPKAPK2-D001249	MAPKAPK2	ENSG00000162889	D001249	Asthma	respiratory, immune	FALSE	0.227	OTG	Preclinical	FALSE			
+MAPKAPK5-D001172	MAPKAPK5	ENSG00000089022	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.197	OTG	Phase II	TRUE	TRUE	FALSE	
+MBP-D009103	MBP	ENSG00000197971	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.223	OTG	Preclinical	FALSE			
+MC1R-D001172	MC1R	ENSG00000258839	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.421	PICCOLO	Phase II	TRUE	TRUE		
+MC1R-D001327	MC1R	ENSG00000258839	D001327	Autoimmune Diseases	immune	FALSE	0.288	PICCOLO	Phase I	TRUE	FALSE		
+MC1R-D003876	MC1R	ENSG00000258839	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.532	PICCOLO	Preclinical	FALSE			
+MC1R-D010392	MC1R	ENSG00000258839	D010392	Pemphigus	dermatology, immune	FALSE	0.531	PICCOLO	Phase I	TRUE	FALSE		
+MC1R-D014581	MC1R	ENSG00000258839	D014581	Urticaria	dermatology, immune	FALSE	0.546	PICCOLO	Phase II	TRUE	TRUE	FALSE	
+MC1R-D015433	MC1R	ENSG00000258839	D015433	Glomerulonephritis, Membranous	immune	FALSE	0.211	PICCOLO	Phase II	TRUE	TRUE		
+MDK-D001172	MDK	ENSG00000110492	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Preclinical	FALSE			
+MDK-D009103	MDK	ENSG00000110492	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Preclinical	FALSE			
+METAP2-D001172	METAP2	ENSG00000111142	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.248	OTG	Phase I	TRUE	FALSE		
+METTL14-D001327	METTL14	ENSG00000145388	D001327	Autoimmune Diseases	immune	FALSE	0.036	Genebass	Preclinical	FALSE			
+METTL3-D001327	METTL3	ENSG00000165819	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical	FALSE			
+MGLL-D009471	MGLL	ENSG00000074416	D009471	Neuromyelitis Optica	neurology, ophthalmology, immune	FALSE	0		Phase I	TRUE	FALSE		
+MIF-D001172	MIF	ENSG00000240972	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.031	OTG	Preclinical				
+MIF-D001249	MIF	ENSG00000240972	D001249	Asthma	respiratory, immune	FALSE	0.031	OTG	Phase II	TRUE	TRUE	FALSE	
+MIF-D001327	MIF	ENSG00000240972	D001327	Autoimmune Diseases	immune	FALSE	0.033	OTG	Preclinical	FALSE			
+MIF-D003876	MIF	ENSG00000240972	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.029	OTG	Preclinical	FALSE			
+MIF-D003922	MIF	ENSG00000240972	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.032	OTG	Preclinical	FALSE			
+MIF-D008180	MIF	ENSG00000240972	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.031	OTG	Preclinical	FALSE			
+MIF-D008181	MIF	ENSG00000240972	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.028	OTG	Phase I	TRUE	FALSE		
+MIF-D009103	MIF	ENSG00000240972	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.031	OTG	Preclinical				
+MOSPD2-D001172	MOSPD2	ENSG00000130150	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Preclinical	FALSE			
+MOSPD2-D009103	MOSPD2	ENSG00000130150	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Preclinical	FALSE			
+MS4A1-D000744	MS4A1	ENSG00000156738	D000744	Anemia, Hemolytic, Autoimmune	hematology, immune	FALSE	0		Preclinical				
+MS4A1-D001172	MS4A1	ENSG00000156738	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Launched	TRUE	TRUE	TRUE	TRUE
+MS4A1-D001327	MS4A1	ENSG00000156738	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical	FALSE			
+MS4A1-D006086	MS4A1	ENSG00000156738	D006086	Graft vs Host Disease	immune	FALSE	0		Preclinical	FALSE			
+MS4A1-D007154	MS4A1	ENSG00000156738	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+MS4A1-D008180	MS4A1	ENSG00000156738	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Phase III	TRUE	TRUE	TRUE	
+MS4A1-D008181	MS4A1	ENSG00000156738	D008181	Lupus Nephritis	dermatology, immune	FALSE	0		Phase III	TRUE	TRUE	TRUE	
+MS4A1-D008232	MS4A1	ENSG00000156738	D008232	Lymphoproliferative Disorders	hematology, immune	FALSE	0		Launched	TRUE	TRUE	TRUE	TRUE
+MS4A1-D009103	MS4A1	ENSG00000156738	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Phase III	TRUE	TRUE	TRUE	
+MS4A1-D009471	MS4A1	ENSG00000156738	D009471	Neuromyelitis Optica	neurology, ophthalmology, immune	FALSE	0		Phase III	TRUE	TRUE	TRUE	
+MS4A1-D010392	MS4A1	ENSG00000156738	D010392	Pemphigus	dermatology, immune	FALSE	0		Launched	TRUE	TRUE	TRUE	TRUE
+MS4A1-D015433	MS4A1	ENSG00000156738	D015433	Glomerulonephritis, Membranous	immune	FALSE	0		Phase III	TRUE	TRUE	TRUE	
+MS4A1-D016553	MS4A1	ENSG00000156738	D016553	Purpura, Thrombocytopenic, Idiopathic	hematology, immune, signs/symptoms	FALSE	0		Launched	TRUE	TRUE	TRUE	TRUE
+MS4A1-D055953	MS4A1	ENSG00000156738	D055953	Microscopic Polyangiitis	neurology, cardiovascular, immune	FALSE	0		Launched	TRUE	TRUE	TRUE	TRUE
+MTOR-D001172	MTOR	ENSG00000198793	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.229	Genebass	Preclinical	FALSE			
+MTOR-D003876	MTOR	ENSG00000198793	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.207	Genebass	Preclinical	FALSE			
+MTOR-D006086	MTOR	ENSG00000198793	D006086	Graft vs Host Disease	immune	FALSE	0.21	Genebass	Phase II	TRUE	TRUE	FALSE	
+MTOR-D007154	MTOR	ENSG00000198793	D007154	Immune System Diseases	immune	FALSE	0.28	Genebass	Phase I	TRUE	FALSE		
+MTOR-D008180	MTOR	ENSG00000198793	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.224	Genebass	Preclinical	FALSE			
+MTOR-D009103	MTOR	ENSG00000198793	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.23	Genebass	Preclinical	FALSE			
+NAIP-D001327	NAIP	ENSG00000249437	D001327	Autoimmune Diseases	immune	FALSE	0.295	OTG	Preclinical				
+NAIP-D007154	NAIP	ENSG00000249437	D007154	Immune System Diseases	immune	FALSE	0.341	OTG	Preclinical	FALSE			
+NCF1-D001172	NCF1	ENSG00000158517	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.364	OMIM	Preclinical	FALSE			
+NCR3-D001327	NCR3	ENSG00000204475	D001327	Autoimmune Diseases	immune	FALSE	0.298	Genebass	Preclinical	FALSE			
+NFATC1-D001249	NFATC1	ENSG00000131196	D001249	Asthma	respiratory, immune	TRUE	1	OTG	Preclinical	FALSE			
+NFATC1-D006086	NFATC1	ENSG00000131196	D006086	Graft vs Host Disease	immune	FALSE	0.414	OTG	Preclinical	FALSE			
+NFATC1-D007154	NFATC1	ENSG00000131196	D007154	Immune System Diseases	immune	FALSE	0.578	OTG	Preclinical	FALSE			
+NFE2L2-D001172	NFE2L2	ENSG00000116044	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.484	OMIM	Phase II	TRUE	TRUE	FALSE	
+NFE2L2-D003876	NFE2L2	ENSG00000116044	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.382	OMIM	Preclinical				
+NFE2L2-D005922	NFE2L2	ENSG00000116044	D005922	Glomerulonephritis, IGA	immune	FALSE	0.68	OTG	Phase II	TRUE	TRUE		
+NFE2L2-D006086	NFE2L2	ENSG00000116044	D006086	Graft vs Host Disease	immune	FALSE	0.434	OMIM	Phase I	TRUE	FALSE		
+NFE2L2-D009103	NFE2L2	ENSG00000116044	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.488	OMIM	Phase I	TRUE	FALSE		
+NFE2L2-D010391	NFE2L2	ENSG00000116044	D010391	Pemphigoid, Bullous	dermatology, immune	FALSE	0.419	OMIM	Preclinical	FALSE			
+NFKB1-D001172	NFKB1	ENSG00000109320	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.542	OTG	Phase II	TRUE	TRUE	FALSE	
+NFKB1-D001249	NFKB1	ENSG00000109320	D001249	Asthma	respiratory, immune	TRUE	0.87	OTG	Phase II	TRUE	TRUE	FALSE	
+NFKB1-D003876	NFKB1	ENSG00000109320	D003876	Dermatitis, Atopic	congenital, dermatology, immune	TRUE	0.844	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+NFKB1-D006086	NFKB1	ENSG00000109320	D006086	Graft vs Host Disease	immune	FALSE	0.402	OTG	Phase I	TRUE	FALSE		
+NFKB1-D006967	NFKB1	ENSG00000109320	D006967	Hypersensitivity	immune	TRUE	1	OTG	Phase II	TRUE	TRUE	FALSE	
+NFKB1-D007154	NFKB1	ENSG00000109320	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Preclinical	FALSE			
+NFKB1-D008180	NFKB1	ENSG00000109320	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.535	OTG	Phase I	TRUE	FALSE		
+NFKB1-D008181	NFKB1	ENSG00000109320	D008181	Lupus Nephritis	dermatology, immune	TRUE	0.827	OTG	Phase I	TRUE	FALSE		
+NFKB1-D009103	NFKB1	ENSG00000109320	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.544	OTG	Preclinical	FALSE			
+NFKBIA-D001172	NFKBIA	ENSG00000100906	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Preclinical	FALSE			
+NLE1-D007154	NLE1	ENSG00000073536	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+NLRX1-D001249	NLRX1	ENSG00000160703	D001249	Asthma	respiratory, immune	FALSE	0.217	Genebass	Preclinical				
+NLRX1-D009103	NLRX1	ENSG00000160703	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.22	Genebass	Preclinical				
+NR1H2-D001249	NR1H2	ENSG00000131408	D001249	Asthma	respiratory, immune	FALSE	0		Preclinical	FALSE			
+NR1H2-D003876	NR1H2	ENSG00000131408	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+NR1H3-D001249	NR1H3	ENSG00000025434	D001249	Asthma	respiratory, immune	FALSE	0.437	OTG	Preclinical	FALSE			
+NR1H3-D003876	NR1H3	ENSG00000025434	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.397	OTG	Preclinical	FALSE			
+NR2F6-D001172	NR2F6	ENSG00000160113	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.248	OTG	Preclinical	FALSE			
+NR2F6-D001327	NR2F6	ENSG00000160113	D001327	Autoimmune Diseases	immune	FALSE	0.28	OTG	Preclinical	FALSE			
+NR3C1-D000224	NR3C1	ENSG00000113580	D000224	Addison Disease	endocrine, immune	FALSE	0.569	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+NR3C1-D001171	NR3C1	ENSG00000113580	D001171	Arthritis, Juvenile	musculoskeletal, dermatology, immune	FALSE	0.177	OTG	Preclinical	FALSE			
+NR3C1-D001172	NR3C1	ENSG00000113580	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.413	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+NR3C1-D001249	NR3C1	ENSG00000113580	D001249	Asthma	respiratory, immune	TRUE	1	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+NR3C1-D001260	NR3C1	ENSG00000113580	D001260	Ataxia Telangiectasia	neurology, cardiovascular, congenital, metabolic, immune	FALSE	0.518	OTG	Phase I	TRUE			
+NR3C1-D003233	NR3C1	ENSG00000113580	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.723	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+NR3C1-D003876	NR3C1	ENSG00000113580	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.762	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+NR3C1-D005922	NR3C1	ENSG00000113580	D005922	Glomerulonephritis, IGA	immune	FALSE	0.37	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+NR3C1-D006086	NR3C1	ENSG00000113580	D006086	Graft vs Host Disease	immune	FALSE	0.382	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+NR3C1-D006255	NR3C1	ENSG00000113580	D006255	Rhinitis, Allergic, Seasonal	respiratory, immune	FALSE	0.785	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+NR3C1-D006967	NR3C1	ENSG00000113580	D006967	Hypersensitivity	immune	FALSE	0.765	OTG	Preclinical	FALSE			
+NR3C1-D007154	NR3C1	ENSG00000113580	D007154	Immune System Diseases	immune	FALSE	0.496	OTG	Preclinical				
+NR3C1-D008180	NR3C1	ENSG00000113580	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.406	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+NR3C1-D009103	NR3C1	ENSG00000113580	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	OTG	Phase I	TRUE			
+NR3C1-D009471	NR3C1	ENSG00000113580	D009471	Neuromyelitis Optica	neurology, ophthalmology, immune	FALSE	0.364	OTG	Phase I	TRUE	FALSE		
+NR3C1-D012221	NR3C1	ENSG00000113580	D012221	Rhinitis, Allergic, Perennial	respiratory, immune	FALSE	0.772	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+NR3C1-D057765	NR3C1	ENSG00000113580	D057765	Eosinophilic Esophagitis	digestive, hematology, immune	TRUE	0.904	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+NR3C1-D065631	NR3C1	ENSG00000113580	D065631	Rhinitis, Allergic	respiratory, immune	TRUE	0.81	OTG	Phase II	TRUE	TRUE	FALSE	
+NR4A1-D001327	NR4A1	ENSG00000123358	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical	FALSE			
+NRG2-D009103	NRG2	ENSG00000158458	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.03	OTG	Preclinical	FALSE			
+NT5E-D001327	NT5E	ENSG00000135318	D001327	Autoimmune Diseases	immune	FALSE	0.297	OTG	Preclinical	FALSE			
+ODC1-D003922	ODC1	ENSG00000115758	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0		Phase I	TRUE	FALSE		
+OSM-D001172	OSM	ENSG00000099985	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.258	OTG	Phase II	TRUE	TRUE	FALSE	
+P2RX7-D001172	P2RX7	ENSG00000089041	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.241	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+P2RX7-D001327	P2RX7	ENSG00000089041	D001327	Autoimmune Diseases	immune	FALSE	0.269	OTG	Preclinical	FALSE			
+P2RX7-D003876	P2RX7	ENSG00000089041	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.216	OTG	Preclinical	FALSE			
+P2RX7-D007154	P2RX7	ENSG00000089041	D007154	Immune System Diseases	immune	FALSE	0.303	OTG	Phase I	TRUE			
+P2RX7-D009103	P2RX7	ENSG00000089041	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.242	OTG	Preclinical	FALSE			
+PADI4-D001172	PADI4	ENSG00000159339	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Preclinical				
+PADI4-D001327	PADI4	ENSG00000159339	D001327	Autoimmune Diseases	immune	TRUE	1	OTG	Preclinical	FALSE			
+PADI4-D008180	PADI4	ENSG00000159339	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.667	OTG	Preclinical	FALSE			
+PADI4-D009103	PADI4	ENSG00000159339	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.686	OTG	Preclinical	FALSE			
+PARP1-D003922	PARP1	ENSG00000143799	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.239	OTG	Phase I	TRUE	FALSE		
+PARP1-D006086	PARP1	ENSG00000143799	D006086	Graft vs Host Disease	immune	FALSE	0.21	OTG	Preclinical	FALSE			
+PDE4A-D001172	PDE4A	ENSG00000065989	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.436	OTG	Phase II	TRUE	TRUE	FALSE	
+PDE4A-D001249	PDE4A	ENSG00000065989	D001249	Asthma	respiratory, immune	FALSE	0.765	OTG	Phase II	TRUE	TRUE		
+PDE4A-D001327	PDE4A	ENSG00000065989	D001327	Autoimmune Diseases	immune	FALSE	0.484	OTG	Phase I	TRUE	FALSE		
+PDE4A-D003233	PDE4A	ENSG00000065989	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.656	OTG	Phase II	TRUE	TRUE	FALSE	
+PDE4A-D003876	PDE4A	ENSG00000065989	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.696	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+PDE4A-D006255	PDE4A	ENSG00000065989	D006255	Rhinitis, Allergic, Seasonal	respiratory, immune	FALSE	0.684	OTG	Phase II	TRUE	TRUE		
+PDE4A-D007154	PDE4A	ENSG00000065989	D007154	Immune System Diseases	immune	FALSE	0.539	OTG	Phase I	TRUE	FALSE		
+PDE4A-D009103	PDE4A	ENSG00000065989	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.439	OTG	Phase II	TRUE	TRUE	FALSE	
+PDE4A-D010391	PDE4A	ENSG00000065989	D010391	Pemphigoid, Bullous	dermatology, immune	FALSE	0.389	OTG	Phase II	TRUE	TRUE		
+PDE4A-D065631	PDE4A	ENSG00000065989	D065631	Rhinitis, Allergic	respiratory, immune	FALSE	0.708	OTG	Phase II	TRUE	TRUE	FALSE	
+PDE4B-D001172	PDE4B	ENSG00000184588	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Phase II	TRUE	TRUE	FALSE	
+PDE4B-D001249	PDE4B	ENSG00000184588	D001249	Asthma	respiratory, immune	FALSE	0.437	OTG	Phase II	TRUE	TRUE		
+PDE4B-D001327	PDE4B	ENSG00000184588	D001327	Autoimmune Diseases	immune	FALSE	0.489	OTG	Phase I	TRUE	FALSE		
+PDE4B-D003233	PDE4B	ENSG00000184588	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.374	OTG	Phase II	TRUE	TRUE	FALSE	
+PDE4B-D003876	PDE4B	ENSG00000184588	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.397	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+PDE4B-D006255	PDE4B	ENSG00000184588	D006255	Rhinitis, Allergic, Seasonal	respiratory, immune	FALSE	0.653	OTG	Phase II	TRUE	TRUE		
+PDE4B-D007154	PDE4B	ENSG00000184588	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Phase I	TRUE	FALSE		
+PDE4B-D009103	PDE4B	ENSG00000184588	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.443	OTG	Phase II	TRUE	TRUE	FALSE	
+PDE4B-D010391	PDE4B	ENSG00000184588	D010391	Pemphigoid, Bullous	dermatology, immune	FALSE	0.391	OTG	Phase II	TRUE	TRUE		
+PDE4B-D065631	PDE4B	ENSG00000184588	D065631	Rhinitis, Allergic	respiratory, immune	FALSE	0.671	OTG	Phase II	TRUE	TRUE	FALSE	
+PDE4D-D001172	PDE4D	ENSG00000113448	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.413	OTG	Phase II	TRUE	TRUE	FALSE	
+PDE4D-D001249	PDE4D	ENSG00000113448	D001249	Asthma	respiratory, immune	TRUE	1	OTG	Phase II	TRUE	TRUE		
+PDE4D-D001327	PDE4D	ENSG00000113448	D001327	Autoimmune Diseases	immune	FALSE	0.452	OTG	Phase I	TRUE	FALSE		
+PDE4D-D003233	PDE4D	ENSG00000113448	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.723	OTG	Phase II	TRUE	TRUE	FALSE	
+PDE4D-D003876	PDE4D	ENSG00000113448	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.762	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+PDE4D-D006255	PDE4D	ENSG00000113448	D006255	Rhinitis, Allergic, Seasonal	respiratory, immune	FALSE	0.785	OTG	Phase II	TRUE	TRUE		
+PDE4D-D007154	PDE4D	ENSG00000113448	D007154	Immune System Diseases	immune	FALSE	0.496	OTG	Phase I	TRUE	FALSE		
+PDE4D-D009103	PDE4D	ENSG00000113448	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.426	OMIM	Phase II	TRUE	TRUE	FALSE	
+PDE4D-D010391	PDE4D	ENSG00000113448	D010391	Pemphigoid, Bullous	dermatology, immune	FALSE	0.465	OTG	Phase II	TRUE	TRUE		
+PDE4D-D065631	PDE4D	ENSG00000113448	D065631	Rhinitis, Allergic	respiratory, immune	TRUE	0.81	OTG	Phase II	TRUE	TRUE	FALSE	
+PDE7A-D001249	PDE7A	ENSG00000205268	D001249	Asthma	respiratory, immune	FALSE	0.239	OTG	Preclinical	FALSE			
+PDE7A-D007154	PDE7A	ENSG00000205268	D007154	Immune System Diseases	immune	FALSE	0.303	OTG	Preclinical	FALSE			
+PELI1-D009103	PELI1	ENSG00000197329	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.036	OTG	Preclinical	FALSE			
+PF4-D001249	PF4	ENSG00000163737	D001249	Asthma	respiratory, immune	FALSE	0.216	OTG	Preclinical	FALSE			
+PF4-D006086	PF4	ENSG00000163737	D006086	Graft vs Host Disease	immune	FALSE	0.201	OTG	Preclinical	FALSE			
+PI4KB-D001249	PI4KB	ENSG00000143393	D001249	Asthma	respiratory, immune	FALSE	0.206	OMIM	Preclinical				
+PIK3CA-D001249	PIK3CA	ENSG00000121879	D001249	Asthma	respiratory, immune	FALSE	0.231	OMIM	Preclinical				
+PIK3CA-D065631	PIK3CA	ENSG00000121879	D065631	Rhinitis, Allergic	respiratory, immune	FALSE	0.214	OMIM	Phase I	TRUE	FALSE		
+PIK3CB-D001249	PIK3CB	ENSG00000051382	D001249	Asthma	respiratory, immune	FALSE	0.217	OTG	Preclinical				
+PIK3CD-D000081207	PIK3CD	ENSG00000171608	D000081207	Primary Immunodeficiency Diseases	congenital, immune	TRUE	1	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+PIK3CD-D000744	PIK3CD	ENSG00000171608	D000744	Anemia, Hemolytic, Autoimmune	hematology, immune	FALSE	0.462	OTG	Phase III	TRUE	TRUE	TRUE	
+PIK3CD-D001172	PIK3CD	ENSG00000171608	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.484	OMIM	Phase III	TRUE	TRUE	TRUE	FALSE
+PIK3CD-D001249	PIK3CD	ENSG00000171608	D001249	Asthma	respiratory, immune	FALSE	0.48	OMIM	Preclinical				
+PIK3CD-D001327	PIK3CD	ENSG00000171608	D001327	Autoimmune Diseases	immune	FALSE	0.553	OMIM	Preclinical	FALSE			
+PIK3CD-D006086	PIK3CD	ENSG00000171608	D006086	Graft vs Host Disease	immune	FALSE	0.434	OMIM	Preclinical	FALSE			
+PIK3CD-D006967	PIK3CD	ENSG00000171608	D006967	Hypersensitivity	immune	FALSE	0.518	OMIM	Phase I	TRUE	FALSE		
+PIK3CD-D007154	PIK3CD	ENSG00000171608	D007154	Immune System Diseases	immune	FALSE	0.639	OMIM	Preclinical	FALSE			
+PIK3CD-D008180	PIK3CD	ENSG00000171608	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.472	OMIM	Phase I	TRUE	FALSE		
+PIK3CD-D008181	PIK3CD	ENSG00000171608	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.418	OMIM	Preclinical	FALSE			
+PIK3CD-D009103	PIK3CD	ENSG00000171608	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.488	OMIM	Phase I	TRUE	FALSE		
+PIK3CD-D010392	PIK3CD	ENSG00000171608	D010392	Pemphigus	dermatology, immune	FALSE	0.426	OMIM	Preclinical	FALSE			
+PIK3CD-D012859	PIK3CD	ENSG00000171608	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.432	OMIM	Phase II	TRUE	TRUE	FALSE	
+PIK3CD-D065631	PIK3CD	ENSG00000171608	D065631	Rhinitis, Allergic	respiratory, immune	FALSE	0.436	OMIM	Phase I	TRUE	FALSE		
+PIK3CG-D001172	PIK3CG	ENSG00000105851	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+PIK3CG-D001249	PIK3CG	ENSG00000105851	D001249	Asthma	respiratory, immune	FALSE	0.437	OTG	Preclinical				
+PIK3CG-D001327	PIK3CG	ENSG00000105851	D001327	Autoimmune Diseases	immune	FALSE	0.489	OTG	Preclinical	FALSE			
+PIK3CG-D006086	PIK3CG	ENSG00000105851	D006086	Graft vs Host Disease	immune	FALSE	0.402	OTG	Preclinical	FALSE			
+PIK3CG-D006967	PIK3CG	ENSG00000105851	D006967	Hypersensitivity	immune	FALSE	0.465	OTG	Phase I	TRUE	FALSE		
+PIK3CG-D007154	PIK3CG	ENSG00000105851	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Preclinical	FALSE			
+PIK3CG-D008180	PIK3CG	ENSG00000105851	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.431	OTG	Phase I	TRUE	FALSE		
+PIK3CG-D009103	PIK3CG	ENSG00000105851	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.443	OTG	Phase I	TRUE	FALSE		
+PLA2G6-D001172	PLA2G6	ENSG00000184381	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.248	OTG	Phase I	TRUE	FALSE		
+PNP-D001172	PNP	ENSG00000198805	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.484	OMIM	Phase II	TRUE	TRUE	FALSE	
+PNP-D006086	PNP	ENSG00000198805	D006086	Graft vs Host Disease	immune	FALSE	0.434	OMIM	Phase II	TRUE	TRUE	FALSE	
+POLA1-D006086	POLA1	ENSG00000101868	D006086	Graft vs Host Disease	immune	FALSE	0.208	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+POMC-D001249	POMC	ENSG00000115138	D001249	Asthma	respiratory, immune	FALSE	0.218	OMIM	Preclinical	FALSE			
+POMC-D009103	POMC	ENSG00000115138	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.22	OMIM	Preclinical	FALSE			
+PPARA-D003922	PPARA	ENSG00000186951	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.484	OTG	Phase I	TRUE	FALSE		
+PPARA-D009103	PPARA	ENSG00000186951	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.229	OTG	Preclinical	FALSE			
+PPARD-D008180	PPARD	ENSG00000112033	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.223	OTG	Preclinical	FALSE			
+PPARD-D009103	PPARD	ENSG00000112033	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.229	OTG	Preclinical	FALSE			
+PPIA-D001172	PPIA	ENSG00000196262	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Preclinical	FALSE			
+PPIA-D001249	PPIA	ENSG00000196262	D001249	Asthma	respiratory, immune	FALSE	0.437	OTG	Preclinical	FALSE			
+PPIA-D003233	PPIA	ENSG00000196262	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.374	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+PPIA-D003876	PPIA	ENSG00000196262	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.397	OTG	Phase II	TRUE	TRUE	FALSE	
+PPIA-D006086	PPIA	ENSG00000196262	D006086	Graft vs Host Disease	immune	FALSE	0.402	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+PPIA-D007154	PPIA	ENSG00000196262	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Phase I	TRUE	FALSE		
+PPIA-D010392	PPIA	ENSG00000196262	D010392	Pemphigus	dermatology, immune	FALSE	0.396	OTG	Preclinical	FALSE			
+PRF1-D006086	PRF1	ENSG00000180644	D006086	Graft vs Host Disease	immune	FALSE	0.397	OTG	Preclinical	FALSE			
+PRF1-D007154	PRF1	ENSG00000180644	D007154	Immune System Diseases	immune	FALSE	0.532	OTG	Preclinical	FALSE			
+PRKACA-D003876	PRKACA	ENSG00000072062	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+PRKCA-D003876	PRKCA	ENSG00000154229	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.31	OTG	Phase II	TRUE	TRUE	FALSE	
+PRKCA-D006086	PRKCA	ENSG00000154229	D006086	Graft vs Host Disease	immune	FALSE	0.21	OTG	Phase II	TRUE	TRUE	FALSE	
+PRKCB-D001172	PRKCB	ENSG00000166501	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Phase I	TRUE	FALSE		
+PRKCB-D006086	PRKCB	ENSG00000166501	D006086	Graft vs Host Disease	immune	FALSE	0.385	OTG	Phase II	TRUE	TRUE	FALSE	
+PRKCB-D008180	PRKCB	ENSG00000166501	D008180	Lupus Erythematosus, Systemic	dermatology, immune	TRUE	1	OTG	Phase I	TRUE	FALSE		
+PRKCD-D006086	PRKCD	ENSG00000163932	D006086	Graft vs Host Disease	immune	FALSE	0.343	OMIM	Phase II	TRUE	TRUE	FALSE	
+PRKCE-D001172	PRKCE	ENSG00000171132	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Preclinical	FALSE			
+PRKCE-D006086	PRKCE	ENSG00000171132	D006086	Graft vs Host Disease	immune	FALSE	0.402	OTG	Phase II	TRUE	TRUE	FALSE	
+PRKCE-D009103	PRKCE	ENSG00000171132	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.443	OTG	Preclinical				
+PRKCH-D006086	PRKCH	ENSG00000027075	D006086	Graft vs Host Disease	immune	FALSE	0.385	OTG	Phase II	TRUE	TRUE	FALSE	
+PRKCQ-D001172	PRKCQ	ENSG00000065675	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Preclinical				
+PRKCQ-D001249	PRKCQ	ENSG00000065675	D001249	Asthma	respiratory, immune	TRUE	1	OTG	Preclinical				
+PRKCQ-D001327	PRKCQ	ENSG00000065675	D001327	Autoimmune Diseases	immune	FALSE	0.682	OTG	Preclinical				
+PRKCQ-D003876	PRKCQ	ENSG00000065675	D003876	Dermatitis, Atopic	congenital, dermatology, immune	TRUE	1	OTG	Preclinical				
+PRKCQ-D006086	PRKCQ	ENSG00000065675	D006086	Graft vs Host Disease	immune	FALSE	0.385	OTG	Phase II	TRUE	TRUE	FALSE	
+PRKCQ-D007154	PRKCQ	ENSG00000065675	D007154	Immune System Diseases	immune	FALSE	0.501	OTG	Preclinical	FALSE			
+PRKCQ-D009103	PRKCQ	ENSG00000065675	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.626	OTG	Preclinical	FALSE			
+PSMB8-D001327	PSMB8	ENSG00000204264	D001327	Autoimmune Diseases	immune	FALSE	0.594	PICCOLO	Preclinical	FALSE			
+PTGDR-D001249	PTGDR	ENSG00000168229	D001249	Asthma	respiratory, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+PTGDR-D003876	PTGDR	ENSG00000168229	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+PTGDR-D006255	PTGDR	ENSG00000168229	D006255	Rhinitis, Allergic, Seasonal	respiratory, immune	FALSE	0		Phase III	TRUE	TRUE	TRUE	FALSE
+PTGDR-D006967	PTGDR	ENSG00000168229	D006967	Hypersensitivity	immune	FALSE	0		Preclinical	FALSE			
+PTGDR-D012221	PTGDR	ENSG00000168229	D012221	Rhinitis, Allergic, Perennial	respiratory, immune	FALSE	0		Phase III	TRUE	TRUE	TRUE	FALSE
+PTGDR-D065631	PTGDR	ENSG00000168229	D065631	Rhinitis, Allergic	respiratory, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+PTGDS-D001249	PTGDS	ENSG00000107317	D001249	Asthma	respiratory, immune	FALSE	0.215	PICCOLO	Preclinical	FALSE			
+PTGDS-D006255	PTGDS	ENSG00000107317	D006255	Rhinitis, Allergic, Seasonal	respiratory, immune	FALSE	0.195	PICCOLO	Phase II	TRUE	TRUE	FALSE	
+PTGDS-D006967	PTGDS	ENSG00000107317	D006967	Hypersensitivity	immune	FALSE	0.226	PICCOLO	Preclinical	FALSE			
+PTGER2-D001249	PTGER2	ENSG00000125384	D001249	Asthma	respiratory, immune	FALSE	0.033	Genebass	Preclinical	FALSE			
+PTGER4-D001172	PTGER4	ENSG00000171522	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.682	PICCOLO	Phase II	TRUE	TRUE		
+PTGER4-D001249	PTGER4	ENSG00000171522	D001249	Asthma	respiratory, immune	TRUE	0.81	OTG	Preclinical	FALSE			
+PTGER4-D001327	PTGER4	ENSG00000171522	D001327	Autoimmune Diseases	immune	TRUE	1	PICCOLO	Preclinical				
+PTGER4-D006967	PTGER4	ENSG00000171522	D006967	Hypersensitivity	immune	TRUE	1	OTG	Phase I	TRUE	FALSE		
+PTGIR-D001249	PTGIR	ENSG00000160013	D001249	Asthma	respiratory, immune	FALSE	0.205	OTG	Preclinical				
+PTPN11-D001327	PTPN11	ENSG00000179295	D001327	Autoimmune Diseases	immune	FALSE	0.24	Genebass	Preclinical				
+PTPN11-D007154	PTPN11	ENSG00000179295	D007154	Immune System Diseases	immune	FALSE	0.262	Genebass	Preclinical	FALSE			
+PTPN11-D009103	PTPN11	ENSG00000179295	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.22	Genebass	Preclinical				
+PYCARD-D001172	PYCARD	ENSG00000103490	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Preclinical	FALSE			
+PYCARD-D001327	PYCARD	ENSG00000103490	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical				
+PYCARD-D005922	PYCARD	ENSG00000103490	D005922	Glomerulonephritis, IGA	immune	FALSE	0		Preclinical				
+PYCARD-D008181	PYCARD	ENSG00000103490	D008181	Lupus Nephritis	dermatology, immune	FALSE	0		Preclinical	FALSE			
+PYCARD-D009103	PYCARD	ENSG00000103490	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Preclinical				
+RALBP1-D001327	RALBP1	ENSG00000017797	D001327	Autoimmune Diseases	immune	FALSE	0.224	OTG	Phase I	TRUE			
+RALBP1-D009103	RALBP1	ENSG00000017797	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.209	OTG	Preclinical	FALSE			
+RAMP1-D001249	RAMP1	ENSG00000132329	D001249	Asthma	respiratory, immune	FALSE	0.205	OTG	Phase II	TRUE	TRUE	FALSE	
+RARA-D001327	RARA	ENSG00000131759	D001327	Autoimmune Diseases	immune	FALSE	0.252	OMIM	Preclinical	FALSE			
+RARG-D001327	RARG	ENSG00000172819	D001327	Autoimmune Diseases	immune	FALSE	0.452	OTG	Preclinical	FALSE			
+REL-D006086	REL	ENSG00000162924	D006086	Graft vs Host Disease	immune	FALSE	0.4	OTG	Preclinical	FALSE			
+REL-D009103	REL	ENSG00000162924	D009103	Multiple Sclerosis	neurology, immune	TRUE	1	OTG	Preclinical	FALSE			
+RHBDF2-D001327	RHBDF2	ENSG00000129667	D001327	Autoimmune Diseases	immune	FALSE	0.253	OTG	Preclinical				
+RHOA-D009103	RHOA	ENSG00000067560	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Preclinical	FALSE			
+RIPK1-D001172	RIPK1	ENSG00000137275	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.484	OMIM	Preclinical				
+RIPK1-D001327	RIPK1	ENSG00000137275	D001327	Autoimmune Diseases	immune	FALSE	0.553	OMIM	Phase I	TRUE			
+RIPK1-D007154	RIPK1	ENSG00000137275	D007154	Immune System Diseases	immune	FALSE	0.639	OMIM	Preclinical				
+RIPK1-D009103	RIPK1	ENSG00000137275	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.488	OMIM	Phase I	TRUE			
+RIPK2-D001172	RIPK2	ENSG00000104312	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.209	OTG	Preclinical				
+RIPK2-D001249	RIPK2	ENSG00000104312	D001249	Asthma	respiratory, immune	FALSE	0.208	OTG	Preclinical	FALSE			
+RIPK2-D001327	RIPK2	ENSG00000104312	D001327	Autoimmune Diseases	immune	FALSE	0.225	OTG	Preclinical				
+RIPK2-D008180	RIPK2	ENSG00000104312	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.205	OTG	Preclinical	FALSE			
+RIPK2-D009103	RIPK2	ENSG00000104312	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.21	OTG	Preclinical				
+ROCK2-D001249	ROCK2	ENSG00000134318	D001249	Asthma	respiratory, immune	FALSE	0.239	OTG	Preclinical	FALSE			
+ROCK2-D001327	ROCK2	ENSG00000134318	D001327	Autoimmune Diseases	immune	FALSE	0.269	OTG	Preclinical	FALSE			
+ROCK2-D006086	ROCK2	ENSG00000134318	D006086	Graft vs Host Disease	immune	FALSE	0.219	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+ROCK2-D006967	ROCK2	ENSG00000134318	D006967	Hypersensitivity	immune	FALSE	0.255	OTG	Preclinical	FALSE			
+ROCK2-D008180	ROCK2	ENSG00000134318	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.235	OTG	Preclinical	FALSE			
+ROCK2-D008181	ROCK2	ENSG00000134318	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.684	OTG	Preclinical	FALSE			
+ROCK2-D009103	ROCK2	ENSG00000134318	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.383	OTG	Preclinical				
+RPS6KA4-D001327	RPS6KA4	ENSG00000162302	D001327	Autoimmune Diseases	immune	FALSE	0.234	PICCOLO	Preclinical	FALSE			
+RPS6KA5-D001327	RPS6KA5	ENSG00000100784	D001327	Autoimmune Diseases	immune	FALSE	0.269	OTG	Preclinical	FALSE			
+RTN4-D009103	RTN4	ENSG00000115310	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.443	OTG	Phase II	TRUE	TRUE	FALSE	
+S100A9-D001172	S100A9	ENSG00000163220	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.26	PICCOLO	Phase I	TRUE	FALSE		
+S100A9-D007154	S100A9	ENSG00000163220	D007154	Immune System Diseases	immune	FALSE	0.345	PICCOLO	Preclinical	FALSE			
+S100A9-D008180	S100A9	ENSG00000163220	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.253	PICCOLO	Phase II	TRUE	TRUE	FALSE	
+S1PR1-D001172	S1PR1	ENSG00000170989	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.26	OTG	Phase I	TRUE	FALSE		
+S1PR1-D001327	S1PR1	ENSG00000170989	D001327	Autoimmune Diseases	immune	FALSE	0.298	OTG	Phase I	TRUE			
+S1PR1-D003876	S1PR1	ENSG00000170989	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.301	OTG	Phase II	TRUE	TRUE		
+S1PR1-D006086	S1PR1	ENSG00000170989	D006086	Graft vs Host Disease	immune	FALSE	0.233	OTG	Preclinical				
+S1PR1-D006967	S1PR1	ENSG00000170989	D006967	Hypersensitivity	immune	FALSE	0.279	OTG	Phase I	TRUE	FALSE		
+S1PR1-D007154	S1PR1	ENSG00000170989	D007154	Immune System Diseases	immune	FALSE	0.345	OTG	Phase I	TRUE	FALSE		
+S1PR1-D008180	S1PR1	ENSG00000170989	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.253	OTG	Phase II	TRUE	TRUE		
+S1PR1-D009103	S1PR1	ENSG00000170989	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.49	OTG	Phase I	TRUE			
+S1PR1-D057765	S1PR1	ENSG00000170989	D057765	Eosinophilic Esophagitis	digestive, hematology, immune	TRUE	0.904	OTG	Phase II	TRUE	TRUE		
+S1PR4-D001172	S1PR4	ENSG00000125910	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	Genebass	Preclinical	FALSE			
+S1PR4-D003876	S1PR4	ENSG00000125910	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.397	Genebass	Phase II	TRUE	TRUE		
+S1PR4-D006086	S1PR4	ENSG00000125910	D006086	Graft vs Host Disease	immune	FALSE	0.402	Genebass	Preclinical				
+S1PR4-D009103	S1PR4	ENSG00000125910	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.443	Genebass	Phase II	TRUE	TRUE	FALSE	
+S1PR4-D057765	S1PR4	ENSG00000125910	D057765	Eosinophilic Esophagitis	digestive, hematology, immune	TRUE	0.904	Genebass	Phase II	TRUE	TRUE		
+S1PR5-D001172	S1PR5	ENSG00000180739	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Preclinical	FALSE			
+S1PR5-D001327	S1PR5	ENSG00000180739	D001327	Autoimmune Diseases	immune	FALSE	0		Phase I	TRUE	FALSE		
+S1PR5-D003876	S1PR5	ENSG00000180739	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0		Phase II	TRUE	TRUE		
+S1PR5-D006086	S1PR5	ENSG00000180739	D006086	Graft vs Host Disease	immune	FALSE	0		Preclinical				
+S1PR5-D007154	S1PR5	ENSG00000180739	D007154	Immune System Diseases	immune	FALSE	0		Phase I	TRUE	FALSE		
+S1PR5-D008180	S1PR5	ENSG00000180739	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Phase I	TRUE	FALSE		
+S1PR5-D009103	S1PR5	ENSG00000180739	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+S1PR5-D057765	S1PR5	ENSG00000180739	D057765	Eosinophilic Esophagitis	digestive, hematology, immune	FALSE	0		Phase II	TRUE	TRUE		
+SARM1-D009103	SARM1	ENSG00000004139	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.221	PICCOLO	Preclinical	FALSE			
+SELL-D001249	SELL	ENSG00000188404	D001249	Asthma	respiratory, immune	FALSE	0.437	OTG	Preclinical	FALSE			
+SELL-D007154	SELL	ENSG00000188404	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Preclinical	FALSE			
+SELL-D009103	SELL	ENSG00000188404	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.443	OTG	Preclinical	FALSE			
+SELPLG-D001172	SELPLG	ENSG00000110876	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Phase I	TRUE	FALSE		
+SELPLG-D001249	SELPLG	ENSG00000110876	D001249	Asthma	respiratory, immune	FALSE	0		Phase II	TRUE	TRUE		
+SELPLG-D003922	SELPLG	ENSG00000110876	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0		Phase I	TRUE	FALSE		
+SELPLG-D006086	SELPLG	ENSG00000110876	D006086	Graft vs Host Disease	immune	FALSE	0		Phase I	TRUE			
+SELPLG-D008180	SELPLG	ENSG00000110876	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Phase I	TRUE	FALSE		
+SELPLG-D009103	SELPLG	ENSG00000110876	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Phase I	TRUE	FALSE		
+SEMA4D-D009103	SEMA4D	ENSG00000187764	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.23	OTG	Phase I	TRUE			
+SERPINA1-D001249	SERPINA1	ENSG00000197249	D001249	Asthma	respiratory, immune	TRUE	0.83	OTG	Preclinical	FALSE			
+SERPINA1-D003922	SERPINA1	ENSG00000197249	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.748	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+SERPINA1-D006086	SERPINA1	ENSG00000197249	D006086	Graft vs Host Disease	immune	FALSE	0.363	OTG	Phase III	TRUE	TRUE	TRUE	
+SERPINA1-D054179	SERPINA1	ENSG00000197249	D054179	Angioedemas, Hereditary	cardiovascular, congenital, dermatology, immune	FALSE	0.453	OTG	Preclinical	FALSE			
+SESN2-D001327	SESN2	ENSG00000130766	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical	FALSE			
+SGPL1-D001172	SGPL1	ENSG00000166224	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.229	OTG	Phase II	TRUE	TRUE	FALSE	
+SGPL1-D009103	SGPL1	ENSG00000166224	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.23	OTG	Phase I	TRUE	FALSE		
+SGPL1-D010392	SGPL1	ENSG00000166224	D010392	Pemphigus	dermatology, immune	FALSE	0.207	OTG	Phase II	TRUE	TRUE	FALSE	
+SIGMAR1-D009103	SIGMAR1	ENSG00000147955	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Preclinical	FALSE			
+SIK2-D001172	SIK2	ENSG00000170145	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.032	OTG	Preclinical				
+SIK2-D008180	SIK2	ENSG00000170145	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.031	OTG	Preclinical				
+SIK2-D012859	SIK2	ENSG00000170145	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.03	OTG	Phase II	TRUE	TRUE	FALSE	
+SIK3-D001172	SIK3	ENSG00000160584	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.26	OTG	Phase II	TRUE	TRUE	FALSE	
+SIK3-D008180	SIK3	ENSG00000160584	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.253	OTG	Phase II	TRUE	TRUE	FALSE	
+SIK3-D012859	SIK3	ENSG00000160584	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.232	OTG	Phase II	TRUE	TRUE	FALSE	
+SLC15A4-D008180	SLC15A4	ENSG00000139370	D008180	Lupus Erythematosus, Systemic	dermatology, immune	TRUE	1	OTG	Preclinical				
+SLC16A1-D007154	SLC16A1	ENSG00000155380	D007154	Immune System Diseases	immune	FALSE	0.36	OTG	Preclinical	FALSE			
+SLC7A5-D001327	SLC7A5	ENSG00000103257	D001327	Autoimmune Diseases	immune	FALSE	0.452	OTG	Preclinical				
+SLC7A5-D009103	SLC7A5	ENSG00000103257	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.262	OTG	Preclinical				
+SNRNP70-D001172	SNRNP70	ENSG00000104852	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Preclinical				
+SNRNP70-D001249	SNRNP70	ENSG00000104852	D001249	Asthma	respiratory, immune	FALSE	0		Preclinical				
+SNRNP70-D008180	SNRNP70	ENSG00000104852	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Phase III	TRUE	TRUE	TRUE	
+SNRNP70-D020277	SNRNP70	ENSG00000104852	D020277	Polyradiculoneuropathy, Chronic Inflammatory Demyelinating	neurology, immune	FALSE	0		Preclinical				
+ST13-D001327	ST13	ENSG00000100380	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical				
+STAT1-D001249	STAT1	ENSG00000115415	D001249	Asthma	respiratory, immune	FALSE	0.48	OMIM	Phase II	TRUE	TRUE	FALSE	
+STAT3-D001172	STAT3	ENSG00000168610	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.682	OMIM	Preclinical				
+STAT3-D001249	STAT3	ENSG00000168610	D001249	Asthma	respiratory, immune	FALSE	0.452	OMIM	Preclinical	FALSE			
+STAT3-D001327	STAT3	ENSG00000168610	D001327	Autoimmune Diseases	immune	TRUE	1	OMIM	Preclinical				
+STAT3-D003876	STAT3	ENSG00000168610	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.46	OTG	Phase I	TRUE	FALSE		
+STAT3-D007154	STAT3	ENSG00000168610	D007154	Immune System Diseases	immune	FALSE	0.578	OMIM	Preclinical				
+STAT3-D007589	STAT3	ENSG00000168610	D007589	Job Syndrome	hematology, congenital, immune	TRUE	1	OMIM	Preclinical				
+STAT3-D008180	STAT3	ENSG00000168610	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.667	OMIM	Preclinical	FALSE			
+STAT3-D009103	STAT3	ENSG00000168610	D009103	Multiple Sclerosis	neurology, immune	TRUE	1	OTG	Preclinical	FALSE			
+STAT4-D003922	STAT4	ENSG00000138378	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	TRUE	1	OTG	Preclinical	FALSE			
+STAT5B-D001249	STAT5B	ENSG00000173757	D001249	Asthma	respiratory, immune	FALSE	0.185	OMIM	Preclinical	FALSE			
+STAT5B-D003876	STAT5B	ENSG00000173757	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.294	OMIM	Preclinical	FALSE			
+STAT6-D001172	STAT6	ENSG00000166888	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.436	PICCOLO	Preclinical	FALSE			
+STAT6-D001249	STAT6	ENSG00000166888	D001249	Asthma	respiratory, immune	TRUE	1	PICCOLO	Preclinical	FALSE			
+STAT6-D003876	STAT6	ENSG00000166888	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.772	PICCOLO	Preclinical	FALSE			
+STAT6-D006967	STAT6	ENSG00000166888	D006967	Hypersensitivity	immune	TRUE	1	PICCOLO	Preclinical	FALSE			
+SYK-D000744	SYK	ENSG00000165025	D000744	Anemia, Hemolytic, Autoimmune	hematology, immune	FALSE	0.704	OTG	Phase III	TRUE	TRUE	TRUE	
+SYK-D001172	SYK	ENSG00000165025	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Phase II	TRUE	TRUE		
+SYK-D001249	SYK	ENSG00000165025	D001249	Asthma	respiratory, immune	FALSE	0.437	OTG	Phase II	TRUE	TRUE	FALSE	
+SYK-D001327	SYK	ENSG00000165025	D001327	Autoimmune Diseases	immune	FALSE	0.489	OTG	Preclinical	FALSE			
+SYK-D003233	SYK	ENSG00000165025	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.374	OTG	Phase II	TRUE	TRUE		
+SYK-D003876	SYK	ENSG00000165025	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.397	OTG	Phase II	TRUE	TRUE		
+SYK-D006086	SYK	ENSG00000165025	D006086	Graft vs Host Disease	immune	FALSE	0.402	OTG	Phase II	TRUE	TRUE	FALSE	
+SYK-D006967	SYK	ENSG00000165025	D006967	Hypersensitivity	immune	FALSE	0.465	OTG	Preclinical	FALSE			
+SYK-D007154	SYK	ENSG00000165025	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Preclinical	FALSE			
+SYK-D008180	SYK	ENSG00000165025	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.431	OTG	Phase I	TRUE			
+SYK-D008181	SYK	ENSG00000165025	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.39	OTG	Phase II	TRUE	TRUE	FALSE	
+SYK-D009103	SYK	ENSG00000165025	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.755	OTG	Preclinical	FALSE			
+SYK-D012859	SYK	ENSG00000165025	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.401	OTG	Phase II	TRUE	TRUE	FALSE	
+SYK-D014581	SYK	ENSG00000165025	D014581	Urticaria	dermatology, immune	FALSE	0.406	OTG	Phase I	TRUE	FALSE		
+SYK-D016553	SYK	ENSG00000165025	D016553	Purpura, Thrombocytopenic, Idiopathic	hematology, immune, signs/symptoms	TRUE	0.847	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+SYK-D065631	SYK	ENSG00000165025	D065631	Rhinitis, Allergic	respiratory, immune	FALSE	0.404	OTG	Preclinical	FALSE			
+SYVN1-D001172	SYVN1	ENSG00000162298	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Preclinical	FALSE			
+TBK1-D001172	TBK1	ENSG00000183735	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.26	OTG	Phase I	TRUE			
+TBK1-D003876	TBK1	ENSG00000183735	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.229	OTG	Preclinical				
+TBK1-D006086	TBK1	ENSG00000183735	D006086	Graft vs Host Disease	immune	FALSE	0.233	OTG	Preclinical				
+TBK1-D008180	TBK1	ENSG00000183735	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.253	OTG	Preclinical				
+TBK1-D012859	TBK1	ENSG00000183735	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.232	OTG	Preclinical	FALSE			
+TBXAS1-D001249	TBXAS1	ENSG00000059377	D001249	Asthma	respiratory, immune	FALSE	0.256	OTG	Preclinical	FALSE			
+TBXAS1-D065631	TBXAS1	ENSG00000059377	D065631	Rhinitis, Allergic	respiratory, immune	FALSE	0.233	OTG	Preclinical	FALSE			
+TCIRG1-D001172	TCIRG1	ENSG00000110719	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.343	OMIM	Preclinical	FALSE			
+TCIRG1-D006086	TCIRG1	ENSG00000110719	D006086	Graft vs Host Disease	immune	FALSE	0.237	OTG	Preclinical	FALSE			
+TCIRG1-D009103	TCIRG1	ENSG00000110719	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.268	OTG	Preclinical	FALSE			
+TFRC-D009103	TFRC	ENSG00000072274	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.488	OMIM	Preclinical	FALSE			
+TGFB1-D001172	TGFB1	ENSG00000105329	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.478	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+TGFB1-D001327	TGFB1	ENSG00000105329	D001327	Autoimmune Diseases	immune	FALSE	0.311	OTG	Preclinical				
+TGFB1-D003922	TGFB1	ENSG00000105329	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.705	OTG	Phase I	TRUE			
+TGFB1-D006086	TGFB1	ENSG00000105329	D006086	Graft vs Host Disease	immune	FALSE	0.238	OTG	Preclinical				
+TGFB1-D007154	TGFB1	ENSG00000105329	D007154	Immune System Diseases	immune	FALSE	0.365	OTG	Phase I	TRUE			
+TGFBR1-D001327	TGFBR1	ENSG00000106799	D001327	Autoimmune Diseases	immune	FALSE	0.452	OTG	Preclinical	FALSE			
+TGFBR2-D001327	TGFBR2	ENSG00000163513	D001327	Autoimmune Diseases	immune	FALSE	0.298	OTG	Preclinical	FALSE			
+TGFBR3-D001327	TGFBR3	ENSG00000069702	D001327	Autoimmune Diseases	immune	FALSE	0.686	OTG	Preclinical	FALSE			
+TIGIT-D001327	TIGIT	ENSG00000181847	D001327	Autoimmune Diseases	immune	FALSE	0		Preclinical	FALSE			
+TLR2-D001172	TLR2	ENSG00000137462	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Preclinical				
+TLR2-D001249	TLR2	ENSG00000137462	D001249	Asthma	respiratory, immune	FALSE	0		Preclinical	FALSE			
+TLR2-D006086	TLR2	ENSG00000137462	D006086	Graft vs Host Disease	immune	FALSE	0		Phase II	TRUE	TRUE	FALSE	
+TLR2-D007154	TLR2	ENSG00000137462	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+TLR2-D008180	TLR2	ENSG00000137462	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Preclinical	FALSE			
+TLR2-D009103	TLR2	ENSG00000137462	D009103	Multiple Sclerosis	neurology, immune	FALSE	0		Preclinical	FALSE			
+TLR2-D020275	TLR2	ENSG00000137462	D020275	Guillain-Barre Syndrome	neurology, immune	FALSE	0		Preclinical				
+TLR6-D006086	TLR6	ENSG00000174130	D006086	Graft vs Host Disease	immune	FALSE	0.4	PICCOLO	Preclinical	FALSE			
+TNF-D001171	TNF	ENSG00000232810	D001171	Arthritis, Juvenile	musculoskeletal, dermatology, immune	FALSE	0.014	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+TNF-D001172	TNF	ENSG00000232810	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.037	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+TNF-D001249	TNF	ENSG00000232810	D001249	Asthma	respiratory, immune	FALSE	0.036	OTG	Phase II	TRUE	TRUE	FALSE	
+TNF-D001327	TNF	ENSG00000232810	D001327	Autoimmune Diseases	immune	FALSE	0.041	OTG	Phase II	TRUE	TRUE		
+TNF-D003233	TNF	ENSG00000232810	D003233	Conjunctivitis, Allergic	ophthalmology, immune	FALSE	0.031	OTG	Preclinical	FALSE			
+TNF-D003876	TNF	ENSG00000232810	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.033	OTG	Phase II	TRUE	TRUE	FALSE	
+TNF-D003922	TNF	ENSG00000232810	D003922	Diabetes Mellitus, Type 1	metabolic, endocrine, immune	FALSE	0.038	OTG	Phase II	TRUE	TRUE		
+TNF-D006086	TNF	ENSG00000232810	D006086	Graft vs Host Disease	immune	FALSE	0.033	OTG	Preclinical	FALSE			
+TNF-D006967	TNF	ENSG00000232810	D006967	Hypersensitivity	immune	FALSE	0.039	OTG	Phase I	TRUE	FALSE		
+TNF-D007153	TNF	ENSG00000232810	D007153	Immunologic Deficiency Syndromes	immune	FALSE	0.045	OTG	Phase I	TRUE	FALSE		
+TNF-D007154	TNF	ENSG00000232810	D007154	Immune System Diseases	immune	FALSE	0.046	OTG	Phase I	TRUE			
+TNF-D008180	TNF	ENSG00000232810	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.036	OTG	Preclinical	FALSE			
+TNF-D009103	TNF	ENSG00000232810	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.037	OTG	Preclinical				
+TNFRSF13C-D001172	TNFRSF13C	ENSG00000159958	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.363	OMIM	Phase I	TRUE			
+TNFRSF13C-D001327	TNFRSF13C	ENSG00000159958	D001327	Autoimmune Diseases	immune	FALSE	0.386	OMIM	Preclinical	FALSE			
+TNFRSF13C-D008180	TNFRSF13C	ENSG00000159958	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.358	OMIM	Phase II	TRUE	TRUE		
+TNFRSF13C-D008181	TNFRSF13C	ENSG00000159958	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.336	OMIM	Phase III	TRUE	TRUE	TRUE	
+TNFRSF13C-D010392	TNFRSF13C	ENSG00000159958	D010392	Pemphigus	dermatology, immune	FALSE	0.34	OMIM	Phase II	TRUE	TRUE	FALSE	
+TNFRSF13C-D012859	TNFRSF13C	ENSG00000159958	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.342	OMIM	Phase II	TRUE	TRUE		
+TNFRSF1A-D001172	TNFRSF1A	ENSG00000067182	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.626	OTG	Preclinical				
+TNFRSF1A-D001327	TNFRSF1A	ENSG00000067182	D001327	Autoimmune Diseases	immune	FALSE	0.686	OTG	Preclinical	FALSE			
+TNFRSF1A-D007154	TNFRSF1A	ENSG00000067182	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Phase I	TRUE			
+TNFRSF1A-D009103	TNFRSF1A	ENSG00000067182	D009103	Multiple Sclerosis	neurology, immune	TRUE	1	OTG	Phase I	TRUE	FALSE		
+TNFRSF1B-D001172	TNFRSF1B	ENSG00000028137	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.682	OTG	Preclinical				
+TNFRSF1B-D001327	TNFRSF1B	ENSG00000028137	D001327	Autoimmune Diseases	immune	TRUE	1	OTG	Preclinical	FALSE			
+TNFRSF25-D006086	TNFRSF25	ENSG00000215788	D006086	Graft vs Host Disease	immune	FALSE	0		Preclinical	FALSE			
+TNFRSF4-D001172	TNFRSF4	ENSG00000186827	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0		Preclinical				
+TNFRSF4-D001327	TNFRSF4	ENSG00000186827	D001327	Autoimmune Diseases	immune	FALSE	0		Phase I	TRUE			
+TNFRSF4-D003876	TNFRSF4	ENSG00000186827	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0		Phase III	TRUE	TRUE	TRUE	
+TNFRSF4-D006086	TNFRSF4	ENSG00000186827	D006086	Graft vs Host Disease	immune	FALSE	0		Preclinical	FALSE			
+TNFRSF4-D008180	TNFRSF4	ENSG00000186827	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0		Preclinical				
+TNFSF13B-D001172	TNFSF13B	ENSG00000102524	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Phase III	TRUE	TRUE	TRUE	
+TNFSF13B-D001327	TNFSF13B	ENSG00000102524	D001327	Autoimmune Diseases	immune	FALSE	0.489	OTG	Phase I	TRUE			
+TNFSF13B-D005922	TNFSF13B	ENSG00000102524	D005922	Glomerulonephritis, IGA	immune	FALSE	0.387	OTG	Phase II	TRUE	TRUE		
+TNFSF13B-D007154	TNFSF13B	ENSG00000102524	D007154	Immune System Diseases	immune	FALSE	0.546	OTG	Preclinical				
+TNFSF13B-D008180	TNFSF13B	ENSG00000102524	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.431	OTG	Launched	TRUE	TRUE	TRUE	TRUE
+TNFSF13B-D008181	TNFSF13B	ENSG00000102524	D008181	Lupus Nephritis	dermatology, immune	FALSE	0.39	OTG	Preclinical				
+TNFSF13B-D009103	TNFSF13B	ENSG00000102524	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.443	OTG	Phase II	TRUE	TRUE		
+TNFSF13B-D009471	TNFSF13B	ENSG00000102524	D009471	Neuromyelitis Optica	neurology, ophthalmology, immune	FALSE	0.37	OTG	Phase III	TRUE	TRUE	TRUE	
+TNFSF13B-D012859	TNFSF13B	ENSG00000102524	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	FALSE	0.401	OTG	Phase II	TRUE	TRUE		
+TNFSF13B-D016553	TNFSF13B	ENSG00000102524	D016553	Purpura, Thrombocytopenic, Idiopathic	hematology, immune, signs/symptoms	FALSE	0.45	OTG	Phase III	TRUE	TRUE	TRUE	FALSE
+TNFSF8-D001327	TNFSF8	ENSG00000106952	D001327	Autoimmune Diseases	immune	TRUE	1	PICCOLO	Preclinical	FALSE			
+TNFSF8-D007154	TNFSF8	ENSG00000106952	D007154	Immune System Diseases	immune	FALSE	0.578	PICCOLO	Preclinical	FALSE			
+TP53-D006086	TP53	ENSG00000141510	D006086	Graft vs Host Disease	immune	FALSE	0.182	OMIM	Phase III	TRUE	TRUE	TRUE	FALSE
+TP53-D007154	TP53	ENSG00000141510	D007154	Immune System Diseases	immune	FALSE	0.217	OMIM	Preclinical	FALSE			
+TUBB-D006086	TUBB	ENSG00000196230	D006086	Graft vs Host Disease	immune	FALSE	0.214	OMIM	Phase III	TRUE	TRUE	TRUE	FALSE
+TXK-D001327	TXK	ENSG00000074966	D001327	Autoimmune Diseases	immune	FALSE	0.686	OTG	Preclinical	FALSE			
+TYK2-D001172	TYK2	ENSG00000105397	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	TRUE	1	OTG	Phase II	TRUE	TRUE		
+TYK2-D001249	TYK2	ENSG00000105397	D001249	Asthma	respiratory, immune	FALSE	0.765	PICCOLO	Phase I	TRUE			
+TYK2-D001327	TYK2	ENSG00000105397	D001327	Autoimmune Diseases	immune	TRUE	1	OTG	Phase I	TRUE			
+TYK2-D003876	TYK2	ENSG00000105397	D003876	Dermatitis, Atopic	congenital, dermatology, immune	FALSE	0.696	PICCOLO	Launched	TRUE	TRUE	TRUE	TRUE
+TYK2-D006086	TYK2	ENSG00000105397	D006086	Graft vs Host Disease	immune	FALSE	0.434	OMIM	Preclinical	FALSE			
+TYK2-D006967	TYK2	ENSG00000105397	D006967	Hypersensitivity	immune	TRUE	1	PICCOLO	Phase I	TRUE			
+TYK2-D007154	TYK2	ENSG00000105397	D007154	Immune System Diseases	immune	FALSE	0.639	OMIM	Phase I	TRUE			
+TYK2-D008180	TYK2	ENSG00000105397	D008180	Lupus Erythematosus, Systemic	dermatology, immune	TRUE	1	PICCOLO	Phase II	TRUE	TRUE		
+TYK2-D008181	TYK2	ENSG00000105397	D008181	Lupus Nephritis	dermatology, immune	TRUE	0.824	PICCOLO	Phase II	TRUE	TRUE	FALSE	
+TYK2-D009103	TYK2	ENSG00000105397	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.686	OTG	Preclinical				
+TYK2-D012859	TYK2	ENSG00000105397	D012859	Sjogren's Syndrome	musculoskeletal, ophthalmology, dermatology, immune	TRUE	0.803	OTG	Phase II	TRUE	TRUE		
+TYMS-D001171	TYMS	ENSG00000176890	D001171	Arthritis, Juvenile	musculoskeletal, dermatology, immune	FALSE	0.157	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+TYMS-D001172	TYMS	ENSG00000176890	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.314	OMIM	Launched	TRUE	TRUE	TRUE	TRUE
+USP15-D009103	USP15	ENSG00000135655	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.22	OTG	Preclinical	FALSE			
+VAV1-D001327	VAV1	ENSG00000141968	D001327	Autoimmune Diseases	immune	FALSE	0.239	OTG	Preclinical				
+VEGFB-D001172	VEGFB	ENSG00000173511	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.24	OTG	Preclinical	FALSE			
+VIM-D001327	VIM	ENSG00000026025	D001327	Autoimmune Diseases	immune	FALSE	0.253	OTG	Preclinical				
+VIPR1-D001172	VIPR1	ENSG00000114812	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.202	OTG	Preclinical	FALSE			
+VSIR-D001327	VSIR	ENSG00000107738	D001327	Autoimmune Diseases	immune	FALSE	0.489	OTG	Preclinical				
+VSIR-D008180	VSIR	ENSG00000107738	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.431	OTG	Preclinical	FALSE			
+WAS-D014923	WAS	ENSG00000015285	D014923	Wiskott-Aldrich Syndrome	hematology, congenital, immune	TRUE	1	OMIM	Phase II	TRUE	TRUE		
+XAF1-D007154	XAF1	ENSG00000132530	D007154	Immune System Diseases	immune	FALSE	0		Preclinical	FALSE			
+XIAP-D007154	XIAP	ENSG00000101966	D007154	Immune System Diseases	immune	FALSE	0.546	OMIM	Preclinical	FALSE			
+XPO1-D001172	XPO1	ENSG00000082898	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Preclinical	FALSE			
+XPO1-D008180	XPO1	ENSG00000082898	D008180	Lupus Erythematosus, Systemic	dermatology, immune	FALSE	0.431	OTG	Phase I	TRUE			
+XPO1-D009103	XPO1	ENSG00000082898	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.443	OTG	Preclinical	FALSE			
+YWHAH-D001172	YWHAH	ENSG00000128245	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.44	OTG	Preclinical	FALSE			
+ZAP70-D001172	ZAP70	ENSG00000115085	D001172	Arthritis, Rheumatoid	musculoskeletal, dermatology, immune	FALSE	0.682	OTG	Phase II	TRUE	TRUE	FALSE	
+ZAP70-D001327	ZAP70	ENSG00000115085	D001327	Autoimmune Diseases	immune	TRUE	1	OTG	Preclinical	FALSE			
+ZAP70-D009103	ZAP70	ENSG00000115085	D009103	Multiple Sclerosis	neurology, immune	FALSE	0.686	OTG	Preclinical	FALSE			
