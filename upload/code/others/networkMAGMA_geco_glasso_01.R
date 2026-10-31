@@ -5,7 +5,7 @@ outd <- "results/others"
 dir.create(outd, showWarnings=FALSE, recursive=TRUE)
 resfile <- "data/others/networkMAGMA_78traits_geco_glasso_01_results.txt"
 
-NET  <- c("GECO_Shared","GECO_Specific","glasso_Shared","glasso_Specific")
+NET  <- c("GECO_Shared","GECO_Specific","glasso_Bulk","glasso_Specific")
 GRPS <- c("GECO Shared","GECO Specific","glasso Bulk","glasso Pseudobulk")
 LAB  <- setNames(GRPS, NET)
 
