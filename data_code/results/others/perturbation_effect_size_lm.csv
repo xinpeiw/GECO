@@ -1,0 +1,13 @@
+metric,col,group,mode,n,n_hub,coef,se,p,stars
+Mean incoming effect (received),mean_normed_effect_sig_pair_in,Shared,Baseline,6603,337,-0.0379,0.0061,6.44610688001953e-10,***
+Mean incoming effect (received),mean_normed_effect_sig_pair_in,Shared,Adjusted,6603,337,0.0203,0.0056,0.000298760299484407,***
+Mean incoming effect (received),mean_normed_effect_sig_pair_in,CD4-specific,Baseline,6603,143,0.0744,0.0092,9.31713237794543e-16,***
+Mean incoming effect (received),mean_normed_effect_sig_pair_in,CD4-specific,Adjusted,6603,143,0.0816,0.0083,8.2738965410572e-23,***
+Mean incoming effect (received),mean_normed_effect_sig_pair_in,non-CD4 specific,Baseline,6603,360,0.0885,0.0059,7.07211680511419e-51,***
+Mean incoming effect (received),mean_normed_effect_sig_pair_in,non-CD4 specific,Adjusted,6603,360,0.0718,0.0055,6.62298709480349e-39,***
+Mean outgoing effect (exerted),mean_normed_effect_sig_pair_out,Shared,Baseline,6603,337,0.0436,0.0129,0.000745867383476505,***
+Mean outgoing effect (exerted),mean_normed_effect_sig_pair_out,Shared,Adjusted,6603,337,0.0222,0.0133,0.0954279381270054,""
+Mean outgoing effect (exerted),mean_normed_effect_sig_pair_out,CD4-specific,Baseline,6603,143,0.0154,0.0196,0.431461168319857,""
+Mean outgoing effect (exerted),mean_normed_effect_sig_pair_out,CD4-specific,Adjusted,6603,143,0.0058,0.0197,0.766667745227581,""
+Mean outgoing effect (exerted),mean_normed_effect_sig_pair_out,non-CD4 specific,Baseline,6603,360,-0.0126,0.0125,0.313237770001484,""
+Mean outgoing effect (exerted),mean_normed_effect_sig_pair_out,non-CD4 specific,Adjusted,6603,360,-0.0151,0.0131,0.248053653875885,""

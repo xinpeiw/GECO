@@ -1,0 +1,25 @@
+method	net	n
+WGCNA	Bulk/Shared	337
+WGCNA	CD4NC	198
+WGCNA	CD4ET	29
+WGCNA	CD8NC	89
+WGCNA	CD8ET	75
+WGCNA	NK	70
+WGCNA	BIN	11
+WGCNA	BMem	15
+Standard glasso	Bulk/Shared	496
+Standard glasso	CD4NC	263
+Standard glasso	CD4ET	21
+Standard glasso	CD8NC	33
+Standard glasso	CD8ET	124
+Standard glasso	NK	121
+Standard glasso	BIN	45
+Standard glasso	BMem	5
+GECO	Bulk/Shared	482
+GECO	CD4NC	224
+GECO	CD4ET	78
+GECO	CD8NC	210
+GECO	CD8ET	272
+GECO	NK	297
+GECO	BIN	122
+GECO	BMem	96

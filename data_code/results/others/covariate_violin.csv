@@ -1,0 +1,9 @@
+covariate,comparison,n_hub,med_hub,med_nonhub,W,p,A_prob_sup,r_rb,higher,stars
+log(expression),Shared vs Non-hub,474,-2.675,-4.084,3845951,3.31380738036075e-112,0.805,0.611,Shared,***
+log(expression),Specific vs Non-hub,849,-3.261,-4.084,5743685,4.32652166593288e-62,0.672,0.343,Specific,***
+log(expression variability),Shared vs Non-hub,474,-0.781,-0.66,2292388,0.141943316139515,0.48,-0.04,Non-hub,ns
+log(expression variability),Specific vs Non-hub,849,1.446,-0.66,7454872,3.8579038686338e-284,0.872,0.743,Specific,***
+log(gene length),Shared vs Non-hub,474,10.395,10.279,2454765.5,0.299446746213463,0.514,0.028,Shared,ns
+log(gene length),Specific vs Non-hub,849,10.112,10.279,4066140,0.0171713252411201,0.475,-0.049,Non-hub,*
+GC content,Shared vs Non-hub,474,0.409,0.447,1720066,6.89090625005865e-25,0.36,-0.28,Non-hub,***
+GC content,Specific vs Non-hub,849,0.457,0.447,4534937,0.00339128610546809,0.53,0.06,Specific,**
