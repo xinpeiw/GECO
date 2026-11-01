@@ -23,3 +23,13 @@ kd.to_csv('data/others/known_drug_approved_panel.tsv', sep='\t', index=False)
 for cat in ['Immune', 'Non-Immune']:
     genes = sorted(set(kd.loc[kd.Category == cat, 'targetId']) & U)
     Path(f"data/5e-drug_target/targets_{cat.replace('-', '')}_approved.txt").write_text('\n'.join(genes) + '\n')
+
+# CLUES: metformin excluded (METFORMIN / METFORMIN HYDROCHLORIDE records dropped), targets in the CLUES universe
+Uc = set(open('data/clues/allgenes_CLUES.txt').read().split())
+raw = pq.read_table('raw/DrugTargets/known_drug', columns=['targetId', 'diseaseId', 'phase', 'prefName']).to_pandas()
+raw = raw[~raw.prefName.str.upper().str.contains('METFORMIN', na=False)]
+kdc = raw.groupby(['targetId', 'diseaseId'], as_index=False).phase.max()
+kdc = kdc[kdc.phase >= 4].merge(panel[['efo_id', 'Category']].drop_duplicates('efo_id'), left_on='diseaseId', right_on='efo_id')
+for cat in ['Immune', 'Non-Immune']:
+    genes = sorted(set(kdc.loc[kdc.Category == cat, 'targetId']) & Uc)
+    Path(f"data/7d_drug_target/targets_{cat.replace('-', '')}_approved.txt").write_text('\n'.join(genes) + '\n')

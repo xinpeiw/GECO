@@ -19,10 +19,10 @@ stopifnot(length(U) == 11087L, length(NB) == 55L, all(NB %in% U))
 SETS <- list(
   list(f="geneset_HALLMARK_INTERFERON_ALPHA_RESPONSE.tsv",
        lab="Interferon alpha response",   key="HALLMARK_INTERFERON_ALPHA_RESPONSE"),
-  list(f="geneset_GOBP_MYELOID_LEUKOCYTE_ACTIVATION.tsv",
-       lab="Myeloid leukocyte activation", key="GOBP_MYELOID_LEUKOCYTE_ACTIVATION"),
-  list(f="geneset_IMMUNOPROTEASOME_COMPLEX_curated.tsv",
-       lab="Immunoproteasome complex",     key="IMMUNOPROTEASOME_COMPLEX_curated"))
+  list(f="geneset_GOBP_RESPONSE_TO_INTERFERON_BETA.tsv",
+       lab="Response to interferon beta",  key="GOBP_RESPONSE_TO_INTERFERON_BETA"),
+  list(f="geneset_HALLMARK_INTERFERON_GAMMA_RESPONSE.tsv",
+       lab="Interferon gamma response",    key="HALLMARK_INTERFERON_GAMMA_RESPONSE"))
 
 gs <- lapply(SETS, function(s) {
   d <- fread(file.path(src, s$f))
@@ -43,22 +43,6 @@ chk <- data.table(gene_set = names(gs),
 chk <- merge(chk, up[, .(gene_set, set_size_in_universe, overlap, odds_ratio, p_value)], by="gene_set")
 stopifnot(chk[, all(n_set_here == set_size_in_universe)], chk[, all(n_ov_here == overlap)])
 cat("check: set sizes and overlaps reproduce enrichment_results.tsv exactly\n")
-
-xl <- file.path(src, "BAFF_neighbors_genesets.xlsx")
-if (requireNamespace("readxl", quietly=TRUE) && file.exists(xl)) {
-  x <- as.data.table(readxl::read_excel(xl))
-  setnames(x, 1:2, c("symbol","gene"))
-  x <- x[gene %in% NB]
-  stopifnot(nrow(x) == 55L)
-
-  xk <- c("HALLMARK_INTERFERON_ALPHA_RESPONSE","IMMUNOPROTEASOME_COMPLEX_curated",
-          "GOBP_MYELOID_LEUKOCYTE_ACTIVATION")
-  for (j in seq_along(xk)) {
-    mem <- x[!is.na(x[[2 + j]]) & x[[2 + j]] == "Yes", gene]
-    stopifnot(setequal(mem, intersect(gs[[xk[j]]], NB)))
-  }
-  cat("check: the xlsx membership table agrees with the gene-set tsvs on all 3 sets\n")
-} else cat("note : readxl unavailable or xlsx missing -- membership cross-check skipped\n")
 
 cov <- fread("data/clues/covariates_all.txt")[
          , .(gene, logE=log(expression), logL=log(gene_length), gc=gc_content)]

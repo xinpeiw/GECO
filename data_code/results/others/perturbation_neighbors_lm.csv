@@ -1,0 +1,19 @@
+metric,col,group,mode,n,n_hub,coef,se,p,stars
+# regulators,n_incoming_neighbors,Shared,Baseline,6603,337,0.3142,0.033,2.70607654732606e-21,***
+# regulators,n_incoming_neighbors,Shared,Adjusted,6603,337,0.1431,0.0304,2.48275402225749e-06,***
+# regulators,n_incoming_neighbors,CD4-specific,Baseline,6603,143,0.4929,0.0499,8.18993712864424e-23,***
+# regulators,n_incoming_neighbors,CD4-specific,Adjusted,6603,143,0.2157,0.045,1.65569728012043e-06,***
+# regulators,n_incoming_neighbors,non-CD4 specific,Baseline,6603,360,0.373,0.0319,3.15763848952295e-31,***
+# regulators,n_incoming_neighbors,non-CD4 specific,Adjusted,6603,360,0.1295,0.0299,1.51997333755595e-05,***
+# responders,n_outgoing_neighbors,Shared,Baseline,6603,337,0.4428,0.1177,0.000169921765322666,***
+# responders,n_outgoing_neighbors,Shared,Adjusted,6603,337,0.0991,0.1205,0.41115351792367,""
+# responders,n_outgoing_neighbors,CD4-specific,Baseline,6603,143,-0.2743,0.1781,0.123552983171895,""
+# responders,n_outgoing_neighbors,CD4-specific,Adjusted,6603,143,-0.2898,0.1785,0.104594358942099,""
+# responders,n_outgoing_neighbors,non-CD4 specific,Baseline,6603,360,-0.3561,0.1141,0.00181601983106599,**
+# responders,n_outgoing_neighbors,non-CD4 specific,Adjusted,6603,360,-0.2004,0.1187,0.0914502804512538,""
+# neighbors,n_neighbors,Shared,Baseline,6603,337,0.3693,0.0472,5.86673985275351e-15,***
+# neighbors,n_neighbors,Shared,Adjusted,6603,337,0.1298,0.0463,0.00509794153223137,**
+# neighbors,n_neighbors,CD4-specific,Baseline,6603,143,0.327,0.0716,4.98765235597112e-06,***
+# neighbors,n_neighbors,CD4-specific,Adjusted,6603,143,0.0951,0.0687,0.166006471554949,""
+# neighbors,n_neighbors,non-CD4 specific,Baseline,6603,360,0.2102,0.0459,4.73089249955126e-06,***
+# neighbors,n_neighbors,non-CD4 specific,Adjusted,6603,360,0.0552,0.0457,0.226723152208367,""
