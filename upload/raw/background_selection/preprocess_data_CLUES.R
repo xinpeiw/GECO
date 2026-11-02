@@ -41,16 +41,8 @@ genes_hg38 <- GRanges(
 )
 names(genes_hg38) <- gene_ids
 
-tss_pos <- ifelse(as.character(strand(genes_hg38)) == '-',
-                  end(genes_hg38), start(genes_hg38))
-tss_hg38 <- GRanges(seqnames = seqnames(genes_hg38),
-                    ranges   = IRanges(tss_pos, tss_pos),
-                    strand   = strand(genes_hg38))
-names(tss_hg38) <- names(genes_hg38)
-
 chain <- import.chain(chain_file)
 lift_body <- liftOver(genes_hg38, chain)
-lift_tss  <- liftOver(tss_hg38,  chain)
 message('Gene bodies lifted: ',
         sum(elementNROWS(lift_body) > 0), ' / ', length(genes_hg38))
 
@@ -66,15 +58,8 @@ num <- tapply(w * bv, gn, sum)
 den <- tapply(w,      gn, sum)
 body_B <- num / den
 
-ftss <- unlist(lift_tss)
-strand(ftss) <- '*'
-th <- findOverlaps(ftss, bmap, ignore.strand = TRUE)
-th <- th[!duplicated(queryHits(th))]
-tss_B <- setNames(bmap$B[subjectHits(th)], names(ftss)[queryHits(th)])
-
 out <- data.table(ensg = names(genes_hg38))
-out[, bvalue     := body_B[ensg]]
-out[, bvalue_tss := tss_B[ensg]]
+out[, bvalue := body_B[ensg]]
 out <- out[!is.na(bvalue)]
 
 universe = readLines('data/clues/allgenes_CLUES.txt')
