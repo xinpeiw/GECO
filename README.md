@@ -30,8 +30,6 @@ Plus a single workbook:
 remotes::install_github("xinpeiw/GECO")
 ```
 
-Repository: <https://github.com/xinpeiw/GECO> .
-
 ## Running on a cluster
 
 ### Running it
