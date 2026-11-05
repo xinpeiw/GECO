@@ -30,9 +30,7 @@ Plus a single workbook:
 remotes::install_github("xinpeiw/GECO")
 ```
 
-Repository: <https://github.com/xinpeiw/GECO> (private — collaborators
-will need a GitHub PAT with `repo` scope to `remotes::install_github()`,
-e.g. via `Sys.setenv(GITHUB_PAT = "...")`).
+Repository: <https://github.com/xinpeiw/GECO> .
 
 ## Running on a cluster
 
